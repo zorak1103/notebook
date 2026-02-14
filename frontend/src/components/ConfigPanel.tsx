@@ -18,7 +18,6 @@ function ConfigPanel(): React.JSX.Element {
     llm_provider_url: '',
     llm_api_key: '',
     llm_model: '',
-    language: '',
   });
 
   useEffect(() => {
@@ -34,7 +33,6 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: config.llm_provider_url || '',
         llm_api_key: config.llm_api_key || '',
         llm_model: config.llm_model || '',
-        language: config.language || 'en',
       });
       setOriginalKey(config.llm_api_key || '');
     } catch (err) {
@@ -52,9 +50,11 @@ function ConfigPanel(): React.JSX.Element {
 
     try {
       // If API key hasn't changed (still masked), send empty string
+      // LanguageSwitcher handles language persistence independently
       const dataToSend = {
         ...formData,
         llm_api_key: formData.llm_api_key === originalKey ? '' : formData.llm_api_key,
+        language: '',
       };
 
       const result = await updateConfig(dataToSend);
@@ -62,7 +62,6 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: result.llm_provider_url || '',
         llm_api_key: result.llm_api_key || '',
         llm_model: result.llm_model || '',
-        language: result.language || 'en',
       });
       setOriginalKey(result.llm_api_key || '');
       setSuccess(true);

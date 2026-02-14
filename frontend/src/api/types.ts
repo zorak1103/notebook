@@ -72,5 +72,5 @@ export interface ConfigUpdateRequest {
   llm_provider_url: string;
   llm_api_key: string;
   llm_model: string;
-  language: string;
+  language?: string;
 }

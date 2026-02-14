@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     getConfig().then((cfg) => {
-      if (cfg.language && cfg.language !== i18n.language) {
+      if (cfg.language && !i18n.language.startsWith(cfg.language)) {
         i18n.changeLanguage(cfg.language);
       }
     }).catch(() => { /* use browser-detected language as fallback */ });
