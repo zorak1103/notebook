@@ -5,9 +5,10 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { MeetingList } from './components/MeetingList';
 import { MeetingForm } from './components/MeetingForm';
 import { MeetingDetail } from './components/MeetingDetail';
+import { SearchPanel } from './components/SearchPanel';
 import './App.css';
 
-type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail';
+type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail' | 'search';
 
 function App() {
   const { t } = useTranslation();
@@ -21,6 +22,15 @@ function App() {
 
   const handleMeetingList = () => {
     setView('list');
+  };
+
+  const handleSearch = () => {
+    setView('search');
+  };
+
+  const handleSearchSelect = (id: number) => {
+    setSelectedId(id);
+    setView('detail');
   };
 
   const handleViewDetail = (id: number) => {
@@ -69,7 +79,10 @@ function App() {
           >
             {t('navigation.meetingList')}
           </button>
-          <button className="nav-item" disabled>
+          <button
+            className={`nav-item ${view === 'search' ? 'nav-item--active' : ''}`}
+            onClick={handleSearch}
+          >
             {t('navigation.search')}
           </button>
           <button className="nav-item" disabled>
@@ -102,6 +115,7 @@ function App() {
             onEdit={handleEditFromDetail}
           />
         )}
+        {view === 'search' && <SearchPanel onSelectMeeting={handleSearchSelect} />}
       </main>
     </div>
   );

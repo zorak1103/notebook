@@ -47,6 +47,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /api/notes/{id}", s.handleUpdateNote)
 	mux.HandleFunc("DELETE /api/notes/{id}", s.handleDeleteNote)
 
+	// Search
+	mux.HandleFunc("GET /api/search", s.handleSearch)
+
 	// Static files and SPA fallback
 	mux.HandleFunc("/", s.handleStatic)
 

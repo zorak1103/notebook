@@ -70,5 +70,14 @@
     "participants": "Teilnehmer",
     "summary": "Zusammenfassung",
     "keywords": "Schlagwörter"
+  },
+  "search": {
+    "title": "Meetings durchsuchen",
+    "placeholder": "Nach Betreff oder Zusammenfassung suchen...",
+    "loading": "Suche läuft...",
+    "noResults": "Keine Meetings gefunden, die Ihrer Suche entsprechen",
+    "resultCount": "{{count}} Ergebnis",
+    "resultCount_other": "{{count}} Ergebnisse",
+    "error": "Fehler beim Durchsuchen der Meetings"
   }
 }

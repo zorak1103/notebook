@@ -70,5 +70,14 @@
     "participants": "Participants",
     "summary": "Résumé",
     "keywords": "Mots-clés"
+  },
+  "search": {
+    "title": "Rechercher des réunions",
+    "placeholder": "Rechercher par sujet ou résumé...",
+    "loading": "Recherche en cours...",
+    "noResults": "Aucune réunion ne correspond à votre recherche",
+    "resultCount": "{{count}} résultat",
+    "resultCount_other": "{{count}} résultats",
+    "error": "Échec de la recherche de réunions"
   }
 }

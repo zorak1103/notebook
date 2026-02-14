@@ -70,5 +70,14 @@
     "participants": "Participants",
     "summary": "Summary",
     "keywords": "Keywords"
+  },
+  "search": {
+    "title": "Search Meetings",
+    "placeholder": "Search by subject or summary...",
+    "loading": "Searching...",
+    "noResults": "No meetings found matching your search",
+    "resultCount": "{{count}} result",
+    "resultCount_other": "{{count}} results",
+    "error": "Failed to search meetings"
   }
 }

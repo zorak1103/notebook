@@ -95,6 +95,11 @@ export async function deleteMeeting(id: number): Promise<void> {
   return apiDelete(`/api/meetings/${id}`);
 }
 
+export async function searchMeetings(query: string): Promise<Meeting[]> {
+  if (!query.trim()) return [];
+  return apiGet<Meeting[]>(`/api/search?q=${encodeURIComponent(query)}`);
+}
+
 // Note API functions
 
 export async function fetchNotes(meetingId: number): Promise<Note[]> {
