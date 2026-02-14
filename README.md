@@ -12,6 +12,7 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 - **Meeting Management**: Create, edit, and organize meetings with metadata
 - **Notes System**: Attach numbered notes to meetings with automatic numbering
 - **Full-Text Search**: Search across meeting subjects and summaries
+- **Configuration Management**: Web UI for LLM provider settings with masked API keys
 - **Tailscale Integration**: Seamless authentication and secure network access via tsnet
 - **LLM Integration**: Optional AI-powered meeting summaries (OpenAI, Anthropic)
 - **Single Binary**: Frontend embedded using go:embed
@@ -69,13 +70,13 @@ Download `notebook_Windows_x86_64.zip` from [Releases](https://github.com/zorak1
 **Prerequisites**:
 - Go 1.26+
 - Node.js 20+
-- Make
+- Mage (optional: `go install github.com/magefile/mage@latest`)
 
 **Build**:
 ```bash
 git clone https://github.com/zorak1103/notebook.git
 cd notebook
-make build
+mage build  # or: go run github.com/magefile/mage@latest build
 ./notebook --dev-listen :8080
 ```
 
@@ -107,10 +108,12 @@ Access at https://notebook.your-tailnet.ts.net
 
 **LLM Configuration**:
 
-Configure via Web UI under "Konfiguration":
-- LLM Provider URL (e.g., `https://api.openai.com/v1`)
-- API Key (masked in UI)
-- Model name (e.g., `gpt-4o-mini`, `claude-3-5-sonnet-20241022`)
+Configure via Web UI under "Configuration":
+- **Provider URL**: Base URL for LLM API (e.g., `https://api.openai.com/v1`)
+- **API Key**: Authentication key (automatically masked after saving)
+- **Model**: Model identifier (e.g., `gpt-4o`, `claude-opus-4-6`)
+
+Configuration is stored in the SQLite database and persists across restarts.
 
 ## Development
 
@@ -123,22 +126,26 @@ notebook/
 │   ├── db/               # Database layer (SQLite)
 │   ├── llm/              # LLM integration
 │   ├── tsapp/            # Tailscale wrapper
+│   ├── validation/       # Generated validation rules
 │   └── web/              # HTTP server & handlers
 ├── frontend/             # React + Vite frontend
 ├── .docs/                # Documentation
 ├── .github/workflows/    # CI/CD pipelines
-└── Makefile
+└── magefile.go           # Build system (Mage)
 ```
 
 ### Build Commands
 
 ```bash
-make build        # Build frontend + backend
-make frontend     # Build frontend only
-make backend      # Build backend only
-make dev          # Run dev servers (separate terminals)
-make test         # Run tests
-make clean        # Clean build artifacts
+mage build        # Build frontend + backend (or just: mage)
+mage frontend     # Build frontend only
+mage backend      # Build backend only
+mage dev          # Show dev setup instructions
+mage test         # Run tests
+mage lint         # Run linter
+mage verify       # Run lint + test
+mage clean        # Clean build artifacts
+mage -l           # List all available targets
 ```
 
 ### Running Tests
@@ -180,10 +187,31 @@ Frontend proxies API requests to backend (configured in `vite.config.ts`)
 - `notes` - Notes with auto-incrementing note numbers per meeting
 - `config` - Key-value configuration store
 
-**API**:
-- REST endpoints under `/api/*`
-- JSON request/response
-- Tailscale WhoIs integration for user identity
+**API Endpoints**:
+
+*Meetings*:
+- `GET /api/meetings` - List all meetings (supports `?sort=` and `?order=`)
+- `GET /api/meetings/{id}` - Get meeting by ID
+- `POST /api/meetings` - Create meeting
+- `PUT /api/meetings/{id}` - Update meeting
+- `DELETE /api/meetings/{id}` - Delete meeting
+
+*Notes*:
+- `GET /api/meetings/{meetingId}/notes` - List notes for meeting
+- `GET /api/notes/{id}` - Get note by ID
+- `POST /api/notes` - Create note (auto-assigns note_number)
+- `PUT /api/notes/{id}` - Update note
+- `DELETE /api/notes/{id}` - Delete note
+
+*Search*:
+- `GET /api/search?q=<query>` - Search meetings by subject/summary
+
+*Configuration*:
+- `GET /api/config` - Get configuration (API keys masked)
+- `POST /api/config` - Update configuration
+
+*Authentication*:
+- `GET /api/whoami` - Get Tailscale user identity (WhoIs API)
 
 **Frontend**:
 - Single-page application (SPA)
@@ -236,13 +264,16 @@ Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 - [x] Schema migrations system
 - [x] Repository pattern (Meeting, Note, Config)
 
-**Phase 3-7 (In Progress)**:
-- [ ] Meeting CRUD API endpoints
-- [ ] Notes CRUD API endpoints with auto-numbering
-- [ ] Full-text search API
-- [ ] Configuration management API
+**Phase 3-6 (Completed)**:
+- [x] Meeting CRUD API endpoints
+- [x] Notes CRUD API endpoints with auto-numbering
+- [x] Full-text search API
+- [x] Configuration management API with masked API keys
+- [x] React frontend with i18n (DE, EN, FR, ES)
+
+**Phase 7 (In Progress)**:
 - [ ] LLM integration (OpenAI, Anthropic)
-- [ ] React frontend with i18n (DE, EN, FR, ES)
+- [ ] Meeting summarization endpoints
 
 **Future Enhancements**:
 - [ ] Meeting templates
