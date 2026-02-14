@@ -1,0 +1,57 @@
+# Binaries
+notebook
+notebook.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*.test
+
+# Coverage
+*.out
+coverage.txt
+coverage.html
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Frontend build output (embedded)
+internal/web/frontend/dist/
+
+# Tailscale state
+tsnet-state/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# GoReleaser
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Temporary
+tmp/
+temp/
+.docs/
+
+#CLAUDE
+.claude/

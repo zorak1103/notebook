@@ -1,0 +1,122 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    # Frontend is built in CI before GoReleaser runs
+
+builds:
+  - main: ./cmd/notebook
+    binary: notebook
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: default
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    builds_info:
+      group: root
+      owner: root
+    files:
+      - LICENSE*
+      - README.md
+      - .docs/prd.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - Merge pull request
+      - Merge branch
+
+nfpms:
+  - id: packages
+    package_name: notebook
+    vendor: zorak1103
+    homepage: https://github.com/zorak1103/notebook
+    maintainer: zorak1103
+    description: Meeting and Notes Management App with Tailscale Integration
+    license: MIT
+
+    formats:
+      - deb
+      - rpm
+      - apk
+      - archlinux
+
+    bindir: /usr/bin
+
+    contents:
+      - src: LICENSE*
+        dst: /usr/share/doc/notebook/LICENSE
+      - src: README.md
+        dst: /usr/share/doc/notebook/README.md
+      - src: .docs/prd.md
+        dst: /usr/share/doc/notebook/prd.md
+
+    # RPM specific
+    rpm:
+      group: Applications/Productivity
+      compression: lzma
+
+    # DEB specific
+    deb:
+      compression: xz
+
+    # Arch Linux specific
+    archlinux:
+      pkgbase: notebook
+      packager: zorak1103
+
+# Docker images - multi-arch builds for Docker Hub (v2 format)
+dockers_v2:
+  - images:
+      - "zorak1103/notebook"
+    tags:
+      - "{{ .Version }}"
+      - "latest"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    labels:
+      "org.opencontainers.image.title": "{{ .ProjectName }}"
+      "org.opencontainers.image.description": "Meeting and Notes Management App with Tailscale Integration"
+      "org.opencontainers.image.version": "{{ .Version }}"
+      "org.opencontainers.image.revision": "{{ .FullCommit }}"
+      "org.opencontainers.image.created": "{{ .Date }}"
+      "org.opencontainers.image.source": "https://github.com/zorak1103/notebook"
+      "org.opencontainers.image.licenses": "MIT"
+
+release:
+  github:
+    owner: zorak1103
+    name: notebook
+  draft: false
+  prerelease: auto
