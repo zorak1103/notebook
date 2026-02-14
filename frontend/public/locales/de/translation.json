@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "Notizbuch"
+  },
+  "navigation": {
+    "newMeeting": "Neues Meeting",
+    "meetingList": "Meeting-Liste",
+    "search": "Suche",
+    "configuration": "Konfiguration"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "Notebook"
+  },
+  "navigation": {
+    "newMeeting": "New Meeting",
+    "meetingList": "Meeting List",
+    "search": "Search",
+    "configuration": "Configuration"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "Carnet"
+  },
+  "navigation": {
+    "newMeeting": "Nouvelle réunion",
+    "meetingList": "Liste des réunions",
+    "search": "Recherche",
+    "configuration": "Configuration"
+  }
+}

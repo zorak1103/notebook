@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "Cuaderno"
+  },
+  "navigation": {
+    "newMeeting": "Nueva reunión",
+    "meetingList": "Lista de reuniones",
+    "search": "Búsqueda",
+    "configuration": "Configuración"
+  }
+}

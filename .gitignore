@@ -20,7 +20,8 @@ frontend/dist/
 frontend/.vite/
 
 # Frontend build output (embedded)
-internal/web/frontend/dist/
+internal/web/frontend/dist/*
+!internal/web/frontend/dist/.gitkeep
 
 # Tailscale state
 tsnet-state/
