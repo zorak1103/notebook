@@ -4,22 +4,25 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/zorak1103/notebook/internal/db"
 	"github.com/zorak1103/notebook/internal/tsapp"
 )
 
 // Server manages the HTTP server and routes for the notebook application
 type Server struct {
-	tsapp   *tsapp.App
-	devMode bool
-	verbose bool
+	tsapp    *tsapp.App
+	database *db.DB
+	devMode  bool
+	verbose  bool
 }
 
 // NewServer creates a new web server instance
-func NewServer(app *tsapp.App, devMode, verbose bool) *Server {
+func NewServer(app *tsapp.App, database *db.DB, devMode, verbose bool) *Server {
 	return &Server{
-		tsapp:   app,
-		devMode: devMode,
-		verbose: verbose,
+		tsapp:    app,
+		database: database,
+		devMode:  devMode,
+		verbose:  verbose,
 	}
 }
 
