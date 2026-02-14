@@ -7,10 +7,23 @@
   box-shadow: var(--shadow-sm);
 }
 
-.note-form h2 {
+.note-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--space-sm);
+}
+
+.note-form h2 {
+  margin: 0;
   color: #333;
   font-size: var(--font-2xl);
+}
+
+.note-form-actions {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
 }
 
 .note-form .form-group {
@@ -72,6 +85,17 @@
   transition: background-color 0.2s;
 }
 
+.note-form .form-actions .btn-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-2xl);
+  font-weight: 300;
+}
+
 .note-form .form-actions .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -93,4 +117,48 @@
 
 .note-form .form-actions .btn-submit:hover:not(:disabled) {
   background: #218838;
+}
+
+.note-form-actions .btn-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-lg);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.note-form-actions .btn-ai {
+  background: #9333ea;
+  color: white;
+}
+
+.note-form-actions .btn-ai:hover:not(:disabled) {
+  background: #7e22ce;
+}
+
+.note-form-actions .btn-ai:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.note-form-actions .btn-undo {
+  background: #f59e0b;
+  color: white;
+}
+
+.note-form-actions .btn-undo:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.note-form-actions .btn-undo:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
 }

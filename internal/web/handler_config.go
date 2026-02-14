@@ -12,26 +12,32 @@ import (
 
 // Config key constants
 const (
-	configKeyLLMProviderURL = "llm_provider_url"
-	configKeyLLMAPIKey      = "llm_api_key" // #nosec G101 - config key name, not credential
-	configKeyLLMModel       = "llm_model"
-	configKeyLanguage       = "language"
+	configKeyLLMProviderURL   = "llm_provider_url"
+	configKeyLLMAPIKey        = "llm_api_key" // #nosec G101 - config key name, not credential
+	configKeyLLMModel         = "llm_model"
+	configKeyLanguage         = "language"
+	configKeyLLMPromptSummary = "llm_prompt_summary"
+	configKeyLLMPromptEnhance = "llm_prompt_enhance"
 )
 
 // ConfigData represents the configuration response
 type ConfigData struct {
-	LLMProviderURL string `json:"llm_provider_url"`
-	LLMAPIKey      string `json:"llm_api_key"`
-	LLMModel       string `json:"llm_model"`
-	Language       string `json:"language"`
+	LLMProviderURL   string `json:"llm_provider_url"`
+	LLMAPIKey        string `json:"llm_api_key"`
+	LLMModel         string `json:"llm_model"`
+	Language         string `json:"language"`
+	LLMPromptSummary string `json:"llm_prompt_summary"`
+	LLMPromptEnhance string `json:"llm_prompt_enhance"`
 }
 
 // ConfigUpdateRequest represents the configuration update request
 type ConfigUpdateRequest struct {
-	LLMProviderURL string `json:"llm_provider_url"`
-	LLMAPIKey      string `json:"llm_api_key"`
-	LLMModel       string `json:"llm_model"`
-	Language       string `json:"language"`
+	LLMProviderURL   string `json:"llm_provider_url"`
+	LLMAPIKey        string `json:"llm_api_key"`
+	LLMModel         string `json:"llm_model"`
+	Language         string `json:"language"`
+	LLMPromptSummary string `json:"llm_prompt_summary"`
+	LLMPromptEnhance string `json:"llm_prompt_enhance"`
 }
 
 // handleGetConfig returns the current configuration with masked API key
@@ -103,6 +109,10 @@ func buildConfigData(configs []*models.Config) ConfigData {
 			data.LLMModel = cfg.Value
 		case configKeyLanguage:
 			data.Language = cfg.Value
+		case configKeyLLMPromptSummary:
+			data.LLMPromptSummary = cfg.Value
+		case configKeyLLMPromptEnhance:
+			data.LLMPromptEnhance = cfg.Value
 		}
 	}
 
@@ -131,6 +141,18 @@ func saveConfigFields(repo *repositories.ConfigRepository, req *ConfigUpdateRequ
 
 	if req.Language != "" {
 		if err := repo.Set(configKeyLanguage, req.Language); err != nil {
+			return err
+		}
+	}
+
+	if req.LLMPromptSummary != "" {
+		if err := repo.Set(configKeyLLMPromptSummary, req.LLMPromptSummary); err != nil {
+			return err
+		}
+	}
+
+	if req.LLMPromptEnhance != "" {
+		if err := repo.Set(configKeyLLMPromptEnhance, req.LLMPromptEnhance); err != nil {
 			return err
 		}
 	}

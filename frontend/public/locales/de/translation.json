@@ -47,6 +47,9 @@
     "edit": "Bearbeiten",
     "delete": "Löschen",
     "enhance": "Mit KI verbessern",
+    "enhancing": "Wird verbessert...",
+    "enhanceError": "Fehler beim Verbessern der Notiz",
+    "undoEnhance": "KI-Verbesserung rückgängig machen",
     "empty": "Noch keine Notizen. Fügen Sie Ihre erste Notiz mit der Schaltfläche oben hinzu.",
     "confirmDelete": "Möchten Sie Notiz #{{number}} wirklich löschen?",
     "deleteFailed": "Fehler beim Löschen der Notiz",
@@ -66,6 +69,9 @@
     "back": "Zurück zur Liste",
     "editMeeting": "Meeting bearbeiten",
     "summarize": "Mit KI zusammenfassen",
+    "summarizing": "Wird zusammengefasst...",
+    "summarizeError": "Fehler beim Erstellen der Zusammenfassung",
+    "undoSummary": "KI-Zusammenfassung rückgängig machen",
     "notFound": "Meeting nicht gefunden",
     "date": "Datum",
     "time": "Zeit",
@@ -97,10 +103,21 @@
     "model": "Modell",
     "modelPlaceholder": "gpt-4o",
     "modelHint": "Modellbezeichner für Vervollständigungen",
+    "sectionPrompts": "LLM-Vorlagen",
+    "promptSummary": "Zusammenfassungsvorlage",
+    "promptSummaryPlaceholder": "Vorlage zum Erstellen von Meeting-Zusammenfassungen",
+    "promptSummaryHint": "Verfügbare Platzhalter: {{subject}}, {{date}}, {{participants}}, {{notes}}",
+    "promptEnhance": "Verbesserungsvorlage",
+    "promptEnhancePlaceholder": "Vorlage zum Verbessern von Notizinhalten",
+    "promptEnhanceHint": "Verfügbarer Platzhalter: {{content}}",
     "save": "Speichern",
     "saving": "Speichern...",
     "saveSuccess": "Konfiguration erfolgreich gespeichert",
     "saveError": "Fehler beim Speichern der Konfiguration",
     "loadError": "Fehler beim Laden der Konfiguration"
+  },
+  "llm": {
+    "configMissing": "LLM nicht konfiguriert. Bitte richten Sie Ihren LLM-Anbieter in der Konfiguration ein.",
+    "noNotes": "Keine Notizen zum Zusammenfassen. Fügen Sie zuerst einige Notizen hinzu."
   }
 }

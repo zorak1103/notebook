@@ -59,8 +59,29 @@
   color: white;
 }
 
-.detail-header .btn-ai:hover {
+.detail-header .btn-ai:hover:not(:disabled) {
   background: #7e22ce;
+}
+
+.detail-header .btn-ai:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.detail-header .btn-undo {
+  background: #f59e0b;
+  color: white;
+}
+
+.detail-header .btn-undo:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.detail-header .btn-undo:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .meeting-info {
@@ -92,7 +113,8 @@
 .metadata-label {
   font-weight: 600;
   color: #555;
-  min-width: 80px;
+  min-width: 150px;
+  flex-shrink: 0;
 }
 
 .metadata-value {

@@ -130,8 +130,29 @@
   color: white;
 }
 
-.note-actions .btn-ai:hover {
+.note-actions .btn-ai:hover:not(:disabled) {
   background: #7e22ce;
+}
+
+.note-actions .btn-ai:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.note-actions .btn-undo {
+  background: #f59e0b;
+  color: white;
+}
+
+.note-actions .btn-undo:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.note-actions .btn-undo:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .note-content {

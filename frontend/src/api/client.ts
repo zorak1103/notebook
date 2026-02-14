@@ -100,6 +100,10 @@ export async function searchMeetings(query: string): Promise<Meeting[]> {
   return apiGet<Meeting[]>(`/api/search?q=${encodeURIComponent(query)}`);
 }
 
+export async function summarizeMeeting(id: number): Promise<Meeting> {
+  return apiPost<Meeting>(`/api/meetings/${id}/summarize`, {});
+}
+
 // Note API functions
 
 export async function fetchNotes(meetingId: number): Promise<Note[]> {
@@ -120,6 +124,10 @@ export async function updateNote(id: number, data: UpdateNoteRequest): Promise<N
 
 export async function deleteNote(id: number): Promise<void> {
   return apiDelete(`/api/notes/${id}`);
+}
+
+export async function enhanceNote(id: number): Promise<Note> {
+  return apiPost<Note>(`/api/notes/${id}/enhance`, {});
 }
 
 // Config API functions

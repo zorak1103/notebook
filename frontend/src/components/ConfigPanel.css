@@ -56,7 +56,8 @@
   margin-bottom: var(--space-xs);
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
   width: 100%;
   padding: var(--input-padding);
   font-size: var(--font-md);
@@ -65,11 +66,17 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.form-group textarea {
+  font-family: 'Courier New', Courier, monospace;
+  resize: vertical;
+}
+
 .form-group input[type="password"] {
   font-family: 'Courier New', Courier, monospace;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #4a90e2;
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);

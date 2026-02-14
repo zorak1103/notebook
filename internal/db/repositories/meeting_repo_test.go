@@ -303,6 +303,100 @@ func TestMeetingRepository_Search_EscapesSpecialChars(t *testing.T) {
 	}
 }
 
+func TestMeetingRepository_Search_ByParticipants(t *testing.T) {
+	database := setupTestDB(t)
+	defer database.Close()
+
+	repo := repositories.NewMeetingRepository(database.DB)
+
+	participants1 := "Alice, Bob, Charlie"
+	participants2 := "David, Eve"
+	// Create meetings with different participants
+	meetings := []*models.Meeting{
+		{
+			CreatedBy:    "test@example.com",
+			Subject:      "Meeting 1",
+			MeetingDate:  "2026-02-14",
+			StartTime:    "10:00",
+			Participants: &participants1,
+		},
+		{
+			CreatedBy:    "test@example.com",
+			Subject:      "Meeting 2",
+			MeetingDate:  "2026-02-15",
+			StartTime:    "14:00",
+			Participants: &participants2,
+		},
+	}
+
+	for _, m := range meetings {
+		if err := repo.Create(m); err != nil {
+			t.Fatalf("create failed: %v", err)
+		}
+	}
+
+	// Search by participant name
+	results, err := repo.Search("Alice")
+	if err != nil {
+		t.Fatalf("search failed: %v", err)
+	}
+
+	if len(results) != 1 {
+		t.Errorf("expected 1 result for participant search, got %d", len(results))
+	}
+
+	if len(results) > 0 && results[0].Subject != "Meeting 1" {
+		t.Errorf("expected 'Meeting 1', got %q", results[0].Subject)
+	}
+}
+
+func TestMeetingRepository_Search_ByKeywords(t *testing.T) {
+	database := setupTestDB(t)
+	defer database.Close()
+
+	repo := repositories.NewMeetingRepository(database.DB)
+
+	keywords1 := "planning, quarterly, review"
+	keywords2 := "retrospective, sprint"
+	// Create meetings with different keywords
+	meetings := []*models.Meeting{
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "Q1 Planning",
+			MeetingDate: "2026-02-14",
+			StartTime:   "10:00",
+			Keywords:    &keywords1,
+		},
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "Sprint Review",
+			MeetingDate: "2026-02-15",
+			StartTime:   "14:00",
+			Keywords:    &keywords2,
+		},
+	}
+
+	for _, m := range meetings {
+		if err := repo.Create(m); err != nil {
+			t.Fatalf("create failed: %v", err)
+		}
+	}
+
+	// Search by keyword
+	results, err := repo.Search("quarterly")
+	if err != nil {
+		t.Fatalf("search failed: %v", err)
+	}
+
+	if len(results) != 1 {
+		t.Errorf("expected 1 result for keyword search, got %d", len(results))
+	}
+
+	if len(results) > 0 && results[0].Subject != "Q1 Planning" {
+		t.Errorf("expected 'Q1 Planning', got %q", results[0].Subject)
+	}
+}
+
 func TestMeetingRepository_Search_EscapesUnderscore(t *testing.T) {
 	database := setupTestDB(t)
 	defer database.Close()

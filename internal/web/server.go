@@ -54,6 +54,10 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/config", s.handleGetConfig)
 	mux.HandleFunc("POST /api/config", s.handleUpdateConfig)
 
+	// LLM operations
+	mux.HandleFunc("POST /api/meetings/{id}/summarize", s.handleSummarizeMeeting)
+	mux.HandleFunc("POST /api/notes/{id}/enhance", s.handleEnhanceNote)
+
 	// Static files and SPA fallback
 	mux.HandleFunc("/", s.handleStatic)
 

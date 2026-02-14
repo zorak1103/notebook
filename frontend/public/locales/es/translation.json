@@ -47,6 +47,9 @@
     "edit": "Editar",
     "delete": "Eliminar",
     "enhance": "Mejorar con IA",
+    "enhancing": "Mejorando...",
+    "enhanceError": "Error al mejorar la nota",
+    "undoEnhance": "Deshacer mejora por IA",
     "empty": "Aún no hay notas. Agregue su primera nota usando el botón de arriba.",
     "confirmDelete": "¿Está seguro de que desea eliminar la nota #{{number}}?",
     "deleteFailed": "Error al eliminar la nota",
@@ -66,6 +69,9 @@
     "back": "Volver a la lista",
     "editMeeting": "Editar reunión",
     "summarize": "Resumir con IA",
+    "summarizing": "Resumiendo...",
+    "summarizeError": "Error al generar el resumen",
+    "undoSummary": "Deshacer resumen por IA",
     "notFound": "Reunión no encontrada",
     "date": "Fecha",
     "time": "Hora",
@@ -97,10 +103,21 @@
     "model": "Modelo",
     "modelPlaceholder": "gpt-4o",
     "modelHint": "Identificador del modelo a utilizar para completaciones",
+    "sectionPrompts": "Plantillas LLM",
+    "promptSummary": "Plantilla de resumen",
+    "promptSummaryPlaceholder": "Plantilla para generar resúmenes de reuniones",
+    "promptSummaryHint": "Marcadores de posición disponibles: {{subject}}, {{date}}, {{participants}}, {{notes}}",
+    "promptEnhance": "Plantilla de mejora",
+    "promptEnhancePlaceholder": "Plantilla para mejorar el contenido de las notas",
+    "promptEnhanceHint": "Marcador de posición disponible: {{content}}",
     "save": "Guardar",
     "saving": "Guardando...",
-    "saveSuccess": "Configuración guardada exitosamente",
+    "saveSuccess": "Configuración guardada con éxito",
     "saveError": "Error al guardar la configuración",
     "loadError": "Error al cargar la configuración"
+  },
+  "llm": {
+    "configMissing": "LLM no configurado. Por favor configure su proveedor LLM en Configuración.",
+    "noNotes": "No hay notas para resumir. Agregue algunas notas primero."
   }
 }

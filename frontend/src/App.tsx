@@ -72,16 +72,6 @@ function App() {
     setView('list');
   };
 
-  const handleSummarize = () => {
-    // TODO: Implement LLM summarization
-    alert('LLM Summarize feature - Coming soon!');
-  };
-
-  const handleEnhanceNote = (noteId: number) => {
-    // TODO: Implement LLM note enhancement
-    alert(`LLM Enhance Note #${noteId} - Coming soon!`);
-  };
-
   return (
     <div className="app">
       <aside className="sidebar">
@@ -139,8 +129,6 @@ function App() {
             meetingId={selectedId}
             onBack={handleDetailBack}
             onEdit={handleEditFromDetail}
-            onSummarize={handleSummarize}
-            onEnhanceNote={handleEnhanceNote}
           />
         )}
         {view === 'search' && <SearchPanel onSelectMeeting={handleSearchSelect} />}

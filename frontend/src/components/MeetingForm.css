@@ -85,6 +85,17 @@
   transition: background-color 0.2s;
 }
 
+.form-actions .btn-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-2xl);
+  font-weight: 300;
+}
+
 .form-actions .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;

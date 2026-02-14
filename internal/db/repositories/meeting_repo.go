@@ -167,7 +167,7 @@ func escapeLikePattern(s string) string {
 	return "%" + s + "%"
 }
 
-// Search searches meetings by subject and summary
+// Search searches meetings by subject, summary, participants, and keywords
 func (r *MeetingRepository) Search(query string) ([]*models.Meeting, error) {
 	ctx := context.Background()
 	pattern := escapeLikePattern(query)
@@ -175,9 +175,12 @@ func (r *MeetingRepository) Search(query string) ([]*models.Meeting, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, created_by, subject, meeting_date, start_time, end_time, participants, summary, keywords, created_at, updated_at
 		FROM meetings
-		WHERE subject LIKE ? ESCAPE '\' OR summary LIKE ? ESCAPE '\'
+		WHERE subject LIKE ? ESCAPE '\'
+		   OR summary LIKE ? ESCAPE '\'
+		   OR participants LIKE ? ESCAPE '\'
+		   OR keywords LIKE ? ESCAPE '\'
 		ORDER BY meeting_date DESC, start_time DESC
-	`, pattern, pattern)
+	`, pattern, pattern, pattern, pattern)
 
 	if err != nil {
 		return nil, fmt.Errorf("search meetings: %w", err)

@@ -47,6 +47,9 @@
     "edit": "Edit",
     "delete": "Delete",
     "enhance": "Enhance with AI",
+    "enhancing": "Enhancing...",
+    "enhanceError": "Failed to enhance note",
+    "undoEnhance": "Undo AI enhancement",
     "empty": "No notes yet. Add your first note using the button above.",
     "confirmDelete": "Are you sure you want to delete note #{{number}}?",
     "deleteFailed": "Failed to delete note",
@@ -66,6 +69,9 @@
     "back": "Back to List",
     "editMeeting": "Edit Meeting",
     "summarize": "Summarize with AI",
+    "summarizing": "Summarizing...",
+    "summarizeError": "Failed to generate summary",
+    "undoSummary": "Undo AI summary",
     "notFound": "Meeting not found",
     "date": "Date",
     "time": "Time",
@@ -97,10 +103,21 @@
     "model": "Model",
     "modelPlaceholder": "gpt-4o",
     "modelHint": "Model identifier to use for completions",
+    "sectionPrompts": "LLM Prompts",
+    "promptSummary": "Summary Prompt",
+    "promptSummaryPlaceholder": "Template for generating meeting summaries",
+    "promptSummaryHint": "Available placeholders: {{subject}}, {{date}}, {{participants}}, {{notes}}",
+    "promptEnhance": "Enhancement Prompt",
+    "promptEnhancePlaceholder": "Template for enhancing note content",
+    "promptEnhanceHint": "Available placeholder: {{content}}",
     "save": "Save",
     "saving": "Saving...",
     "saveSuccess": "Configuration saved successfully",
     "saveError": "Failed to save configuration",
     "loadError": "Failed to load configuration"
+  },
+  "llm": {
+    "configMissing": "LLM not configured. Please set up your LLM provider in Configuration.",
+    "noNotes": "No notes to summarize. Add some notes first."
   }
 }

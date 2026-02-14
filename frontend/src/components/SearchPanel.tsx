@@ -109,6 +109,16 @@ export function SearchPanel({ onSelectMeeting }: SearchPanelProps) {
                   {meeting.meeting_date} {meeting.start_time}
                   {meeting.end_time && ` - ${meeting.end_time}`}
                 </div>
+                {meeting.participants && (
+                  <div className="search-result-participants">
+                    👥 {highlightMatch(meeting.participants, query)}
+                  </div>
+                )}
+                {meeting.keywords && (
+                  <div className="search-result-keywords">
+                    🏷 {highlightMatch(meeting.keywords, query)}
+                  </div>
+                )}
                 {meeting.summary && (
                   <div className="search-result-summary">
                     {highlightMatch(truncate(meeting.summary, 150), query)}

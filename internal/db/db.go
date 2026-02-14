@@ -71,6 +71,7 @@ func (db *DB) Migrate() error {
 	}{
 		{1, "migrations/001_initial_schema.sql"},
 		{2, "migrations/002_add_language_config.sql"},
+		{3, "migrations/003_add_llm_prompts.sql"},
 	}
 
 	// Apply migrations

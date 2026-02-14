@@ -47,6 +47,9 @@
     "edit": "Modifier",
     "delete": "Supprimer",
     "enhance": "Améliorer avec l'IA",
+    "enhancing": "Amélioration en cours...",
+    "enhanceError": "Échec de l'amélioration de la note",
+    "undoEnhance": "Annuler l'amélioration par l'IA",
     "empty": "Aucune note pour le moment. Ajoutez votre première note en utilisant le bouton ci-dessus.",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer la note #{{number}}?",
     "deleteFailed": "Échec de la suppression de la note",
@@ -66,6 +69,9 @@
     "back": "Retour à la liste",
     "editMeeting": "Modifier la réunion",
     "summarize": "Résumer avec l'IA",
+    "summarizing": "Résumé en cours...",
+    "summarizeError": "Échec de la génération du résumé",
+    "undoSummary": "Annuler le résumé par l'IA",
     "notFound": "Réunion non trouvée",
     "date": "Date",
     "time": "Heure",
@@ -97,10 +103,21 @@
     "model": "Modèle",
     "modelPlaceholder": "gpt-4o",
     "modelHint": "Identifiant du modèle à utiliser pour les complétions",
+    "sectionPrompts": "Modèles LLM",
+    "promptSummary": "Modèle de résumé",
+    "promptSummaryPlaceholder": "Modèle pour générer des résumés de réunion",
+    "promptSummaryHint": "Espaces réservés disponibles : {{subject}}, {{date}}, {{participants}}, {{notes}}",
+    "promptEnhance": "Modèle d'amélioration",
+    "promptEnhancePlaceholder": "Modèle pour améliorer le contenu des notes",
+    "promptEnhanceHint": "Espace réservé disponible : {{content}}",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "saveSuccess": "Configuration enregistrée avec succès",
     "saveError": "Échec de l'enregistrement de la configuration",
     "loadError": "Échec du chargement de la configuration"
+  },
+  "llm": {
+    "configMissing": "LLM non configuré. Veuillez configurer votre fournisseur LLM dans Configuration.",
+    "noNotes": "Aucune note à résumer. Ajoutez d'abord quelques notes."
   }
 }

@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNotes } from '../hooks/useNotes';
+import { enhanceNote, updateNote } from '../api/client';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorMessage } from './ErrorMessage';
 import './NoteList.css';
@@ -8,12 +10,14 @@ interface NoteListProps {
   meetingId: number;
   onEdit: (noteId: number) => void;
   onAdd: () => void;
-  onEnhance?: (noteId: number) => void;
 }
 
-export function NoteList({ meetingId, onEdit, onAdd, onEnhance }: NoteListProps) {
+export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
   const { t } = useTranslation();
-  const { notes, loading, error, handleDelete } = useNotes(meetingId);
+  const { notes, loading, error, handleDelete, refresh } = useNotes(meetingId);
+  const [enhancingId, setEnhancingId] = useState<number | null>(null);
+  const [enhanceError, setEnhanceError] = useState<string | null>(null);
+  const [previousContent, setPreviousContent] = useState<{ noteId: number; content: string } | null>(null);
 
   const confirmDelete = async (id: number, noteNumber: number) => {
     if (window.confirm(t('notes.confirmDelete', { number: noteNumber }))) {
@@ -22,6 +26,42 @@ export function NoteList({ meetingId, onEdit, onAdd, onEnhance }: NoteListProps)
       } catch (err) {
         alert(err instanceof Error ? err.message : t('notes.deleteFailed'));
       }
+    }
+  };
+
+  const handleEnhance = async (noteId: number) => {
+    const note = notes.find((n) => n.id === noteId);
+    if (!note) return;
+
+    try {
+      setEnhancingId(noteId);
+      setEnhanceError(null);
+      setPreviousContent({ noteId, content: note.content });
+
+      await enhanceNote(noteId);
+      await refresh();
+    } catch (err) {
+      setEnhanceError(err instanceof Error ? err.message : t('notes.enhanceError'));
+      setPreviousContent(null);
+    } finally {
+      setEnhancingId(null);
+    }
+  };
+
+  const handleUndoEnhance = async () => {
+    if (!previousContent) return;
+
+    try {
+      setEnhancingId(previousContent.noteId);
+      setEnhanceError(null);
+
+      await updateNote(previousContent.noteId, { content: previousContent.content });
+      await refresh();
+      setPreviousContent(null);
+    } catch (err) {
+      setEnhanceError(err instanceof Error ? err.message : t('notes.enhanceError'));
+    } finally {
+      setEnhancingId(null);
     }
   };
 
@@ -37,6 +77,8 @@ export function NoteList({ meetingId, onEdit, onAdd, onEnhance }: NoteListProps)
         </button>
       </div>
 
+      {enhanceError && <ErrorMessage message={enhanceError} />}
+
       {notes.length === 0 ? (
         <div className="note-list-empty">
           <p>{t('notes.empty')}</p>
@@ -48,13 +90,22 @@ export function NoteList({ meetingId, onEdit, onAdd, onEnhance }: NoteListProps)
               <div className="note-header">
                 <span className="note-number">#{note.note_number}</span>
                 <div className="note-actions">
-                  {onEnhance && (
+                  <button
+                    onClick={() => handleEnhance(note.id)}
+                    className="btn btn-icon btn-ai"
+                    title={t('notes.enhance')}
+                    disabled={enhancingId === note.id}
+                  >
+                    {enhancingId === note.id ? '⏳' : '✨'}
+                  </button>
+                  {previousContent?.noteId === note.id && (
                     <button
-                      onClick={() => onEnhance(note.id)}
-                      className="btn btn-icon btn-ai"
-                      title={t('notes.enhance')}
+                      onClick={handleUndoEnhance}
+                      className="btn btn-icon btn-undo"
+                      title={t('notes.undoEnhance')}
+                      disabled={enhancingId !== null}
                     >
-                      ✨
+                      ↶
                     </button>
                   )}
                   <button

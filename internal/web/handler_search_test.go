@@ -127,6 +127,66 @@ func TestHandleSearch_NoQueryParam(t *testing.T) {
 	assert.Empty(t, meetings)
 }
 
+func TestHandleSearch_MatchesParticipants(t *testing.T) {
+	s := newTestServer(t)
+	defer s.database.Close()
+
+	// Create test meeting
+	repo := repositories.NewMeetingRepository(s.database.DB)
+	meeting := &models.Meeting{
+		CreatedBy:    "test@example.com",
+		Subject:      "Team Sync",
+		MeetingDate:  "2026-02-14",
+		StartTime:    "10:00",
+		Participants: stringPtr("Alice, Bob, Charlie"),
+	}
+	err := repo.Create(meeting)
+	require.NoError(t, err)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/search?q=Alice", nil)
+	w := httptest.NewRecorder()
+
+	s.handleSearch(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	var meetings []*models.Meeting
+	err = json.NewDecoder(w.Body).Decode(&meetings)
+	require.NoError(t, err)
+	require.Len(t, meetings, 1)
+	assert.Equal(t, "Team Sync", meetings[0].Subject)
+}
+
+func TestHandleSearch_MatchesKeywords(t *testing.T) {
+	s := newTestServer(t)
+	defer s.database.Close()
+
+	// Create test meeting
+	repo := repositories.NewMeetingRepository(s.database.DB)
+	meeting := &models.Meeting{
+		CreatedBy:   "test@example.com",
+		Subject:     "Q1 Review",
+		MeetingDate: "2026-02-14",
+		StartTime:   "10:00",
+		Keywords:    stringPtr("planning, quarterly, budget"),
+	}
+	err := repo.Create(meeting)
+	require.NoError(t, err)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/search?q=quarterly", nil)
+	w := httptest.NewRecorder()
+
+	s.handleSearch(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	var meetings []*models.Meeting
+	err = json.NewDecoder(w.Body).Decode(&meetings)
+	require.NoError(t, err)
+	require.Len(t, meetings, 1)
+	assert.Equal(t, "Q1 Review", meetings[0].Subject)
+}
+
 // stringPtr is a helper to create string pointers
 func stringPtr(s string) *string {
 	return &s

@@ -18,6 +18,8 @@ function ConfigPanel(): React.JSX.Element {
     llm_provider_url: '',
     llm_api_key: '',
     llm_model: '',
+    llm_prompt_summary: '',
+    llm_prompt_enhance: '',
   });
 
   useEffect(() => {
@@ -33,6 +35,8 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: config.llm_provider_url || '',
         llm_api_key: config.llm_api_key || '',
         llm_model: config.llm_model || '',
+        llm_prompt_summary: config.llm_prompt_summary || '',
+        llm_prompt_enhance: config.llm_prompt_enhance || '',
       });
       setOriginalKey(config.llm_api_key || '');
     } catch (err) {
@@ -62,6 +66,8 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: result.llm_provider_url || '',
         llm_api_key: result.llm_api_key || '',
         llm_model: result.llm_model || '',
+        llm_prompt_summary: result.llm_prompt_summary || '',
+        llm_prompt_enhance: result.llm_prompt_enhance || '',
       });
       setOriginalKey(result.llm_api_key || '');
       setSuccess(true);
@@ -144,6 +150,34 @@ function ConfigPanel(): React.JSX.Element {
               placeholder={t('config.modelPlaceholder')}
             />
             <small className="hint">{t('config.modelHint')}</small>
+          </div>
+        </section>
+
+        <section className="config-section">
+          <h2>{t('config.sectionPrompts')}</h2>
+
+          <div className="form-group">
+            <label htmlFor="prompt-summary">{t('config.promptSummary')}</label>
+            <textarea
+              id="prompt-summary"
+              value={formData.llm_prompt_summary}
+              onChange={(e) => handleChange('llm_prompt_summary', e.target.value)}
+              rows={6}
+              placeholder={t('config.promptSummaryPlaceholder')}
+            />
+            <small className="hint">{t('config.promptSummaryHint')}</small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="prompt-enhance">{t('config.promptEnhance')}</label>
+            <textarea
+              id="prompt-enhance"
+              value={formData.llm_prompt_enhance}
+              onChange={(e) => handleChange('llm_prompt_enhance', e.target.value)}
+              rows={6}
+              placeholder={t('config.promptEnhancePlaceholder')}
+            />
+            <small className="hint">{t('config.promptEnhanceHint')}</small>
           </div>
         </section>
 

@@ -14,7 +14,9 @@ export function LanguageSwitcher() {
       language: value,
       llm_provider_url: '',
       llm_api_key: '',
-      llm_model: ''
+      llm_model: '',
+      llm_prompt_summary: '',
+      llm_prompt_enhance: ''
     }).catch(() => {
       // Silently handle save failures - language still changes locally
     });

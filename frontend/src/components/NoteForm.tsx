@@ -1,6 +1,6 @@
 import { useState, useEffect, FormEvent, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { fetchNote, createNote, updateNote } from '../api/client';
+import { fetchNote, createNote, updateNote, enhanceNote } from '../api/client';
 import type { CreateNoteRequest, UpdateNoteRequest } from '../api/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorMessage } from './ErrorMessage';
@@ -20,6 +20,9 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState('');
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const [enhancing, setEnhancing] = useState(false);
+  const [enhanceError, setEnhanceError] = useState<string | null>(null);
+  const [previousContent, setPreviousContent] = useState<string | null>(null);
 
   // Load note data if editing
   useEffect(() => {
@@ -65,13 +68,65 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
     }
   };
 
+  const handleEnhance = async () => {
+    if (!noteId) return; // Only available in edit mode
+
+    try {
+      setEnhancing(true);
+      setEnhanceError(null);
+      setPreviousContent(content);
+
+      const enhancedNote = await enhanceNote(noteId);
+      setContent(enhancedNote.content);
+    } catch (err) {
+      setEnhanceError(err instanceof Error ? err.message : t('notes.enhanceError'));
+      setPreviousContent(null);
+    } finally {
+      setEnhancing(false);
+    }
+  };
+
+  const handleUndoEnhance = () => {
+    if (previousContent !== null) {
+      setContent(previousContent);
+      setPreviousContent(null);
+    }
+  };
+
   if (loading && noteId) return <LoadingSpinner />;
 
   return (
     <div className="note-form">
-      <h2>{noteId ? t('noteForm.editTitle') : t('noteForm.createTitle')}</h2>
+      <div className="note-form-header">
+        <h2>{noteId ? t('noteForm.editTitle') : t('noteForm.createTitle')}</h2>
+        {noteId && (
+          <div className="note-form-actions">
+            <button
+              type="button"
+              onClick={handleEnhance}
+              className="btn btn-icon btn-ai"
+              title={t('notes.enhance')}
+              disabled={enhancing || !content.trim()}
+            >
+              {enhancing ? '⏳' : '✨'}
+            </button>
+            {previousContent !== null && (
+              <button
+                type="button"
+                onClick={handleUndoEnhance}
+                className="btn btn-icon btn-undo"
+                title={t('notes.undoEnhance')}
+                disabled={enhancing}
+              >
+                ↶
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       {error && <ErrorMessage message={error} />}
+      {enhanceError && <ErrorMessage message={enhanceError} />}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -94,11 +149,21 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
         </div>
 
         <div className="form-actions">
-          <button type="button" onClick={onCancel} className="btn btn-cancel">
-            {t('noteForm.cancel')}
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn btn-icon btn-cancel"
+            title={t('noteForm.cancel')}
+          >
+            ×
           </button>
-          <button type="submit" className="btn btn-submit" disabled={loading}>
-            {loading ? t('noteForm.saving') : t('noteForm.save')}
+          <button
+            type="submit"
+            className="btn btn-icon btn-submit"
+            disabled={loading}
+            title={loading ? t('noteForm.saving') : t('noteForm.save')}
+          >
+            {loading ? '⏳' : '✓'}
           </button>
         </div>
       </form>

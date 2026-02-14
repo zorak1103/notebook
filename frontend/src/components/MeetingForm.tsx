@@ -205,11 +205,21 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
         </div>
 
         <div className="form-actions">
-          <button type="button" onClick={onCancel} className="btn btn-cancel">
-            {t('meetingForm.cancel')}
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn btn-icon btn-cancel"
+            title={t('meetingForm.cancel')}
+          >
+            ×
           </button>
-          <button type="submit" className="btn btn-submit" disabled={loading}>
-            {loading ? t('meetingForm.saving') : t('meetingForm.save')}
+          <button
+            type="submit"
+            className="btn btn-icon btn-submit"
+            disabled={loading}
+            title={loading ? t('meetingForm.saving') : t('meetingForm.save')}
+          >
+            {loading ? '⏳' : '✓'}
           </button>
         </div>
       </form>
