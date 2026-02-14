@@ -38,7 +38,6 @@ archives:
     files:
       - LICENSE*
       - README.md
-      - .docs/prd.md
 
 checksum:
   name_template: 'checksums.txt'
@@ -78,8 +77,6 @@ nfpms:
         dst: /usr/share/doc/notebook/LICENSE
       - src: README.md
         dst: /usr/share/doc/notebook/README.md
-      - src: .docs/prd.md
-        dst: /usr/share/doc/notebook/prd.md
 
     # RPM specific
     rpm:
