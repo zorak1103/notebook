@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -38,7 +39,11 @@ func Backend() error {
 	mg.Deps(Frontend)
 
 	fmt.Println("Building backend...")
-	return sh.RunV("go", "build", "-o", "notebook.exe", "./cmd/notebook")
+	binaryName := "notebook"
+	if runtime.GOOS == "windows" {
+		binaryName = "notebook.exe"
+	}
+	return sh.RunV("go", "build", "-o", binaryName, "./cmd/notebook")
 }
 
 // Build builds everything (frontend + backend)
@@ -63,8 +68,10 @@ func Clean() error {
 	fmt.Println("Cleaning build artifacts...")
 
 	artifacts := []string{
-		"notebook.exe",
-		"notebook",
+		"notebook.exe",      // Windows binary
+		"notebook",          // Linux/macOS binary
+		"genvalidation.exe", // Windows code generator binary
+		"genvalidation",     // Linux/macOS code generator binary
 		filepath.Join("internal", "web", "frontend", "dist"),
 		filepath.Join("frontend", "dist"),
 		filepath.Join("frontend", "src", "generated"),
