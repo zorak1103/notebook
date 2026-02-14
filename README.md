@@ -13,7 +13,7 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 - **Notes System**: Attach numbered notes to meetings with automatic numbering
 - **Full-Text Search**: Search across meeting subjects, summaries, participants, and keywords
 - **Configuration Management**: Web UI for LLM provider settings with masked API keys and customizable prompts
-- **Tailscale Integration**: Seamless authentication and secure network access via tsnet
+- **Tailscale Integration**: Seamless authentication and secure network access via tsnet with user information display
 - **LLM Integration**: Optional AI-powered meeting summaries and note enhancement with undo functionality (OpenAI, Anthropic, Ollama, LM Studio, vLLM)
 - **Single Binary**: Frontend embedded using go:embed
 - **Dev Mode**: Run without Tailscale for local development

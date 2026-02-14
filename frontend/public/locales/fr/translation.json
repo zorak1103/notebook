@@ -6,7 +6,8 @@
     "newMeeting": "Nouvelle réunion",
     "meetingList": "Liste des réunions",
     "search": "Recherche",
-    "configuration": "Configuration"
+    "configuration": "Configuration",
+    "info": "Information"
   },
   "meetings": {
     "subject": "Sujet",
@@ -119,5 +120,14 @@
   "llm": {
     "configMissing": "LLM non configuré. Veuillez configurer votre fournisseur LLM dans Configuration.",
     "noNotes": "Aucune note à résumer. Ajoutez d'abord quelques notes."
+  },
+  "info": {
+    "title": "Information",
+    "sectionTailscale": "Informations utilisateur Tailscale",
+    "displayName": "Nom affiché",
+    "loginName": "Nom de connexion",
+    "nodeName": "Nom du nœud",
+    "nodeID": "ID du nœud",
+    "loadError": "Échec du chargement des informations utilisateur"
   }
 }

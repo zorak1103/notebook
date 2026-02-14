@@ -6,7 +6,8 @@
     "newMeeting": "New Meeting",
     "meetingList": "Meeting List",
     "search": "Search",
-    "configuration": "Configuration"
+    "configuration": "Configuration",
+    "info": "Information"
   },
   "meetings": {
     "subject": "Subject",
@@ -119,5 +120,14 @@
   "llm": {
     "configMissing": "LLM not configured. Please set up your LLM provider in Configuration.",
     "noNotes": "No notes to summarize. Add some notes first."
+  },
+  "info": {
+    "title": "Information",
+    "sectionTailscale": "Tailscale User Information",
+    "displayName": "Display Name",
+    "loginName": "Login Name",
+    "nodeName": "Node Name",
+    "nodeID": "Node ID",
+    "loadError": "Failed to load user information"
   }
 }

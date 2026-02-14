@@ -5,11 +5,12 @@ import { MeetingForm } from './components/MeetingForm';
 import { MeetingDetail } from './components/MeetingDetail';
 import { SearchPanel } from './components/SearchPanel';
 import ConfigPanel from './components/ConfigPanel';
+import UserInfoPanel from './components/UserInfoPanel';
 import { getConfig } from './api/client';
 import i18n from './i18n';
 import './App.css';
 
-type View = 'list' | 'create' | 'edit' | 'detail' | 'search' | 'config';
+type View = 'list' | 'create' | 'edit' | 'detail' | 'search' | 'config' | 'info';
 
 function App() {
   const { t } = useTranslation();
@@ -39,6 +40,10 @@ function App() {
 
   const handleConfig = () => {
     setView('config');
+  };
+
+  const handleInfo = () => {
+    setView('info');
   };
 
   const handleSearchSelect = (id: number) => {
@@ -102,7 +107,15 @@ function App() {
 
         <div className="sidebar-footer">
           <button
-            className={`gear-button ${view === 'config' ? 'gear-button--active' : ''}`}
+            className={`footer-icon-button ${view === 'info' ? 'footer-icon-button--active' : ''}`}
+            onClick={handleInfo}
+            aria-label={t('navigation.info')}
+            title={t('navigation.info')}
+          >
+            ℹ
+          </button>
+          <button
+            className={`footer-icon-button ${view === 'config' ? 'footer-icon-button--active' : ''}`}
             onClick={handleConfig}
             aria-label={t('navigation.configuration')}
             title={t('navigation.configuration')}
@@ -133,6 +146,7 @@ function App() {
         )}
         {view === 'search' && <SearchPanel onSelectMeeting={handleSearchSelect} />}
         {view === 'config' && <ConfigPanel />}
+        {view === 'info' && <UserInfoPanel />}
       </main>
     </div>
   );
