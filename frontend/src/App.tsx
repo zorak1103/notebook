@@ -6,9 +6,10 @@ import { MeetingList } from './components/MeetingList';
 import { MeetingForm } from './components/MeetingForm';
 import { MeetingDetail } from './components/MeetingDetail';
 import { SearchPanel } from './components/SearchPanel';
+import ConfigPanel from './components/ConfigPanel';
 import './App.css';
 
-type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail' | 'search';
+type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail' | 'search' | 'config';
 
 function App() {
   const { t } = useTranslation();
@@ -26,6 +27,10 @@ function App() {
 
   const handleSearch = () => {
     setView('search');
+  };
+
+  const handleConfig = () => {
+    setView('config');
   };
 
   const handleSearchSelect = (id: number) => {
@@ -85,7 +90,10 @@ function App() {
           >
             {t('navigation.search')}
           </button>
-          <button className="nav-item" disabled>
+          <button
+            className={`nav-item ${view === 'config' ? 'nav-item--active' : ''}`}
+            onClick={handleConfig}
+          >
             {t('navigation.configuration')}
           </button>
         </nav>
@@ -116,6 +124,7 @@ function App() {
           />
         )}
         {view === 'search' && <SearchPanel onSelectMeeting={handleSearchSelect} />}
+        {view === 'config' && <ConfigPanel />}
       </main>
     </div>
   );

@@ -79,5 +79,23 @@
     "resultCount": "{{count}} resultado",
     "resultCount_other": "{{count}} resultados",
     "error": "Error al buscar reuniones"
+  },
+  "config": {
+    "title": "Configuración",
+    "sectionLlm": "Configuración del proveedor LLM",
+    "providerUrl": "URL del proveedor",
+    "providerUrlPlaceholder": "https://api.openai.com/v1",
+    "providerUrlHint": "URL base para el proveedor de API LLM",
+    "apiKey": "Clave API",
+    "apiKeyPlaceholder": "sk-...",
+    "apiKeyHint": "Clave API para autenticación (se ocultará después de guardar)",
+    "model": "Modelo",
+    "modelPlaceholder": "gpt-4o",
+    "modelHint": "Identificador del modelo a utilizar para completaciones",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "saveSuccess": "Configuración guardada exitosamente",
+    "saveError": "Error al guardar la configuración",
+    "loadError": "Error al cargar la configuración"
   }
 }

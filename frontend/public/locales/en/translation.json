@@ -79,5 +79,23 @@
     "resultCount": "{{count}} result",
     "resultCount_other": "{{count}} results",
     "error": "Failed to search meetings"
+  },
+  "config": {
+    "title": "Configuration",
+    "sectionLlm": "LLM Provider Settings",
+    "providerUrl": "Provider URL",
+    "providerUrlPlaceholder": "https://api.openai.com/v1",
+    "providerUrlHint": "Base URL for the LLM API provider",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "sk-...",
+    "apiKeyHint": "API key for authentication (will be masked after saving)",
+    "model": "Model",
+    "modelPlaceholder": "gpt-4o",
+    "modelHint": "Model identifier to use for completions",
+    "save": "Save",
+    "saving": "Saving...",
+    "saveSuccess": "Configuration saved successfully",
+    "saveError": "Failed to save configuration",
+    "loadError": "Failed to load configuration"
   }
 }

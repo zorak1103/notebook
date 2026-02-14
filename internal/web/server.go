@@ -50,6 +50,10 @@ func (s *Server) Handler() http.Handler {
 	// Search
 	mux.HandleFunc("GET /api/search", s.handleSearch)
 
+	// Config
+	mux.HandleFunc("GET /api/config", s.handleGetConfig)
+	mux.HandleFunc("POST /api/config", s.handleUpdateConfig)
+
 	// Static files and SPA fallback
 	mux.HandleFunc("/", s.handleStatic)
 

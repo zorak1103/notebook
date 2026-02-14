@@ -58,3 +58,17 @@ export interface CreateNoteRequest {
 export interface UpdateNoteRequest {
   content: string;
 }
+
+// Config represents the application configuration
+export interface Config {
+  llm_provider_url: string;
+  llm_api_key: string;
+  llm_model: string;
+}
+
+// ConfigUpdateRequest represents the request body for updating configuration
+export interface ConfigUpdateRequest {
+  llm_provider_url: string;
+  llm_api_key: string;
+  llm_model: string;
+}

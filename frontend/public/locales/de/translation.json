@@ -79,5 +79,23 @@
     "resultCount": "{{count}} Ergebnis",
     "resultCount_other": "{{count}} Ergebnisse",
     "error": "Fehler beim Durchsuchen der Meetings"
+  },
+  "config": {
+    "title": "Konfiguration",
+    "sectionLlm": "LLM-Anbieter-Einstellungen",
+    "providerUrl": "Anbieter-URL",
+    "providerUrlPlaceholder": "https://api.openai.com/v1",
+    "providerUrlHint": "Basis-URL für den LLM-API-Anbieter",
+    "apiKey": "API-Schlüssel",
+    "apiKeyPlaceholder": "sk-...",
+    "apiKeyHint": "API-Schlüssel für die Authentifizierung (wird nach dem Speichern maskiert)",
+    "model": "Modell",
+    "modelPlaceholder": "gpt-4o",
+    "modelHint": "Modellbezeichner für Vervollständigungen",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "saveSuccess": "Konfiguration erfolgreich gespeichert",
+    "saveError": "Fehler beim Speichern der Konfiguration",
+    "loadError": "Fehler beim Laden der Konfiguration"
   }
 }
