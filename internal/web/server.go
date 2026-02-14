@@ -60,3 +60,8 @@ func (s *Server) logRequest(method, path string, status int) {
 		fmt.Printf("[%s] %s - %d\n", method, path, status)
 	}
 }
+
+// logError logs an error with request context
+func (s *Server) logError(r *http.Request, msg string, err error) {
+	fmt.Printf("[ERROR] %s %s: %s: %v\n", r.Method, r.URL.Path, msg, err)
+}

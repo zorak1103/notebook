@@ -470,3 +470,268 @@ func TestHandleDeleteMeeting_NotFound(t *testing.T) {
 		t.Error("expected error message, got empty string")
 	}
 }
+
+func TestHandleCreateMeeting_InvalidDateFormat(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	payload := map[string]interface{}{
+		"subject":      "Test Meeting",
+		"meeting_date": "2023-13-45",
+		"start_time":   "10:00",
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleCreateMeeting_InvalidTimeFormat(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	payload := map[string]interface{}{
+		"subject":      "Test Meeting",
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "25:99",
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleCreateMeeting_InvalidEndTimeFormat(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	endTime := "99:99"
+	payload := map[string]interface{}{
+		"subject":      "Test Meeting",
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "10:00",
+		"end_time":     endTime,
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleUpdateMeeting_InvalidDateFormat(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	// Create test meeting
+	repo := repositories.NewMeetingRepository(server.database.DB)
+
+	meeting := &models.Meeting{
+		CreatedBy:   "user@example.com",
+		Subject:     "Original Subject",
+		MeetingDate: time.Now().Format("2006-01-02"),
+		StartTime:   "10:00",
+	}
+
+	if err := repo.Create(meeting); err != nil {
+		t.Fatalf("failed to create meeting: %v", err)
+	}
+
+	// Update with invalid date
+	payload := map[string]interface{}{
+		"subject":      "Updated Subject",
+		"meeting_date": "2023-99-99",
+		"start_time":   "11:00",
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
+	req.SetPathValue("id", "1")
+	w := httptest.NewRecorder()
+
+	server.handleUpdateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleCreateMeeting_SubjectTooLong(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	// Create subject with 256 characters (exceeds 255 limit)
+	buf := make([]byte, 256)
+	for i := range buf {
+		buf[i] = byte('a' + (i % 26))
+	}
+	longSubject := string(buf)
+
+	payload := map[string]interface{}{
+		"subject":      longSubject,
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "10:00",
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleCreateMeeting_ParticipantsTooLong(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	// Create participants with 1001 characters (exceeds 1000 limit)
+	buf := make([]byte, 1001)
+	for i := range buf {
+		buf[i] = byte('a' + (i % 26))
+	}
+	longParticipants := string(buf)
+
+	payload := map[string]interface{}{
+		"subject":      "Test Meeting",
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "10:00",
+		"participants": longParticipants,
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleUpdateMeeting_SubjectTooLong(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	// Create test meeting
+	repo := repositories.NewMeetingRepository(server.database.DB)
+
+	meeting := &models.Meeting{
+		CreatedBy:   "user@example.com",
+		Subject:     "Original Subject",
+		MeetingDate: time.Now().Format("2006-01-02"),
+		StartTime:   "10:00",
+	}
+
+	if err := repo.Create(meeting); err != nil {
+		t.Fatalf("failed to create meeting: %v", err)
+	}
+
+	// Create subject with 256 characters (exceeds 255 limit)
+	buf := make([]byte, 256)
+	for i := range buf {
+		buf[i] = byte('a' + (i % 26))
+	}
+	longSubject := string(buf)
+
+	payload := map[string]interface{}{
+		"subject":      longSubject,
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "11:00",
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
+	req.SetPathValue("id", "1")
+	w := httptest.NewRecorder()
+
+	server.handleUpdateMeeting(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}

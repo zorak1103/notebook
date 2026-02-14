@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 
 	"github.com/zorak1103/notebook/internal/db/models"
 )
@@ -155,15 +156,26 @@ func (r *MeetingRepository) Delete(id int) error {
 	return nil
 }
 
+// escapeLikePattern escapes special LIKE characters and wraps with wildcards
+func escapeLikePattern(s string) string {
+	// Escape backslash first to avoid double-escaping
+	s = strings.ReplaceAll(s, `\`, `\\`)
+	// Escape % and _ wildcards
+	s = strings.ReplaceAll(s, "%", `\%`)
+	s = strings.ReplaceAll(s, "_", `\_`)
+	// Wrap with wildcards
+	return "%" + s + "%"
+}
+
 // Search searches meetings by subject and summary
 func (r *MeetingRepository) Search(query string) ([]*models.Meeting, error) {
 	ctx := context.Background()
-	pattern := "%" + query + "%"
+	pattern := escapeLikePattern(query)
 
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, created_by, subject, meeting_date, start_time, end_time, participants, summary, keywords, created_at, updated_at
 		FROM meetings
-		WHERE subject LIKE ? OR summary LIKE ?
+		WHERE subject LIKE ? ESCAPE '\' OR summary LIKE ? ESCAPE '\'
 		ORDER BY meeting_date DESC, start_time DESC
 	`, pattern, pattern)
 

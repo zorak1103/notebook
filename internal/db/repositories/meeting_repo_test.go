@@ -259,3 +259,89 @@ func TestMeetingRepository_Search(t *testing.T) {
 		t.Errorf("expected 1 result, got %d", len(results))
 	}
 }
+
+func TestMeetingRepository_Search_EscapesSpecialChars(t *testing.T) {
+	database := setupTestDB(t)
+	defer database.Close()
+
+	repo := repositories.NewMeetingRepository(database.DB)
+
+	// Create meetings with literal % in subject
+	meetings := []*models.Meeting{
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "100% Coverage",
+			MeetingDate: "2026-02-14",
+			StartTime:   "10:00",
+		},
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "Design Review",
+			MeetingDate: "2026-02-15",
+			StartTime:   "14:00",
+		},
+	}
+
+	for _, m := range meetings {
+		if err := repo.Create(m); err != nil {
+			t.Fatalf("create failed: %v", err)
+		}
+	}
+
+	// Search for literal % should only return "100% Coverage"
+	results, err := repo.Search("%")
+	if err != nil {
+		t.Fatalf("search failed: %v", err)
+	}
+
+	if len(results) != 1 {
+		t.Errorf("expected 1 result for %% search, got %d", len(results))
+	}
+
+	if len(results) > 0 && results[0].Subject != "100% Coverage" {
+		t.Errorf("expected '100%% Coverage', got '%s'", results[0].Subject)
+	}
+}
+
+func TestMeetingRepository_Search_EscapesUnderscore(t *testing.T) {
+	database := setupTestDB(t)
+	defer database.Close()
+
+	repo := repositories.NewMeetingRepository(database.DB)
+
+	// Create meetings with underscore patterns
+	meetings := []*models.Meeting{
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "A_B Test",
+			MeetingDate: "2026-02-14",
+			StartTime:   "10:00",
+		},
+		{
+			CreatedBy:   "test@example.com",
+			Subject:     "AXB Test",
+			MeetingDate: "2026-02-15",
+			StartTime:   "14:00",
+		},
+	}
+
+	for _, m := range meetings {
+		if err := repo.Create(m); err != nil {
+			t.Fatalf("create failed: %v", err)
+		}
+	}
+
+	// Search for literal _ should only return "A_B Test"
+	results, err := repo.Search("_")
+	if err != nil {
+		t.Fatalf("search failed: %v", err)
+	}
+
+	if len(results) != 1 {
+		t.Errorf("expected 1 result for _ search, got %d", len(results))
+	}
+
+	if len(results) > 0 && results[0].Subject != "A_B Test" {
+		t.Errorf("expected 'A_B Test', got '%s'", results[0].Subject)
+	}
+}
