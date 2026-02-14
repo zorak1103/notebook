@@ -11,6 +11,7 @@ import (
 	"github.com/zorak1103/notebook/internal/db"
 	"github.com/zorak1103/notebook/internal/db/models"
 	"github.com/zorak1103/notebook/internal/db/repositories"
+	"github.com/zorak1103/notebook/internal/validation"
 )
 
 // newTestServer creates a test server with an in-memory database.
@@ -613,8 +614,8 @@ func TestHandleCreateMeeting_SubjectTooLong(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	// Create subject with 256 characters (exceeds 255 limit)
-	buf := make([]byte, 256)
+	// Create subject exceeding max length
+	buf := make([]byte, validation.MaxSubjectLength+1)
 	for i := range buf {
 		buf[i] = byte('a' + (i % 26))
 	}
@@ -650,8 +651,8 @@ func TestHandleCreateMeeting_ParticipantsTooLong(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	// Create participants with 1001 characters (exceeds 1000 limit)
-	buf := make([]byte, 1001)
+	// Create participants exceeding max length
+	buf := make([]byte, validation.MaxParticipantsLength+1)
 	for i := range buf {
 		buf[i] = byte('a' + (i % 26))
 	}
@@ -702,8 +703,8 @@ func TestHandleUpdateMeeting_SubjectTooLong(t *testing.T) {
 		t.Fatalf("failed to create meeting: %v", err)
 	}
 
-	// Create subject with 256 characters (exceeds 255 limit)
-	buf := make([]byte, 256)
+	// Create subject exceeding max length
+	buf := make([]byte, validation.MaxSubjectLength+1)
 	for i := range buf {
 		buf[i] = byte('a' + (i % 26))
 	}

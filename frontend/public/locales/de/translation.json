@@ -35,6 +35,7 @@
     "summaryPlaceholder": "Notizen und Zusammenfassung des Meetings",
     "keywords": "Schlagwörter",
     "keywordsPlaceholder": "z.B. Planung, Quartal, Überprüfung",
+    "charCount": "{{current}} / {{max}}",
     "save": "Speichern",
     "saving": "Speichern...",
     "cancel": "Abbrechen"

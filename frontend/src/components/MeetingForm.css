@@ -51,6 +51,14 @@
   min-height: 100px;
 }
 
+.form-group .char-count {
+  display: block;
+  margin-top: 0.25rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

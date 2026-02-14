@@ -18,6 +18,7 @@ coverage.html
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+frontend/src/generated/
 
 # Frontend build output (embedded)
 internal/web/frontend/dist/*

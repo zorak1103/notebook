@@ -35,6 +35,7 @@
     "summaryPlaceholder": "Notas y resumen de la reunión",
     "keywords": "Palabras clave",
     "keywordsPlaceholder": "por ej. planificación, trimestral, revisión",
+    "charCount": "{{current}} / {{max}}",
     "save": "Guardar",
     "saving": "Guardando...",
     "cancel": "Cancelar"

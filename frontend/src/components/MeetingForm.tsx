@@ -4,6 +4,12 @@ import { fetchMeeting, createMeeting, updateMeeting } from '../api/client';
 import type { CreateMeetingRequest } from '../api/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorMessage } from './ErrorMessage';
+import {
+  MaxSubjectLength,
+  MaxParticipantsLength,
+  MaxSummaryLength,
+  MaxKeywordsLength,
+} from '../generated/validationRules';
 import './MeetingForm.css';
 
 interface MeetingFormProps {
@@ -96,8 +102,12 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
             value={formData.subject}
             onChange={(e) => handleChange('subject', e.target.value)}
             placeholder={t('meetingForm.subjectPlaceholder')}
+            maxLength={MaxSubjectLength}
             required
           />
+          <small className="char-count">
+            {t('meetingForm.charCount', { current: formData.subject.length, max: MaxSubjectLength })}
+          </small>
         </div>
 
         <div className="form-group">
@@ -146,7 +156,11 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
             value={formData.participants || ''}
             onChange={(e) => handleChange('participants', e.target.value)}
             placeholder={t('meetingForm.participantsPlaceholder')}
+            maxLength={MaxParticipantsLength}
           />
+          <small className="char-count">
+            {t('meetingForm.charCount', { current: (formData.participants || '').length, max: MaxParticipantsLength })}
+          </small>
         </div>
 
         <div className="form-group">
@@ -157,7 +171,11 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
             value={formData.summary || ''}
             onChange={(e) => handleChange('summary', e.target.value)}
             placeholder={t('meetingForm.summaryPlaceholder')}
+            maxLength={MaxSummaryLength}
           />
+          <small className="char-count">
+            {t('meetingForm.charCount', { current: (formData.summary || '').length, max: MaxSummaryLength })}
+          </small>
         </div>
 
         <div className="form-group">
@@ -168,7 +186,11 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
             value={formData.keywords || ''}
             onChange={(e) => handleChange('keywords', e.target.value)}
             placeholder={t('meetingForm.keywordsPlaceholder')}
+            maxLength={MaxKeywordsLength}
           />
+          <small className="char-count">
+            {t('meetingForm.charCount', { current: (formData.keywords || '').length, max: MaxKeywordsLength })}
+          </small>
         </div>
 
         <div className="form-actions">

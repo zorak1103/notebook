@@ -2,7 +2,11 @@ module github.com/zorak1103/notebook
 
 go 1.25.5
 
-require tailscale.com v1.94.2
+require (
+	github.com/magefile/mage v1.15.0
+	modernc.org/sqlite v1.45.0
+	tailscale.com v1.94.2
+)
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -70,5 +74,4 @@ require (
 	modernc.org/libc v1.67.6 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
-	modernc.org/sqlite v1.45.0 // indirect
 )

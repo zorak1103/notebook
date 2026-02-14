@@ -35,6 +35,7 @@
     "summaryPlaceholder": "Meeting notes and summary",
     "keywords": "Keywords",
     "keywordsPlaceholder": "e.g., planning, quarterly, review",
+    "charCount": "{{current}} / {{max}}",
     "save": "Save",
     "saving": "Saving...",
     "cancel": "Cancel"

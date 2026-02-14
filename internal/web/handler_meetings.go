@@ -8,16 +8,13 @@ import (
 
 	"github.com/zorak1103/notebook/internal/db/models"
 	"github.com/zorak1103/notebook/internal/db/repositories"
+	"github.com/zorak1103/notebook/internal/validation"
 )
 
 const (
-	devModeCreatedBy      = "dev@example.com"
-	dateFormat            = "2006-01-02"
-	timeFormat            = "15:04"
-	maxSubjectLength      = 255
-	maxParticipantsLength = 1000
-	maxSummaryLength      = 10000
-	maxKeywordsLength     = 500
+	devModeCreatedBy = "dev@example.com"
+	dateFormat       = "2006-01-02"
+	timeFormat       = "15:04"
 )
 
 // validateMeetingDateTime validates date and time formats
@@ -44,20 +41,20 @@ func validateMeetingDateTime(meetingDate, startTime string, endTime *string) err
 
 // validateMeetingFieldLengths validates field length limits
 func validateMeetingFieldLengths(m *models.Meeting) error {
-	if len(m.Subject) > maxSubjectLength {
-		return fmt.Errorf("subject exceeds maximum length of %d characters", maxSubjectLength)
+	if len(m.Subject) > validation.MaxSubjectLength {
+		return fmt.Errorf("subject exceeds maximum length of %d characters", validation.MaxSubjectLength)
 	}
 
-	if m.Participants != nil && len(*m.Participants) > maxParticipantsLength {
-		return fmt.Errorf("participants exceeds maximum length of %d characters", maxParticipantsLength)
+	if m.Participants != nil && len(*m.Participants) > validation.MaxParticipantsLength {
+		return fmt.Errorf("participants exceeds maximum length of %d characters", validation.MaxParticipantsLength)
 	}
 
-	if m.Summary != nil && len(*m.Summary) > maxSummaryLength {
-		return fmt.Errorf("summary exceeds maximum length of %d characters", maxSummaryLength)
+	if m.Summary != nil && len(*m.Summary) > validation.MaxSummaryLength {
+		return fmt.Errorf("summary exceeds maximum length of %d characters", validation.MaxSummaryLength)
 	}
 
-	if m.Keywords != nil && len(*m.Keywords) > maxKeywordsLength {
-		return fmt.Errorf("keywords exceeds maximum length of %d characters", maxKeywordsLength)
+	if m.Keywords != nil && len(*m.Keywords) > validation.MaxKeywordsLength {
+		return fmt.Errorf("keywords exceeds maximum length of %d characters", validation.MaxKeywordsLength)
 	}
 
 	return nil

@@ -35,6 +35,7 @@
     "summaryPlaceholder": "Notes et résumé de la réunion",
     "keywords": "Mots-clés",
     "keywordsPlaceholder": "par ex. planification, trimestriel, examen",
+    "charCount": "{{current}} / {{max}}",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "cancel": "Annuler"
