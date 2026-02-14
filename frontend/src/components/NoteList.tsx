@@ -8,9 +8,10 @@ interface NoteListProps {
   meetingId: number;
   onEdit: (noteId: number) => void;
   onAdd: () => void;
+  onEnhance?: (noteId: number) => void;
 }
 
-export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
+export function NoteList({ meetingId, onEdit, onAdd, onEnhance }: NoteListProps) {
   const { t } = useTranslation();
   const { notes, loading, error, handleDelete } = useNotes(meetingId);
 
@@ -31,8 +32,8 @@ export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
     <div className="note-list">
       <div className="note-list-header">
         <h3>{t('notes.title')}</h3>
-        <button onClick={onAdd} className="btn btn-add">
-          {t('notes.add')}
+        <button onClick={onAdd} className="btn btn-icon btn-add" title={t('notes.add')}>
+          +
         </button>
       </div>
 
@@ -47,17 +48,28 @@ export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
               <div className="note-header">
                 <span className="note-number">#{note.note_number}</span>
                 <div className="note-actions">
+                  {onEnhance && (
+                    <button
+                      onClick={() => onEnhance(note.id)}
+                      className="btn btn-icon btn-ai"
+                      title={t('notes.enhance')}
+                    >
+                      ✨
+                    </button>
+                  )}
                   <button
                     onClick={() => onEdit(note.id)}
-                    className="btn btn-edit"
+                    className="btn btn-icon btn-edit"
+                    title={t('notes.edit')}
                   >
-                    {t('notes.edit')}
+                    ✏
                   </button>
                   <button
                     onClick={() => confirmDelete(note.id, note.note_number)}
-                    className="btn btn-delete"
+                    className="btn btn-icon btn-delete"
+                    title={t('notes.delete')}
                   >
-                    {t('notes.delete')}
+                    🗑
                   </button>
                 </div>
               </div>

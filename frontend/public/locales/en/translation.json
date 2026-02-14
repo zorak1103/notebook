@@ -46,6 +46,7 @@
     "add": "Add Note",
     "edit": "Edit",
     "delete": "Delete",
+    "enhance": "Enhance with AI",
     "empty": "No notes yet. Add your first note using the button above.",
     "confirmDelete": "Are you sure you want to delete note #{{number}}?",
     "deleteFailed": "Failed to delete note",
@@ -64,6 +65,7 @@
   "meetingDetail": {
     "back": "Back to List",
     "editMeeting": "Edit Meeting",
+    "summarize": "Summarize with AI",
     "notFound": "Meeting not found",
     "date": "Date",
     "time": "Time",

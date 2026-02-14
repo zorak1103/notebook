@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchMeeting, createMeeting, updateMeeting } from '../api/client';
 import type { CreateMeetingRequest } from '../api/types';
@@ -22,10 +22,17 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const subjectInputRef = useRef<HTMLInputElement>(null);
+
+  // Get current date and time for default values
+  const now = new Date();
+  const currentDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
+  const currentTime = now.toTimeString().slice(0, 5); // HH:MM
+
   const [formData, setFormData] = useState<CreateMeetingRequest>({
     subject: '',
-    meeting_date: '',
-    start_time: '',
+    meeting_date: meetingId ? '' : currentDate,
+    start_time: meetingId ? '' : currentTime,
     end_time: null,
     participants: null,
     summary: null,
@@ -54,6 +61,9 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      // Focus subject field when creating new meeting
+      subjectInputRef.current?.focus();
     }
   }, [meetingId]);
 
@@ -97,6 +107,7 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
             {t('meetingForm.subject')} <span className="required">*</span>
           </label>
           <input
+            ref={subjectInputRef}
             type="text"
             id="subject"
             value={formData.subject}
@@ -110,20 +121,20 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
           </small>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="meeting_date">
-            {t('meetingForm.date')} <span className="required">*</span>
-          </label>
-          <input
-            type="date"
-            id="meeting_date"
-            value={formData.meeting_date}
-            onChange={(e) => handleChange('meeting_date', e.target.value)}
-            required
-          />
-        </div>
-
         <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="meeting_date">
+              {t('meetingForm.date')} <span className="required">*</span>
+            </label>
+            <input
+              type="date"
+              id="meeting_date"
+              value={formData.meeting_date}
+              onChange={(e) => handleChange('meeting_date', e.target.value)}
+              required
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="start_time">
               {t('meetingForm.startTime')} <span className="required">*</span>

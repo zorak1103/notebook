@@ -46,6 +46,7 @@
     "add": "Notiz hinzufügen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
+    "enhance": "Mit KI verbessern",
     "empty": "Noch keine Notizen. Fügen Sie Ihre erste Notiz mit der Schaltfläche oben hinzu.",
     "confirmDelete": "Möchten Sie Notiz #{{number}} wirklich löschen?",
     "deleteFailed": "Fehler beim Löschen der Notiz",
@@ -64,6 +65,7 @@
   "meetingDetail": {
     "back": "Zurück zur Liste",
     "editMeeting": "Meeting bearbeiten",
+    "summarize": "Mit KI zusammenfassen",
     "notFound": "Meeting nicht gefunden",
     "date": "Datum",
     "time": "Zeit",

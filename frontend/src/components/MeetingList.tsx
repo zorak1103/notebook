@@ -77,22 +77,18 @@ export function MeetingList({ onEdit, onViewDetail }: MeetingListProps) {
               <td>{meeting.participants || '-'}</td>
               <td className="actions">
                 <button
-                  onClick={() => onViewDetail(meeting.id)}
-                  className="btn btn-view"
-                >
-                  {t('meetings.view')}
-                </button>
-                <button
                   onClick={() => onEdit(meeting.id)}
-                  className="btn btn-edit"
+                  className="btn btn-icon btn-edit"
+                  title={t('meetings.edit')}
                 >
-                  {t('meetings.edit')}
+                  ✏
                 </button>
                 <button
                   onClick={() => confirmDelete(meeting.id, meeting.subject)}
-                  className="btn btn-delete"
+                  className="btn btn-icon btn-delete"
+                  title={t('meetings.delete')}
                 >
-                  {t('meetings.delete')}
+                  🗑
                 </button>
               </td>
             </tr>

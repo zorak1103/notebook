@@ -12,11 +12,13 @@ interface MeetingDetailProps {
   meetingId: number;
   onBack: () => void;
   onEdit: () => void;
+  onSummarize?: () => void;
+  onEnhanceNote?: (noteId: number) => void;
 }
 
 type NoteView = 'list' | 'create' | 'edit';
 
-export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps) {
+export function MeetingDetail({ meetingId, onBack, onEdit, onSummarize, onEnhanceNote }: MeetingDetailProps) {
   const { t } = useTranslation();
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,9 +70,16 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
         <button onClick={onBack} className="btn btn-back">
           ← {t('meetingDetail.back')}
         </button>
-        <button onClick={onEdit} className="btn btn-edit">
-          {t('meetingDetail.editMeeting')}
-        </button>
+        <div className="detail-actions">
+          {onSummarize && (
+            <button onClick={onSummarize} className="btn btn-icon btn-ai" title={t('meetingDetail.summarize')}>
+              ✨
+            </button>
+          )}
+          <button onClick={onEdit} className="btn btn-icon btn-edit" title={t('meetingDetail.editMeeting')}>
+            ✏
+          </button>
+        </div>
       </div>
 
       <div className="meeting-info">
@@ -114,6 +123,7 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
             meetingId={meetingId}
             onEdit={handleEditNote}
             onAdd={handleAddNote}
+            onEnhance={onEnhanceNote}
           />
         )}
         {noteView === 'create' && (

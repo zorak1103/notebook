@@ -46,6 +46,7 @@
     "add": "Ajouter une note",
     "edit": "Modifier",
     "delete": "Supprimer",
+    "enhance": "Améliorer avec l'IA",
     "empty": "Aucune note pour le moment. Ajoutez votre première note en utilisant le bouton ci-dessus.",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer la note #{{number}}?",
     "deleteFailed": "Échec de la suppression de la note",
@@ -64,6 +65,7 @@
   "meetingDetail": {
     "back": "Retour à la liste",
     "editMeeting": "Modifier la réunion",
+    "summarize": "Résumer avec l'IA",
     "notFound": "Réunion non trouvée",
     "date": "Date",
     "time": "Heure",

@@ -84,7 +84,7 @@ func (r *MeetingRepository) List(orderBy string, ascending bool) ([]*models.Meet
 	query := fmt.Sprintf(`
 		SELECT id, created_by, subject, meeting_date, start_time, end_time, participants, summary, keywords, created_at, updated_at
 		FROM meetings
-		ORDER BY %s %s
+		ORDER BY %s COLLATE NOCASE %s
 	`, orderBy, direction)
 
 	ctx := context.Background()

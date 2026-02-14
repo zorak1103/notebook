@@ -5,22 +5,22 @@
 }
 
 .sidebar {
-  width: 250px;
+  width: 160px;
   background-color: var(--color-card-bg);
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  gap: 1.5rem;
+  padding: var(--space-sm);
+  gap: var(--space-xs);
 }
 
 .sidebar-header {
-  padding-bottom: 1rem;
+  padding-bottom: var(--space-xs);
   border-bottom: 1px solid var(--color-border);
 }
 
 .app-title {
-  font-size: 1.5rem;
+  font-size: var(--font-xl);
   font-weight: 700;
   color: var(--color-text);
   margin: 0;
@@ -34,13 +34,13 @@
 }
 
 .nav-item {
-  padding: 0.75rem 1rem;
+  padding: var(--space-xs) var(--space-sm);
   background: transparent;
   color: var(--color-text);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   text-align: left;
-  font-size: 0.95rem;
+  font-size: var(--font-md);
   font-weight: 500;
   transition: background-color 0.2s;
   cursor: pointer;
@@ -70,7 +70,7 @@
 }
 
 .sidebar-footer {
-  padding-top: 1rem;
+  padding-top: var(--space-xs);
   border-top: 1px solid var(--color-border);
 }
 
@@ -78,13 +78,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   background: transparent;
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  font-size: 1.4rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xl);
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }

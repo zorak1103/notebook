@@ -1,27 +1,27 @@
 .search-panel {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-md);
 }
 
 .search-panel h2 {
-  font-size: 24px;
+  font-size: var(--font-2xl);
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-sm);
   color: #333;
 }
 
 .search-input-container {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-sm);
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 16px;
-  font-size: 16px;
+  padding: var(--input-padding);
+  font-size: var(--font-md);
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -34,10 +34,11 @@
 .search-loading,
 .search-error,
 .search-no-results {
-  padding: 16px;
-  border-radius: 8px;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-md);
+  font-size: var(--font-md);
 }
 
 .search-loading {
@@ -56,23 +57,23 @@
 }
 
 .search-result-count {
-  font-size: 14px;
+  font-size: var(--font-sm);
   color: #666;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
 }
 
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .search-result-item {
-  padding: 16px;
+  padding: var(--space-sm);
   background-color: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: box-shadow 0.2s, border-color 0.2s;
 }
@@ -83,22 +84,22 @@
 }
 
 .search-result-subject {
-  font-size: 18px;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: #333;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-xs);
 }
 
 .search-result-meta {
-  font-size: 14px;
+  font-size: var(--font-sm);
   color: #666;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-xs);
 }
 
 .search-result-summary {
-  font-size: 14px;
+  font-size: var(--font-md);
   color: #555;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .search-result-subject mark,

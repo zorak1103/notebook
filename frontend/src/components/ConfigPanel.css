@@ -1,46 +1,47 @@
 .config-panel {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-md);
 }
 
 .config-panel h1 {
-  font-size: 28px;
+  font-size: var(--font-3xl);
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-sm);
   color: #333;
 }
 
 .config-success {
-  padding: 16px;
-  border-radius: 8px;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
   background-color: #d4edda;
   color: #155724;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-md);
   text-align: center;
   border: 1px solid #c3e6cb;
+  font-size: var(--font-md);
 }
 
 .config-section {
   background-color: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .config-section h2 {
-  font-size: 20px;
+  font-size: var(--font-xl);
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-sm);
   color: #333;
   border-bottom: 2px solid #4a90e2;
-  padding-bottom: 8px;
+  padding-bottom: var(--space-xs);
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-sm);
 }
 
 .form-group:last-child {
@@ -49,18 +50,18 @@
 
 .form-group label {
   display: block;
-  font-size: 14px;
+  font-size: var(--font-sm);
   font-weight: 600;
   color: #333;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-xs);
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px 12px;
-  font-size: 14px;
+  padding: var(--input-padding);
+  font-size: var(--font-md);
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -76,23 +77,23 @@
 
 .form-group .hint {
   display: block;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: #666;
-  margin-top: 4px;
+  margin-top: var(--space-xs);
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-start;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .form-actions button {
-  padding: 10px 24px;
-  font-size: 14px;
+  padding: var(--btn-padding-lg);
+  font-size: var(--font-md);
   font-weight: 600;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
 }

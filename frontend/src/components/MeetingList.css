@@ -1,22 +1,23 @@
 .meeting-list {
-  padding: 1rem;
+  padding: var(--space-md);
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .meeting-list-empty {
-  padding: 2rem;
+  padding: var(--space-lg);
   text-align: center;
   color: #666;
   font-style: italic;
+  font-size: var(--font-md);
 }
 
 .meeting-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
@@ -25,11 +26,12 @@
 }
 
 .meeting-table th {
-  padding: 1rem;
+  padding: var(--space-sm);
   text-align: left;
   font-weight: 600;
   color: #333;
   border-bottom: 2px solid #ddd;
+  font-size: var(--font-sm);
 }
 
 .meeting-table th.sortable {
@@ -42,8 +44,9 @@
 }
 
 .meeting-table td {
-  padding: 1rem;
+  padding: var(--space-sm);
   border-bottom: 1px solid #eee;
+  font-size: var(--font-md);
 }
 
 .meeting-table tbody tr:hover {
@@ -65,22 +68,23 @@
 }
 
 .meeting-table .btn {
-  padding: 0.5rem 1rem;
+  padding: var(--btn-padding-sm);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.875rem;
-  margin-right: 0.5rem;
+  font-size: var(--font-sm);
+  margin-right: var(--space-sm);
   transition: background-color 0.2s;
 }
 
-.meeting-table .btn-view {
-  background: #6c757d;
-  color: white;
-}
-
-.meeting-table .btn-view:hover {
-  background: #5a6268;
+.meeting-table .btn-icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-md);
 }
 
 .meeting-table .btn-edit {

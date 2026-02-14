@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchNote, createNote, updateNote } from '../api/client';
 import type { CreateNoteRequest, UpdateNoteRequest } from '../api/types';
@@ -19,6 +19,7 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState('');
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Load note data if editing
   useEffect(() => {
@@ -34,6 +35,9 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      // Focus textarea when creating new note
+      contentTextareaRef.current?.focus();
     }
   }, [noteId]);
 
@@ -75,6 +79,7 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
             {t('noteForm.content')} <span className="required">*</span>
           </label>
           <textarea
+            ref={contentTextareaRef}
             id="content"
             rows={10}
             value={content}
