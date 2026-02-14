@@ -7,5 +7,36 @@
     "meetingList": "Meeting List",
     "search": "Search",
     "configuration": "Configuration"
+  },
+  "meetings": {
+    "subject": "Subject",
+    "date": "Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "participants": "Participants",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "empty": "No meetings found. Create your first meeting using the button above.",
+    "confirmDelete": "Are you sure you want to delete the meeting \"{{subject}}\"?",
+    "deleteFailed": "Failed to delete meeting"
+  },
+  "meetingForm": {
+    "createTitle": "New Meeting",
+    "editTitle": "Edit Meeting",
+    "subject": "Subject",
+    "subjectPlaceholder": "Enter meeting subject",
+    "date": "Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "participants": "Participants",
+    "participantsPlaceholder": "e.g., Alice, Bob, Charlie",
+    "summary": "Summary",
+    "summaryPlaceholder": "Meeting notes and summary",
+    "keywords": "Keywords",
+    "keywordsPlaceholder": "e.g., planning, quarterly, review",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
   }
 }

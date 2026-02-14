@@ -230,11 +230,21 @@ Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## Roadmap
 
-- [x] Meeting CRUD
-- [x] Notes CRUD with auto-numbering
-- [x] Full-text search
-- [x] Tailscale integration
-- [x] LLM integration (OpenAI, Anthropic)
+**Phase 1-2 (Completed)**:
+- [x] Project scaffolding with Tailscale integration
+- [x] Database layer (SQLite with modernc.org/sqlite)
+- [x] Schema migrations system
+- [x] Repository pattern (Meeting, Note, Config)
+
+**Phase 3-7 (In Progress)**:
+- [ ] Meeting CRUD API endpoints
+- [ ] Notes CRUD API endpoints with auto-numbering
+- [ ] Full-text search API
+- [ ] Configuration management API
+- [ ] LLM integration (OpenAI, Anthropic)
+- [ ] React frontend with i18n (DE, EN, FR, ES)
+
+**Future Enhancements**:
 - [ ] Meeting templates
 - [ ] Markdown support in notes
 - [ ] Export to PDF

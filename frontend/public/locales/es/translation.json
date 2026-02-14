@@ -7,5 +7,36 @@
     "meetingList": "Lista de reuniones",
     "search": "Búsqueda",
     "configuration": "Configuración"
+  },
+  "meetings": {
+    "subject": "Asunto",
+    "date": "Fecha",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "participants": "Participantes",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "empty": "No se encontraron reuniones. Cree su primera reunión usando el botón de arriba.",
+    "confirmDelete": "¿Está seguro de que desea eliminar la reunión \"{{subject}}\"?",
+    "deleteFailed": "Error al eliminar la reunión"
+  },
+  "meetingForm": {
+    "createTitle": "Nueva reunión",
+    "editTitle": "Editar reunión",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Ingrese el asunto de la reunión",
+    "date": "Fecha",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "participants": "Participantes",
+    "participantsPlaceholder": "por ej. Alice, Bob, Charlie",
+    "summary": "Resumen",
+    "summaryPlaceholder": "Notas y resumen de la reunión",
+    "keywords": "Palabras clave",
+    "keywordsPlaceholder": "por ej. planificación, trimestral, revisión",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar"
   }
 }

@@ -7,5 +7,36 @@
     "meetingList": "Meeting-Liste",
     "search": "Suche",
     "configuration": "Konfiguration"
+  },
+  "meetings": {
+    "subject": "Betreff",
+    "date": "Datum",
+    "startTime": "Startzeit",
+    "endTime": "Endzeit",
+    "participants": "Teilnehmer",
+    "actions": "Aktionen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "empty": "Keine Meetings gefunden. Erstellen Sie Ihr erstes Meeting mit der Schaltfläche oben.",
+    "confirmDelete": "Möchten Sie das Meeting \"{{subject}}\" wirklich löschen?",
+    "deleteFailed": "Fehler beim Löschen des Meetings"
+  },
+  "meetingForm": {
+    "createTitle": "Neues Meeting",
+    "editTitle": "Meeting bearbeiten",
+    "subject": "Betreff",
+    "subjectPlaceholder": "Meeting-Betreff eingeben",
+    "date": "Datum",
+    "startTime": "Startzeit",
+    "endTime": "Endzeit",
+    "participants": "Teilnehmer",
+    "participantsPlaceholder": "z.B. Alice, Bob, Charlie",
+    "summary": "Zusammenfassung",
+    "summaryPlaceholder": "Notizen und Zusammenfassung des Meetings",
+    "keywords": "Schlagwörter",
+    "keywordsPlaceholder": "z.B. Planung, Quartal, Überprüfung",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "cancel": "Abbrechen"
   }
 }

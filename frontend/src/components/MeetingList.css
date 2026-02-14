@@ -1,0 +1,83 @@
+.meeting-list {
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.meeting-list-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.meeting-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.meeting-table thead {
+  background: #f5f5f5;
+}
+
+.meeting-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.meeting-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.meeting-table th.sortable:hover {
+  background: #e8e8e8;
+}
+
+.meeting-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.meeting-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.meeting-table .actions {
+  white-space: nowrap;
+}
+
+.meeting-table .btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.meeting-table .btn-edit {
+  background: #007bff;
+  color: white;
+}
+
+.meeting-table .btn-edit:hover {
+  background: #0056b3;
+}
+
+.meeting-table .btn-delete {
+  background: #dc3545;
+  color: white;
+}
+
+.meeting-table .btn-delete:hover {
+  background: #c82333;
+}

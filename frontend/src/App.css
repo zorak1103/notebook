@@ -60,6 +60,15 @@
   cursor: not-allowed;
 }
 
+.nav-item--active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.nav-item--active:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
 .sidebar-footer {
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);

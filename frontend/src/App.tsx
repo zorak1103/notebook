@@ -1,10 +1,39 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WelcomePage } from './components/WelcomePage';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { MeetingList } from './components/MeetingList';
+import { MeetingForm } from './components/MeetingForm';
 import './App.css';
+
+type View = 'welcome' | 'list' | 'create' | 'edit';
 
 function App() {
   const { t } = useTranslation();
+  const [view, setView] = useState<View>('welcome');
+  const [editingId, setEditingId] = useState<number | undefined>();
+
+  const handleNewMeeting = () => {
+    setEditingId(undefined);
+    setView('create');
+  };
+
+  const handleMeetingList = () => {
+    setView('list');
+  };
+
+  const handleEdit = (id: number) => {
+    setEditingId(id);
+    setView('edit');
+  };
+
+  const handleFormSuccess = () => {
+    setView('list');
+  };
+
+  const handleFormCancel = () => {
+    setView('list');
+  };
 
   return (
     <div className="app">
@@ -14,10 +43,16 @@ function App() {
         </div>
 
         <nav className="sidebar-nav">
-          <button className="nav-item" disabled>
+          <button
+            className={`nav-item ${view === 'create' ? 'nav-item--active' : ''}`}
+            onClick={handleNewMeeting}
+          >
             {t('navigation.newMeeting')}
           </button>
-          <button className="nav-item" disabled>
+          <button
+            className={`nav-item ${view === 'list' || view === 'edit' ? 'nav-item--active' : ''}`}
+            onClick={handleMeetingList}
+          >
             {t('navigation.meetingList')}
           </button>
           <button className="nav-item" disabled>
@@ -34,7 +69,18 @@ function App() {
       </aside>
 
       <main className="main-content">
-        <WelcomePage />
+        {view === 'welcome' && <WelcomePage />}
+        {view === 'list' && <MeetingList onEdit={handleEdit} />}
+        {view === 'create' && (
+          <MeetingForm onSuccess={handleFormSuccess} onCancel={handleFormCancel} />
+        )}
+        {view === 'edit' && (
+          <MeetingForm
+            meetingId={editingId}
+            onSuccess={handleFormSuccess}
+            onCancel={handleFormCancel}
+          />
+        )}
       </main>
     </div>
   );
