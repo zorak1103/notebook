@@ -1,0 +1,78 @@
+.meeting-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.detail-header .btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.detail-header .btn-back {
+  background: #6c757d;
+  color: white;
+}
+
+.detail-header .btn-back:hover {
+  background: #5a6268;
+}
+
+.detail-header .btn-edit {
+  background: #007bff;
+  color: white;
+}
+
+.detail-header .btn-edit:hover {
+  background: #0056b3;
+}
+
+.meeting-info {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.meeting-info h1 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.meeting-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metadata-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.metadata-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 120px;
+}
+
+.metadata-value {
+  color: #333;
+  white-space: pre-wrap;
+}
+
+.notes-section {
+  margin-top: 2rem;
+}

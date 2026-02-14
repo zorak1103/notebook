@@ -37,3 +37,24 @@ export interface CreateMeetingRequest {
 export interface UpdateMeetingRequest extends CreateMeetingRequest {
   id: number;
 }
+
+// Note represents a note record
+export interface Note {
+  id: number;
+  meeting_id: number;
+  note_number: number;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// CreateNoteRequest represents the request body for creating a note
+export interface CreateNoteRequest {
+  meeting_id: number;
+  content: string;
+}
+
+// UpdateNoteRequest represents the request body for updating a note
+export interface UpdateNoteRequest {
+  content: string;
+}

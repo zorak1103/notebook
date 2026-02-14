@@ -15,6 +15,7 @@
     "endTime": "End Time",
     "participants": "Participants",
     "actions": "Actions",
+    "view": "View",
     "edit": "Edit",
     "delete": "Delete",
     "empty": "No meetings found. Create your first meeting using the button above.",
@@ -39,5 +40,35 @@
     "save": "Save",
     "saving": "Saving...",
     "cancel": "Cancel"
+  },
+  "notes": {
+    "title": "Notes",
+    "add": "Add Note",
+    "edit": "Edit",
+    "delete": "Delete",
+    "empty": "No notes yet. Add your first note using the button above.",
+    "confirmDelete": "Are you sure you want to delete note #{{number}}?",
+    "deleteFailed": "Failed to delete note",
+    "updated": "Updated: {{date}}"
+  },
+  "noteForm": {
+    "createTitle": "New Note",
+    "editTitle": "Edit Note",
+    "content": "Content",
+    "contentPlaceholder": "Enter note content",
+    "charCount": "{{current}} / {{max}}",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
+  },
+  "meetingDetail": {
+    "back": "Back to List",
+    "editMeeting": "Edit Meeting",
+    "notFound": "Meeting not found",
+    "date": "Date",
+    "time": "Time",
+    "participants": "Participants",
+    "summary": "Summary",
+    "keywords": "Keywords"
   }
 }

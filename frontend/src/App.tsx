@@ -4,17 +4,18 @@ import { WelcomePage } from './components/WelcomePage';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { MeetingList } from './components/MeetingList';
 import { MeetingForm } from './components/MeetingForm';
+import { MeetingDetail } from './components/MeetingDetail';
 import './App.css';
 
-type View = 'welcome' | 'list' | 'create' | 'edit';
+type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail';
 
 function App() {
   const { t } = useTranslation();
   const [view, setView] = useState<View>('welcome');
-  const [editingId, setEditingId] = useState<number | undefined>();
+  const [selectedId, setSelectedId] = useState<number | undefined>();
 
   const handleNewMeeting = () => {
-    setEditingId(undefined);
+    setSelectedId(undefined);
     setView('create');
   };
 
@@ -22,8 +23,17 @@ function App() {
     setView('list');
   };
 
+  const handleViewDetail = (id: number) => {
+    setSelectedId(id);
+    setView('detail');
+  };
+
   const handleEdit = (id: number) => {
-    setEditingId(id);
+    setSelectedId(id);
+    setView('edit');
+  };
+
+  const handleEditFromDetail = () => {
     setView('edit');
   };
 
@@ -32,6 +42,10 @@ function App() {
   };
 
   const handleFormCancel = () => {
+    setView('list');
+  };
+
+  const handleDetailBack = () => {
     setView('list');
   };
 
@@ -50,7 +64,7 @@ function App() {
             {t('navigation.newMeeting')}
           </button>
           <button
-            className={`nav-item ${view === 'list' || view === 'edit' ? 'nav-item--active' : ''}`}
+            className={`nav-item ${view === 'list' || view === 'edit' || view === 'detail' ? 'nav-item--active' : ''}`}
             onClick={handleMeetingList}
           >
             {t('navigation.meetingList')}
@@ -70,15 +84,22 @@ function App() {
 
       <main className="main-content">
         {view === 'welcome' && <WelcomePage />}
-        {view === 'list' && <MeetingList onEdit={handleEdit} />}
+        {view === 'list' && <MeetingList onEdit={handleEdit} onViewDetail={handleViewDetail} />}
         {view === 'create' && (
           <MeetingForm onSuccess={handleFormSuccess} onCancel={handleFormCancel} />
         )}
-        {view === 'edit' && (
+        {view === 'edit' && selectedId && (
           <MeetingForm
-            meetingId={editingId}
+            meetingId={selectedId}
             onSuccess={handleFormSuccess}
             onCancel={handleFormCancel}
+          />
+        )}
+        {view === 'detail' && selectedId && (
+          <MeetingDetail
+            meetingId={selectedId}
+            onBack={handleDetailBack}
+            onEdit={handleEditFromDetail}
           />
         )}
       </main>

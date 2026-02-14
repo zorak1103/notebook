@@ -15,6 +15,7 @@
     "endTime": "Heure de fin",
     "participants": "Participants",
     "actions": "Actions",
+    "view": "Voir",
     "edit": "Modifier",
     "delete": "Supprimer",
     "empty": "Aucune réunion trouvée. Créez votre première réunion en utilisant le bouton ci-dessus.",
@@ -39,5 +40,35 @@
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "cancel": "Annuler"
+  },
+  "notes": {
+    "title": "Notes",
+    "add": "Ajouter une note",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "empty": "Aucune note pour le moment. Ajoutez votre première note en utilisant le bouton ci-dessus.",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer la note #{{number}}?",
+    "deleteFailed": "Échec de la suppression de la note",
+    "updated": "Mis à jour : {{date}}"
+  },
+  "noteForm": {
+    "createTitle": "Nouvelle note",
+    "editTitle": "Modifier la note",
+    "content": "Contenu",
+    "contentPlaceholder": "Entrez le contenu de la note",
+    "charCount": "{{current}} / {{max}}",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler"
+  },
+  "meetingDetail": {
+    "back": "Retour à la liste",
+    "editMeeting": "Modifier la réunion",
+    "notFound": "Réunion non trouvée",
+    "date": "Date",
+    "time": "Heure",
+    "participants": "Participants",
+    "summary": "Résumé",
+    "keywords": "Mots-clés"
   }
 }

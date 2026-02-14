@@ -50,6 +50,16 @@
   background: #f9f9f9;
 }
 
+.meeting-table .subject-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.meeting-table .subject-link:hover {
+  color: #0056b3;
+}
+
 .meeting-table .actions {
   white-space: nowrap;
 }
@@ -62,6 +72,15 @@
   font-size: 0.875rem;
   margin-right: 0.5rem;
   transition: background-color 0.2s;
+}
+
+.meeting-table .btn-view {
+  background: #6c757d;
+  color: white;
+}
+
+.meeting-table .btn-view:hover {
+  background: #5a6268;
 }
 
 .meeting-table .btn-edit {

@@ -6,9 +6,10 @@ import './MeetingList.css';
 
 interface MeetingListProps {
   onEdit: (id: number) => void;
+  onViewDetail: (id: number) => void;
 }
 
-export function MeetingList({ onEdit }: MeetingListProps) {
+export function MeetingList({ onEdit, onViewDetail }: MeetingListProps) {
   const { t } = useTranslation();
   const { meetings, loading, error, sortColumn, sortOrder, handleSort, handleDelete } = useMeetings();
 
@@ -62,12 +63,25 @@ export function MeetingList({ onEdit }: MeetingListProps) {
         <tbody>
           {meetings.map((meeting) => (
             <tr key={meeting.id}>
-              <td>{meeting.subject}</td>
+              <td>
+                <span
+                  className="subject-link"
+                  onClick={() => onViewDetail(meeting.id)}
+                >
+                  {meeting.subject}
+                </span>
+              </td>
               <td>{meeting.meeting_date}</td>
               <td>{meeting.start_time}</td>
               <td>{meeting.end_time || '-'}</td>
               <td>{meeting.participants || '-'}</td>
               <td className="actions">
+                <button
+                  onClick={() => onViewDetail(meeting.id)}
+                  className="btn btn-view"
+                >
+                  {t('meetings.view')}
+                </button>
                 <button
                   onClick={() => onEdit(meeting.id)}
                   className="btn btn-edit"

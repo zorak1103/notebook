@@ -40,6 +40,13 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /api/meetings/{id}", s.handleUpdateMeeting)
 	mux.HandleFunc("DELETE /api/meetings/{id}", s.handleDeleteMeeting)
 
+	// Note CRUD
+	mux.HandleFunc("GET /api/meetings/{meetingId}/notes", s.handleListNotes)
+	mux.HandleFunc("GET /api/notes/{id}", s.handleGetNote)
+	mux.HandleFunc("POST /api/notes", s.handleCreateNote)
+	mux.HandleFunc("PUT /api/notes/{id}", s.handleUpdateNote)
+	mux.HandleFunc("DELETE /api/notes/{id}", s.handleDeleteNote)
+
 	// Static files and SPA fallback
 	mux.HandleFunc("/", s.handleStatic)
 

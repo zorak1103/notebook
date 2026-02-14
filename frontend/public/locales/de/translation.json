@@ -15,6 +15,7 @@
     "endTime": "Endzeit",
     "participants": "Teilnehmer",
     "actions": "Aktionen",
+    "view": "Ansehen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
     "empty": "Keine Meetings gefunden. Erstellen Sie Ihr erstes Meeting mit der Schaltfläche oben.",
@@ -39,5 +40,35 @@
     "save": "Speichern",
     "saving": "Speichern...",
     "cancel": "Abbrechen"
+  },
+  "notes": {
+    "title": "Notizen",
+    "add": "Notiz hinzufügen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "empty": "Noch keine Notizen. Fügen Sie Ihre erste Notiz mit der Schaltfläche oben hinzu.",
+    "confirmDelete": "Möchten Sie Notiz #{{number}} wirklich löschen?",
+    "deleteFailed": "Fehler beim Löschen der Notiz",
+    "updated": "Aktualisiert: {{date}}"
+  },
+  "noteForm": {
+    "createTitle": "Neue Notiz",
+    "editTitle": "Notiz bearbeiten",
+    "content": "Inhalt",
+    "contentPlaceholder": "Notizinhalt eingeben",
+    "charCount": "{{current}} / {{max}}",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "cancel": "Abbrechen"
+  },
+  "meetingDetail": {
+    "back": "Zurück zur Liste",
+    "editMeeting": "Meeting bearbeiten",
+    "notFound": "Meeting nicht gefunden",
+    "date": "Datum",
+    "time": "Zeit",
+    "participants": "Teilnehmer",
+    "summary": "Zusammenfassung",
+    "keywords": "Schlagwörter"
   }
 }

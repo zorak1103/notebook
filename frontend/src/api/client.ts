@@ -1,4 +1,4 @@
-import type { UserInfo, Meeting, CreateMeetingRequest } from './types';
+import type { UserInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest } from './types';
 
 /**
  * Fetches the current user's Tailscale information from the backend
@@ -93,4 +93,26 @@ export async function updateMeeting(id: number, data: CreateMeetingRequest): Pro
 
 export async function deleteMeeting(id: number): Promise<void> {
   return apiDelete(`/api/meetings/${id}`);
+}
+
+// Note API functions
+
+export async function fetchNotes(meetingId: number): Promise<Note[]> {
+  return apiGet<Note[]>(`/api/meetings/${meetingId}/notes`);
+}
+
+export async function fetchNote(id: number): Promise<Note> {
+  return apiGet<Note>(`/api/notes/${id}`);
+}
+
+export async function createNote(data: CreateNoteRequest): Promise<Note> {
+  return apiPost<Note>('/api/notes', data);
+}
+
+export async function updateNote(id: number, data: UpdateNoteRequest): Promise<Note> {
+  return apiPut<Note>(`/api/notes/${id}`, data);
+}
+
+export async function deleteNote(id: number): Promise<void> {
+  return apiDelete(`/api/notes/${id}`);
 }

@@ -15,6 +15,7 @@
     "endTime": "Hora de fin",
     "participants": "Participantes",
     "actions": "Acciones",
+    "view": "Ver",
     "edit": "Editar",
     "delete": "Eliminar",
     "empty": "No se encontraron reuniones. Cree su primera reunión usando el botón de arriba.",
@@ -39,5 +40,35 @@
     "save": "Guardar",
     "saving": "Guardando...",
     "cancel": "Cancelar"
+  },
+  "notes": {
+    "title": "Notas",
+    "add": "Agregar nota",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "empty": "Aún no hay notas. Agregue su primera nota usando el botón de arriba.",
+    "confirmDelete": "¿Está seguro de que desea eliminar la nota #{{number}}?",
+    "deleteFailed": "Error al eliminar la nota",
+    "updated": "Actualizado: {{date}}"
+  },
+  "noteForm": {
+    "createTitle": "Nueva nota",
+    "editTitle": "Editar nota",
+    "content": "Contenido",
+    "contentPlaceholder": "Ingrese el contenido de la nota",
+    "charCount": "{{current}} / {{max}}",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar"
+  },
+  "meetingDetail": {
+    "back": "Volver a la lista",
+    "editMeeting": "Editar reunión",
+    "notFound": "Reunión no encontrada",
+    "date": "Fecha",
+    "time": "Hora",
+    "participants": "Participantes",
+    "summary": "Resumen",
+    "keywords": "Palabras clave"
   }
 }
