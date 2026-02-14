@@ -36,6 +36,9 @@ func TestHandleGetConfig_Empty(t *testing.T) {
 	if resp.LLMModel != "" {
 		t.Errorf("expected empty model, got %q", resp.LLMModel)
 	}
+	if resp.Language != "en" {
+		t.Errorf("expected default language 'en', got %q", resp.Language)
+	}
 }
 
 func TestHandleGetConfig_WithValues(t *testing.T) {
@@ -118,6 +121,7 @@ func TestHandleUpdateConfig_Success(t *testing.T) {
 		LLMProviderURL: "https://api.anthropic.com/v1",
 		LLMAPIKey:      "sk-ant-1234567890abcdefghijklmnop",
 		LLMModel:       "claude-opus-4-6",
+		Language:       "de",
 	}
 	body, _ := json.Marshal(reqBody)
 
@@ -141,6 +145,9 @@ func TestHandleUpdateConfig_Success(t *testing.T) {
 	}
 	if resp.LLMModel != "claude-opus-4-6" {
 		t.Errorf("expected model 'claude-opus-4-6', got %q", resp.LLMModel)
+	}
+	if resp.Language != "de" {
+		t.Errorf("expected language 'de', got %q", resp.Language)
 	}
 	// API key should be masked
 	if resp.LLMAPIKey == "sk-ant-1234567890abcdefghijklmnop" {
@@ -321,6 +328,60 @@ func TestMaskAPIKey(t *testing.T) {
 				t.Errorf("maskAPIKey(%q) = %q, expected %q", tt.input, result, tt.expected)
 			}
 		})
+	}
+}
+
+func TestHandleUpdateConfig_LanguagePersistence(t *testing.T) {
+	srv := newTestServer(t)
+
+	// Update language to French
+	reqBody := ConfigUpdateRequest{
+		Language: "fr",
+	}
+	body, _ := json.Marshal(reqBody)
+
+	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	srv.handleUpdateConfig(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("expected status 200, got %d", w.Code)
+	}
+
+	// Verify language is persisted via GET
+	req2 := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	w2 := httptest.NewRecorder()
+
+	srv.handleGetConfig(w2, req2)
+
+	var resp ConfigData
+	if err := json.NewDecoder(w2.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Language != "fr" {
+		t.Errorf("expected language 'fr' to be persisted, got %q", resp.Language)
+	}
+}
+
+func TestHandleUpdateConfig_InvalidLanguage(t *testing.T) {
+	srv := newTestServer(t)
+
+	reqBody := ConfigUpdateRequest{
+		Language: "invalid",
+	}
+	body, _ := json.Marshal(reqBody)
+
+	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	srv.handleUpdateConfig(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
 	}
 }
 
