@@ -4,6 +4,7 @@ import { getConfig, updateConfig } from '../api/client';
 import type { ConfigUpdateRequest } from '../api/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorMessage } from './ErrorMessage';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import './ConfigPanel.css';
 
 function ConfigPanel(): React.JSX.Element {
@@ -17,6 +18,7 @@ function ConfigPanel(): React.JSX.Element {
     llm_provider_url: '',
     llm_api_key: '',
     llm_model: '',
+    language: '',
   });
 
   useEffect(() => {
@@ -32,6 +34,7 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: config.llm_provider_url || '',
         llm_api_key: config.llm_api_key || '',
         llm_model: config.llm_model || '',
+        language: config.language || 'en',
       });
       setOriginalKey(config.llm_api_key || '');
     } catch (err) {
@@ -59,6 +62,7 @@ function ConfigPanel(): React.JSX.Element {
         llm_provider_url: result.llm_provider_url || '',
         llm_api_key: result.llm_api_key || '',
         llm_model: result.llm_model || '',
+        language: result.language || 'en',
       });
       setOriginalKey(result.llm_api_key || '');
       setSuccess(true);
@@ -93,6 +97,15 @@ function ConfigPanel(): React.JSX.Element {
           {t('config.saveSuccess')}
         </div>
       )}
+
+      <section className="config-section">
+        <h2>{t('config.sectionLanguage')}</h2>
+        <div className="form-group">
+          <label>{t('config.language')}</label>
+          <LanguageSwitcher />
+          <small className="hint">{t('config.languageHint')}</small>
+        </div>
+      </section>
 
       <form onSubmit={handleSubmit}>
         <section className="config-section">

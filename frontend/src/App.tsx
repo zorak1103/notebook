@@ -1,20 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WelcomePage } from './components/WelcomePage';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { MeetingList } from './components/MeetingList';
 import { MeetingForm } from './components/MeetingForm';
 import { MeetingDetail } from './components/MeetingDetail';
 import { SearchPanel } from './components/SearchPanel';
 import ConfigPanel from './components/ConfigPanel';
+import { getConfig } from './api/client';
+import i18n from './i18n';
 import './App.css';
 
-type View = 'welcome' | 'list' | 'create' | 'edit' | 'detail' | 'search' | 'config';
+type View = 'list' | 'create' | 'edit' | 'detail' | 'search' | 'config';
 
 function App() {
   const { t } = useTranslation();
-  const [view, setView] = useState<View>('welcome');
+  const [view, setView] = useState<View>('list');
   const [selectedId, setSelectedId] = useState<number | undefined>();
+
+  useEffect(() => {
+    getConfig().then((cfg) => {
+      if (cfg.language && cfg.language !== i18n.language) {
+        i18n.changeLanguage(cfg.language);
+      }
+    }).catch(() => { /* use browser-detected language as fallback */ });
+  }, []);
 
   const handleNewMeeting = () => {
     setSelectedId(undefined);
@@ -90,21 +98,21 @@ function App() {
           >
             {t('navigation.search')}
           </button>
-          <button
-            className={`nav-item ${view === 'config' ? 'nav-item--active' : ''}`}
-            onClick={handleConfig}
-          >
-            {t('navigation.configuration')}
-          </button>
         </nav>
 
         <div className="sidebar-footer">
-          <LanguageSwitcher />
+          <button
+            className={`gear-button ${view === 'config' ? 'gear-button--active' : ''}`}
+            onClick={handleConfig}
+            aria-label={t('navigation.configuration')}
+            title={t('navigation.configuration')}
+          >
+            &#x2699;
+          </button>
         </div>
       </aside>
 
       <main className="main-content">
-        {view === 'welcome' && <WelcomePage />}
         {view === 'list' && <MeetingList onEdit={handleEdit} onViewDetail={handleViewDetail} />}
         {view === 'create' && (
           <MeetingForm onSuccess={handleFormSuccess} onCancel={handleFormCancel} />

@@ -82,6 +82,9 @@
   },
   "config": {
     "title": "Configuration",
+    "sectionLanguage": "Langue",
+    "language": "Langue d'affichage",
+    "languageHint": "Change la langue de l'interface",
     "sectionLlm": "Paramètres du fournisseur LLM",
     "providerUrl": "URL du fournisseur",
     "providerUrlPlaceholder": "https://api.openai.com/v1",

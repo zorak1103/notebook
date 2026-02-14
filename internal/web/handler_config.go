@@ -15,6 +15,7 @@ const (
 	configKeyLLMProviderURL = "llm_provider_url"
 	configKeyLLMAPIKey      = "llm_api_key" // #nosec G101 - config key name, not credential
 	configKeyLLMModel       = "llm_model"
+	configKeyLanguage       = "language"
 )
 
 // ConfigData represents the configuration response
@@ -22,6 +23,7 @@ type ConfigData struct {
 	LLMProviderURL string `json:"llm_provider_url"`
 	LLMAPIKey      string `json:"llm_api_key"`
 	LLMModel       string `json:"llm_model"`
+	Language       string `json:"language"`
 }
 
 // ConfigUpdateRequest represents the configuration update request
@@ -29,6 +31,7 @@ type ConfigUpdateRequest struct {
 	LLMProviderURL string `json:"llm_provider_url"`
 	LLMAPIKey      string `json:"llm_api_key"`
 	LLMModel       string `json:"llm_model"`
+	Language       string `json:"language"`
 }
 
 // handleGetConfig returns the current configuration with masked API key
@@ -62,6 +65,15 @@ func (s *Server) handleUpdateConfig(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Validate language if provided
+	if req.Language != "" {
+		validLanguages := map[string]bool{"en": true, "de": true, "fr": true, "es": true}
+		if !validLanguages[req.Language] {
+			writeError(w, http.StatusBadRequest, "invalid language code")
+			return
+		}
+	}
+
 	repo := repositories.NewConfigRepository(s.database.DB)
 
 	// Save non-empty, non-masked fields
@@ -77,7 +89,9 @@ func (s *Server) handleUpdateConfig(w http.ResponseWriter, r *http.Request) {
 
 // buildConfigData constructs ConfigData from config models
 func buildConfigData(configs []*models.Config) ConfigData {
-	data := ConfigData{}
+	data := ConfigData{
+		Language: "en", // default language
+	}
 
 	for _, cfg := range configs {
 		switch cfg.Key {
@@ -87,6 +101,8 @@ func buildConfigData(configs []*models.Config) ConfigData {
 			data.LLMAPIKey = maskAPIKey(cfg.Value)
 		case configKeyLLMModel:
 			data.LLMModel = cfg.Value
+		case configKeyLanguage:
+			data.Language = cfg.Value
 		}
 	}
 
@@ -109,6 +125,12 @@ func saveConfigFields(repo *repositories.ConfigRepository, req *ConfigUpdateRequ
 
 	if req.LLMModel != "" {
 		if err := repo.Set(configKeyLLMModel, req.LLMModel); err != nil {
+			return err
+		}
+	}
+
+	if req.Language != "" {
+		if err := repo.Set(configKeyLanguage, req.Language); err != nil {
 			return err
 		}
 	}

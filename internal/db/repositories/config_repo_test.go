@@ -54,9 +54,9 @@ func TestConfigRepository_GetAll(t *testing.T) {
 		t.Fatalf("getAll failed: %v", err)
 	}
 
-	// Migration seeds 3 config entries
-	if len(configs) != 3 {
-		t.Errorf("expected 3 configs, got %d", len(configs))
+	// Migration seeds 4 config entries (llm_provider_url, llm_api_key, llm_model, language)
+	if len(configs) != 4 {
+		t.Errorf("expected 4 configs, got %d", len(configs))
 	}
 }
 

@@ -70,6 +70,7 @@ func (db *DB) Migrate() error {
 		file    string
 	}{
 		{1, "migrations/001_initial_schema.sql"},
+		{2, "migrations/002_add_language_config.sql"},
 	}
 
 	// Apply migrations

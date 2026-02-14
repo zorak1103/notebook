@@ -64,6 +64,7 @@ export interface Config {
   llm_provider_url: string;
   llm_api_key: string;
   llm_model: string;
+  language: string;
 }
 
 // ConfigUpdateRequest represents the request body for updating configuration
@@ -71,4 +72,5 @@ export interface ConfigUpdateRequest {
   llm_provider_url: string;
   llm_api_key: string;
   llm_model: string;
+  language: string;
 }
