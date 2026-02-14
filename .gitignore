@@ -1,6 +1,6 @@
 # Binaries
-notebook
-notebook.exe
+/notebook
+/notebook.exe
 *.exe
 *.dll
 *.so
