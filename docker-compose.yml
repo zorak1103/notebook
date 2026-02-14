@@ -1,0 +1,21 @@
+services:
+  # Development Mode (local testing)
+  notebook-dev:
+    image: zorak1103/notebook:latest
+    container_name: notebook-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    command: ["--dev-listen", ":8080", "--db", "/data/notebook.db"]
+    restart: unless-stopped
+
+  # Tailscale Mode (production)
+  notebook-tailscale:
+    image: zorak1103/notebook:latest
+    container_name: notebook-tailscale
+    network_mode: host
+    volumes:
+      - ./data:/data
+    command: ["--hostname", "notebook", "--state-dir", "/data/tsnet-state", "--db", "/data/notebook.db"]
+    restart: unless-stopped

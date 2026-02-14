@@ -32,6 +32,7 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 
 ### Docker (Recommended)
 
+**Dev Mode (Local Development)**:
 ```bash
 docker pull zorak1103/notebook:latest
 
@@ -43,6 +44,33 @@ docker run -d \
 ```
 
 Open http://localhost:8080
+
+**Tailscale Mode (Production)**:
+```bash
+docker pull zorak1103/notebook:latest
+
+docker run -d \
+  --network host \
+  -v $(pwd)/data:/data \
+  --name notebook \
+  zorak1103/notebook:latest \
+  --hostname notebook \
+  --state-dir /data/tsnet-state \
+  --db /data/notebook.db
+```
+
+Access at https://notebook.your-tailnet.ts.net (not localhost)
+
+**Docker Compose**:
+```bash
+# Dev Mode
+docker compose up -d notebook-dev
+
+# Tailscale Mode
+docker compose up -d notebook-tailscale
+```
+
+See `docker-compose.yml` for configuration. Database persists in `./data/` directory.
 
 ### Binary Download
 
@@ -97,6 +125,8 @@ notebook --hostname notebook --state-dir ./tsnet-state --db notebook.db
 ```
 
 Access at https://notebook.your-tailnet.ts.net
+
+**Note**: In Tailscale mode, the application is **only accessible via your Tailnet** (not localhost). Requires Tailscale authentication on first run.
 
 ### Configuration
 
