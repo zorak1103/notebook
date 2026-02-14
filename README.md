@@ -11,10 +11,10 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 - **Internationalization**: Support for German, English, French, Spanish (react-i18next)
 - **Meeting Management**: Create, edit, and organize meetings with metadata
 - **Notes System**: Attach numbered notes to meetings with automatic numbering
-- **Full-Text Search**: Search across meeting subjects and summaries
-- **Configuration Management**: Web UI for LLM provider settings with masked API keys
+- **Full-Text Search**: Search across meeting subjects, summaries, participants, and keywords
+- **Configuration Management**: Web UI for LLM provider settings with masked API keys and customizable prompts
 - **Tailscale Integration**: Seamless authentication and secure network access via tsnet
-- **LLM Integration**: Optional AI-powered meeting summaries (OpenAI, Anthropic)
+- **LLM Integration**: Optional AI-powered meeting summaries and note enhancement with undo functionality (OpenAI, Anthropic, Ollama, LM Studio, vLLM)
 - **Single Binary**: Frontend embedded using go:embed
 - **Dev Mode**: Run without Tailscale for local development
 - **Responsive UI**: React + Vite + TypeScript frontend
@@ -109,11 +109,35 @@ Access at https://notebook.your-tailnet.ts.net
 **LLM Configuration**:
 
 Configure via Web UI under "Configuration":
-- **Provider URL**: Base URL for LLM API (e.g., `https://api.openai.com/v1`)
+- **Provider URL**: Base URL for LLM API (e.g., `https://api.openai.com/v1`, `https://api.anthropic.com/v1`)
 - **API Key**: Authentication key (automatically masked after saving)
 - **Model**: Model identifier (e.g., `gpt-4o`, `claude-opus-4-6`)
+- **Summary Prompt**: Customizable template for generating meeting summaries (supports `{{subject}}`, `{{date}}`, `{{participants}}`, `{{notes}}` placeholders)
+- **Enhancement Prompt**: Customizable template for enhancing note content (supports `{{content}}` placeholder)
 
-Configuration is stored in the SQLite database and persists across restarts.
+Configuration is stored in the SQLite database and persists across restarts. Supports OpenAI, Anthropic, Ollama, LM Studio, vLLM, and other OpenAI-compatible providers.
+
+### LLM Features
+
+**Meeting Summarization**:
+- Click the ✨ icon in the meeting detail view
+- Generates a concise summary (3-5 sentences) based on all notes
+- Summary is saved to the meeting record
+- Undo button (↶) appears after summarization to restore previous summary
+- Requires at least one note in the meeting
+
+**Note Enhancement**:
+- Available in both note list view and note edit form
+- Click the ✨ icon on any note to improve grammar, clarity, and structure
+- Enhanced content replaces the original note
+- Undo button (↶) appears to restore previous content
+- Edit mode enhancement updates the textarea content without saving (allows further editing before save)
+
+**Customizable Prompts**:
+- Default prompts emphasize language preservation (no translation)
+- Prompts instruct LLM to provide final text only (no multiple options)
+- Edit prompts in Configuration panel to match your workflow
+- Uses template syntax: `{{placeholder}}` for dynamic content
 
 ## Development
 
@@ -185,7 +209,7 @@ Frontend proxies API requests to backend (configured in `vite.config.ts`)
 **Tables**:
 - `meetings` - Meeting metadata with full-text search indices
 - `notes` - Notes with auto-incrementing note numbers per meeting
-- `config` - Key-value configuration store
+- `config` - Key-value configuration store (llm_provider_url, llm_api_key, llm_model, language, llm_prompt_summary, llm_prompt_enhance)
 
 **API Endpoints**:
 
@@ -195,6 +219,7 @@ Frontend proxies API requests to backend (configured in `vite.config.ts`)
 - `POST /api/meetings` - Create meeting
 - `PUT /api/meetings/{id}` - Update meeting
 - `DELETE /api/meetings/{id}` - Delete meeting
+- `POST /api/meetings/{id}/summarize` - Generate AI summary from notes
 
 *Notes*:
 - `GET /api/meetings/{meetingId}/notes` - List notes for meeting
@@ -202,13 +227,14 @@ Frontend proxies API requests to backend (configured in `vite.config.ts`)
 - `POST /api/notes` - Create note (auto-assigns note_number)
 - `PUT /api/notes/{id}` - Update note
 - `DELETE /api/notes/{id}` - Delete note
+- `POST /api/notes/{id}/enhance` - Enhance note content with AI
 
 *Search*:
-- `GET /api/search?q=<query>` - Search meetings by subject/summary
+- `GET /api/search?q=<query>` - Search meetings by subject, summary, participants, and keywords
 
 *Configuration*:
 - `GET /api/config` - Get configuration (API keys masked)
-- `POST /api/config` - Update configuration
+- `POST /api/config` - Update configuration (provider settings and customizable prompts)
 
 *Authentication*:
 - `GET /api/whoami` - Get Tailscale user identity (WhoIs API)
@@ -250,37 +276,6 @@ MIT License - see [LICENSE](LICENSE) for details
 ## Contributing
 
 Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
-
-## Support
-
-- **Issues**: https://github.com/zorak1103/notebook/issues
-- **Discussions**: https://github.com/zorak1103/notebook/discussions
-
-## Roadmap
-
-**Phase 1-2 (Completed)**:
-- [x] Project scaffolding with Tailscale integration
-- [x] Database layer (SQLite with modernc.org/sqlite)
-- [x] Schema migrations system
-- [x] Repository pattern (Meeting, Note, Config)
-
-**Phase 3-6 (Completed)**:
-- [x] Meeting CRUD API endpoints
-- [x] Notes CRUD API endpoints with auto-numbering
-- [x] Full-text search API
-- [x] Configuration management API with masked API keys
-- [x] React frontend with i18n (DE, EN, FR, ES)
-
-**Phase 7 (In Progress)**:
-- [ ] LLM integration (OpenAI, Anthropic)
-- [ ] Meeting summarization endpoints
-
-**Future Enhancements**:
-- [ ] Meeting templates
-- [ ] Markdown support in notes
-- [ ] Export to PDF
-- [ ] Mobile app
-- [ ] Real-time collaboration
 
 ## Acknowledgments
 

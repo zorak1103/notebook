@@ -24,9 +24,11 @@ function highlightMatch(text: string, query: string): React.JSX.Element {
 
   return (
     <>
-      {parts.map((part, i) =>
-        regex.test(part) ? <mark key={i}>{part}</mark> : part
-      )}
+      {parts.map((part, i) => {
+        // When split with capturing group, odd indices are matches
+        const isMatch = i % 2 === 1;
+        return isMatch ? <mark key={i}>{part}</mark> : part;
+      })}
     </>
   );
 }

@@ -99,8 +99,9 @@
 .search-result-participants,
 .search-result-keywords {
   font-size: var(--font-sm);
-  color: #666;
+  color: #555;
   margin-bottom: var(--space-xs);
+  font-style: italic;
 }
 
 .search-result-summary {
