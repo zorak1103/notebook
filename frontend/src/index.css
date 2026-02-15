@@ -1,58 +1,98 @@
 :root {
-  /* Color palette */
-  --color-primary: #0066cc;
-  --color-primary-dark: #0052a3;
-  --color-bg: #f5f7fa;
-  --color-bg-secondary: #e8ecf1;
-  --color-text: #1a202c;
-  --color-text-secondary: #4a5568;
-  --color-border: #cbd5e0;
+  /* Typography */
+  --font-family-heading: 'DM Serif Display', Georgia, serif;
+  --font-family-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Spacing scale (relaxed from ultra-compact 4-12px to comfortable 4-48px) */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 0.75rem;   /* 12px */
+  --space-lg: 1rem;      /* 16px */
+  --space-xl: 1.5rem;    /* 24px */
+  --space-2xl: 2rem;     /* 32px */
+  --space-3xl: 3rem;     /* 48px */
+
+  /* Font sizes (more generous) */
+  --font-xs: 0.75rem;    /* 12px */
+  --font-sm: 0.8125rem;  /* 13px */
+  --font-md: 0.9375rem;  /* 15px */
+  --font-lg: 1.0625rem;  /* 17px */
+  --font-xl: 1.25rem;    /* 20px */
+  --font-2xl: 1.5rem;    /* 24px */
+  --font-3xl: 1.875rem;  /* 30px */
+
+  /* Colors (light mode) - Warm neutral palette with teal accent */
+  --color-bg: #faf9f7;
+  --color-bg-secondary: #f5f4f1;
   --color-card-bg: #ffffff;
-  --color-error: #e53e3e;
-  --color-error-dark: #c53030;
-  --color-error-bg: #fff5f5;
+  --color-text: #1c1917;
+  --color-text-secondary: #78716c;
+  --color-text-tertiary: #a8a29e;
+  --color-border: #e7e5e4;
+  --color-border-light: #f5f4f1;
 
-  /* Spacing scale (ultra-compact design) */
-  --space-xs: 0.25rem;  /* 4px - minimal gaps */
-  --space-sm: 0.4rem;   /* 6.4px - small spacing */
-  --space-md: 0.6rem;   /* 9.6px - medium spacing */
-  --space-lg: 0.8rem;   /* 12.8px - large spacing */
+  /* Accent color (teal replacing inconsistent blues) */
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-primary-light: #ccfbf1;
+  --color-focus-ring: rgba(13, 148, 136, 0.3);
 
-  /* Font sizes (ultra-compact design) */
-  --font-xs: 0.7rem;    /* 11.2px - hints, footnotes */
-  --font-sm: 0.8rem;    /* 12.8px - labels, small text */
-  --font-md: 0.85rem;   /* 13.6px - body text */
-  --font-lg: 0.9rem;    /* 14.4px - emphasized text */
-  --font-xl: 1rem;      /* 16px - section headers */
-  --font-2xl: 1.15rem;  /* 18.4px - page titles */
-  --font-3xl: 1.25rem;  /* 20px - main headers */
+  /* Semantic colors */
+  --color-success: #16a34a;
+  --color-success-dark: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-danger: #dc2626;
+  --color-danger-dark: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-warning: #f59e0b;
+  --color-warning-dark: #d97706;
+  --color-warning-bg: #fef3c7;
+  --color-ai: #9333ea;
+  --color-ai-dark: #7e22ce;
+  --color-ai-bg: #f3e8ff;
 
-  /* Border radius */
-  --radius-sm: 2px;
-  --radius-md: 3px;
+  /* Highlight color for search results */
+  --color-highlight: #fef08a;
+  --color-highlight-dark: #fde047;
+
+  /* Error colors */
+  --color-error: var(--color-danger);
+  --color-error-dark: var(--color-danger-dark);
+  --color-error-bg: var(--color-danger-bg);
+
+  /* Border radius (more rounded) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows (layered depth) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.06);
 
   /* Component sizes */
-  --btn-padding-sm: 0.25rem 0.5rem;
-  --btn-padding-md: 0.3rem 0.6rem;
-  --btn-padding-lg: 0.3rem 0.85rem;
-  --input-padding: 0.3rem 0.45rem;
+  --btn-padding-sm: 0.375rem 0.75rem;
+  --btn-padding-md: 0.5rem 1rem;
+  --btn-padding-lg: 0.625rem 1.25rem;
+  --input-padding: 0.625rem 0.875rem;
   --icon-size-sm: 24px;
-  --icon-size-md: 28px;
+  --icon-size-md: 32px;
 
   /* Line heights */
-  --line-height-tight: 1.3;
-  --line-height-normal: 1.35;
-  --line-height-relaxed: 1.4;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  /* Typography */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
 
   /* Font rendering */
   font-synthesis: none;
@@ -61,20 +101,130 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark mode support */
+/* Dark mode - Warm stone tones mirroring light palette */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary: #4299e1;
-    --color-primary-dark: #3182ce;
-    --color-bg: #1a202c;
-    --color-bg-secondary: #2d3748;
-    --color-text: #f7fafc;
-    --color-text-secondary: #cbd5e0;
-    --color-border: #4a5568;
-    --color-card-bg: #2d3748;
-    --color-error: #fc8181;
-    --color-error-dark: #f56565;
-    --color-error-bg: #742a2a;
+    --color-bg: #1c1917;
+    --color-bg-secondary: #292524;
+    --color-card-bg: #292524;
+    --color-text: #fafaf9;
+    --color-text-secondary: #a8a29e;
+    --color-text-tertiary: #78716c;
+    --color-border: #44403c;
+    --color-border-light: #292524;
+
+    /* Teal accent adjusted for dark mode */
+    --color-primary: #14b8a6;
+    --color-primary-dark: #0d9488;
+    --color-primary-light: #134e4a;
+    --color-focus-ring: rgba(20, 184, 166, 0.3);
+
+    /* Semantic colors adjusted for dark mode */
+    --color-success: #22c55e;
+    --color-success-dark: #16a34a;
+    --color-success-bg: #14532d;
+    --color-danger: #ef4444;
+    --color-danger-dark: #dc2626;
+    --color-danger-bg: #7f1d1d;
+    --color-warning: #fbbf24;
+    --color-warning-dark: #f59e0b;
+    --color-warning-bg: #78350f;
+    --color-ai: #a855f7;
+    --color-ai-dark: #9333ea;
+    --color-ai-bg: #581c87;
+
+    /* Highlight adjusted for dark mode */
+    --color-highlight: #854d0e;
+    --color-highlight-dark: #a16207;
+
+    /* Shadows adjusted for dark mode */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6), 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.7), 0 10px 10px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.6), 0 6px 8px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
   }
 }
 
@@ -91,6 +241,9 @@ body {
   min-height: 100vh;
   background-color: var(--color-bg);
   color: var(--color-text);
+  font-family: var(--font-family-body);
+  font-size: var(--font-md);
+  line-height: var(--line-height-normal);
 }
 
 #root {
@@ -101,9 +254,24 @@ body {
 button {
   font-family: inherit;
   cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 button:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* Input focus styles */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }

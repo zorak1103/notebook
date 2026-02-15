@@ -1,7 +1,7 @@
 .note-list {
-  background: white;
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
+  background: var(--color-card-bg);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
@@ -9,24 +9,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xl);
 }
 
 .note-list-header h3 {
   margin: 0;
-  color: #333;
+  color: var(--color-text);
   font-size: var(--font-xl);
+  font-weight: 600;
 }
 
 .note-list-header .btn-add {
   padding: var(--btn-padding-md);
-  border: none;
-  border-radius: var(--radius-sm);
-  background: #28a745;
-  color: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
   font-size: var(--font-md);
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all var(--transition-base);
 }
 
 .note-list-header .btn-icon.btn-add {
@@ -41,13 +43,17 @@
 }
 
 .note-list-header .btn-add:hover {
-  background: #218838;
+  background: var(--color-success);
+  color: var(--color-card-bg);
+  border-color: var(--color-success);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .note-list-empty {
-  padding: var(--space-md);
+  padding: var(--space-2xl);
   text-align: center;
-  color: #666;
+  color: var(--color-text-secondary);
   font-style: italic;
   font-size: var(--font-md);
 }
@@ -55,46 +61,62 @@
 .notes {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-lg);
 }
 
+/* Note cards with depth and hover lift */
 .note-card {
-  border: 1px solid #ddd;
-  border-radius: var(--radius-sm);
-  padding: var(--space-sm);
-  background: #f9f9f9;
-  transition: box-shadow 0.2s;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  background: var(--color-card-bg);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-base);
 }
 
 .note-card:hover {
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .note-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
 }
 
+/* Note number as teal pill badge */
 .note-number {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-full);
   font-weight: 600;
-  color: #007bff;
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
 }
 
 .note-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-xs);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.note-card:hover .note-actions {
+  opacity: 1;
 }
 
 .note-actions .btn {
   padding: var(--btn-padding-sm);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-size: var(--font-sm);
-  transition: background-color 0.2s;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-xs);
 }
 
 .note-actions .btn-icon {
@@ -107,67 +129,83 @@
   font-size: var(--font-md);
 }
 
+.note-actions .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
 .note-actions .btn-edit {
-  background: #007bff;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-card-bg);
 }
 
 .note-actions .btn-edit:hover {
-  background: #0056b3;
+  background: var(--color-primary-dark);
 }
 
 .note-actions .btn-delete {
-  background: #dc3545;
-  color: white;
+  background: var(--color-danger);
+  color: var(--color-card-bg);
 }
 
 .note-actions .btn-delete:hover {
-  background: #c82333;
+  background: var(--color-danger-dark);
 }
 
 .note-actions .btn-ai {
-  background: #9333ea;
-  color: white;
+  background: var(--color-ai);
+  color: var(--color-card-bg);
 }
 
 .note-actions .btn-ai:hover:not(:disabled) {
-  background: #7e22ce;
+  background: var(--color-ai-dark);
 }
 
 .note-actions .btn-ai:disabled {
-  background: #ddd;
+  background: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 .note-actions .btn-undo {
-  background: #f59e0b;
-  color: white;
+  background: var(--color-warning);
+  color: var(--color-card-bg);
 }
 
 .note-actions .btn-undo:hover:not(:disabled) {
-  background: #d97706;
+  background: var(--color-warning-dark);
 }
 
 .note-actions .btn-undo:disabled {
-  background: #ddd;
+  background: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 .note-content {
-  color: #333;
-  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  line-height: var(--line-height-relaxed);
   white-space: pre-wrap;
-  margin-bottom: var(--space-xs);
-  padding: var(--space-sm);
-  background: white;
-  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
   font-size: var(--font-md);
 }
 
 .note-footer {
   text-align: right;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   font-size: var(--font-xs);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .note-list {
+    padding: var(--space-lg);
+  }
+
+  .note-actions {
+    opacity: 1;
+  }
 }

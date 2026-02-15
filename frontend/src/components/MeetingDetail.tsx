@@ -163,15 +163,21 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
             </div>
           )}
           {meeting.summary && (
-            <div className="metadata-row">
+            <div className="meeting-summary">
               <span className="metadata-label">{t('meetingDetail.summary')}:</span>
-              <span className="metadata-value">{meeting.summary}</span>
+              <p className="summary-text">{meeting.summary}</p>
             </div>
           )}
           {meeting.keywords && (
-            <div className="metadata-row">
+            <div className="meeting-keywords">
               <span className="metadata-label">{t('meetingDetail.keywords')}:</span>
-              <span className="metadata-value">{meeting.keywords}</span>
+              <div className="keywords-list">
+                {meeting.keywords.split(',').map((keyword, idx) => (
+                  <span key={idx} className="keyword-pill">
+                    {keyword.trim()}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </div>

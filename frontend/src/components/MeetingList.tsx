@@ -41,60 +41,93 @@ export function MeetingList({ onEdit, onViewDetail }: MeetingListProps) {
 
   return (
     <div className="meeting-list">
-      <table className="meeting-table">
-        <thead>
-          <tr>
-            <th onClick={() => handleSort('subject')} className="sortable">
-              {t('meetings.subject')}{getSortIndicator('subject')}
-            </th>
-            <th onClick={() => handleSort('meeting_date')} className="sortable">
-              {t('meetings.date')}{getSortIndicator('meeting_date')}
-            </th>
-            <th onClick={() => handleSort('start_time')} className="sortable">
-              {t('meetings.startTime')}{getSortIndicator('start_time')}
-            </th>
-            <th onClick={() => handleSort('end_time')} className="sortable">
-              {t('meetings.endTime')}{getSortIndicator('end_time')}
-            </th>
-            <th>{t('meetings.participants')}</th>
-            <th>{t('meetings.actions')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {meetings.map((meeting) => (
-            <tr key={meeting.id}>
-              <td>
-                <span
-                  className="subject-link"
-                  onClick={() => onViewDetail(meeting.id)}
-                >
-                  {meeting.subject}
+      {/* Sort toolbar */}
+      <div className="sort-toolbar">
+        <button
+          onClick={() => handleSort('subject')}
+          className={`sort-pill ${sortColumn === 'subject' ? 'sort-pill--active' : ''}`}
+        >
+          {t('meetings.subject')}{getSortIndicator('subject')}
+        </button>
+        <button
+          onClick={() => handleSort('meeting_date')}
+          className={`sort-pill ${sortColumn === 'meeting_date' ? 'sort-pill--active' : ''}`}
+        >
+          {t('meetings.date')}{getSortIndicator('meeting_date')}
+        </button>
+        <button
+          onClick={() => handleSort('start_time')}
+          className={`sort-pill ${sortColumn === 'start_time' ? 'sort-pill--active' : ''}`}
+        >
+          {t('meetings.startTime')}{getSortIndicator('start_time')}
+        </button>
+        <button
+          onClick={() => handleSort('end_time')}
+          className={`sort-pill ${sortColumn === 'end_time' ? 'sort-pill--active' : ''}`}
+        >
+          {t('meetings.endTime')}{getSortIndicator('end_time')}
+        </button>
+      </div>
+
+      {/* Card grid */}
+      <div className="meeting-grid">
+        {meetings.map((meeting, index) => (
+          <div
+            key={meeting.id}
+            className="meeting-card"
+            style={{ animationDelay: `${index * 40}ms` }}
+          >
+            {/* Card content - clickable */}
+            <div
+              className="meeting-card-content"
+              onClick={() => onViewDetail(meeting.id)}
+            >
+              <h3 className="meeting-card-subject">{meeting.subject}</h3>
+              <div className="meeting-card-meta">
+                <span className="meeting-card-date">{meeting.meeting_date}</span>
+                <span className="meeting-card-time">
+                  {meeting.start_time}
+                  {meeting.end_time && ` – ${meeting.end_time}`}
                 </span>
-              </td>
-              <td>{meeting.meeting_date}</td>
-              <td>{meeting.start_time}</td>
-              <td>{meeting.end_time || '-'}</td>
-              <td>{meeting.participants || '-'}</td>
-              <td className="actions">
-                <button
-                  onClick={() => onEdit(meeting.id)}
-                  className="btn btn-icon btn-edit"
-                  title={t('meetings.edit')}
-                >
-                  ✏
-                </button>
-                <button
-                  onClick={() => confirmDelete(meeting.id, meeting.subject)}
-                  className="btn btn-icon btn-delete"
-                  title={t('meetings.delete')}
-                >
-                  🗑
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+              {meeting.participants && (
+                <div className="meeting-card-participants">
+                  {meeting.participants}
+                </div>
+              )}
+              {meeting.keywords && (
+                <div className="meeting-card-keywords">
+                  {meeting.keywords}
+                </div>
+              )}
+            </div>
+
+            {/* Action buttons - visible on hover */}
+            <div className="meeting-card-actions">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(meeting.id);
+                }}
+                className="btn-icon btn-edit"
+                title={t('meetings.edit')}
+              >
+                ✏
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  confirmDelete(meeting.id, meeting.subject);
+                }}
+                className="btn-icon btn-delete"
+                title={t('meetings.delete')}
+              >
+                🗑
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

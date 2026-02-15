@@ -1,25 +1,26 @@
 .language-switcher {
-  padding: 0.5rem 0;
+  padding: var(--space-sm) 0;
 }
 
 .language-select {
   width: 100%;
-  padding: 0.5rem;
+  padding: var(--space-sm);
   background-color: var(--color-card-bg);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 0.95rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-md);
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: all var(--transition-base);
 }
 
 .language-select:hover {
   border-color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
 }
 
 .language-select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }

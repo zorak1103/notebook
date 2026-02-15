@@ -1,36 +1,40 @@
 .error-message {
   background-color: var(--color-error-bg);
-  border: 1px solid var(--color-error);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem 0;
+  border: 2px solid var(--color-error);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin: var(--space-xl) 0;
   text-align: center;
+  animation: fadeInUp var(--transition-slow);
 }
 
 .error-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--font-3xl);
+  margin-bottom: var(--space-sm);
 }
 
 .error-text {
-  color: var(--color-error);
-  margin: 0.5rem 0;
-  font-size: 1rem;
+  color: var(--color-error-dark);
+  margin: var(--space-sm) 0;
+  font-size: var(--font-md);
+  font-weight: 500;
 }
 
 .retry-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1.5rem;
+  margin-top: var(--space-lg);
+  padding: var(--btn-padding-md);
   background-color: var(--color-error);
-  color: white;
+  color: var(--color-card-bg);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  font-size: var(--font-md);
+  font-weight: 600;
+  transition: all var(--transition-base);
 }
 
 .retry-button:hover {
   background-color: var(--color-error-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }

@@ -1,47 +1,55 @@
 .config-panel {
   max-width: 1000px;
   margin: 0 auto;
-  padding: var(--space-md);
+  animation: fadeInUp var(--transition-slow);
 }
 
 .config-panel h1 {
+  font-family: var(--font-family-heading);
   font-size: var(--font-3xl);
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-  color: #333;
+  font-weight: 400;
+  margin-bottom: var(--space-xl);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
 }
 
+/* Success toast with fadeInDown animation */
 .config-success {
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-  background-color: #d4edda;
-  color: #155724;
-  margin-bottom: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-success-bg);
+  color: var(--color-success-dark);
+  margin-bottom: var(--space-xl);
   text-align: center;
-  border: 1px solid #c3e6cb;
+  border: 2px solid var(--color-success);
   font-size: var(--font-md);
+  font-weight: 600;
+  animation: fadeInDown var(--transition-slow);
 }
 
 .config-section {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  margin-bottom: var(--space-sm);
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
   box-shadow: var(--shadow-sm);
 }
 
+/* Section headers - clean uppercase label style */
 .config-section h2 {
-  font-size: var(--font-xl);
+  font-size: var(--font-sm);
   font-weight: 600;
-  margin-bottom: var(--space-sm);
-  color: #333;
-  border-bottom: 2px solid #4a90e2;
-  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .form-group {
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg);
 }
 
 .form-group:last-child {
@@ -52,8 +60,10 @@
   display: block;
   font-size: var(--font-sm);
   font-weight: 600;
-  color: #333;
-  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .form-group input,
@@ -61,38 +71,44 @@
   width: 100%;
   padding: var(--input-padding);
   font-size: var(--font-md);
-  border: 1px solid #ddd;
-  border-radius: var(--radius-sm);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .form-group textarea {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
   resize: vertical;
+  min-height: 100px;
+  line-height: var(--line-height-relaxed);
 }
 
 .form-group input[type="password"] {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .form-group .hint {
   display: block;
   font-size: var(--font-xs);
-  color: #666;
-  margin-top: var(--space-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+  line-height: var(--line-height-normal);
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-start;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
 }
 
 .form-actions button {
@@ -100,26 +116,39 @@
   font-size: var(--font-md);
   font-weight: 600;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all var(--transition-base);
 }
 
 .form-actions button[type="submit"] {
-  background-color: #4a90e2;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-card-bg);
 }
 
 .form-actions button[type="submit"]:hover:not(:disabled) {
-  background-color: #357abd;
-}
-
-.form-actions button[type="submit"]:active:not(:disabled) {
-  transform: scale(0.98);
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .form-actions button:disabled {
-  background-color: #ccc;
+  background-color: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .config-section {
+    padding: var(--space-lg);
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
 }

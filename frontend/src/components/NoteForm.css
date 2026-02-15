@@ -1,23 +1,27 @@
 .note-form {
   max-width: 1000px;
   margin: 0 auto;
-  padding: var(--space-md);
-  background: white;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  padding: var(--space-2xl);
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp var(--transition-slow);
 }
 
 .note-form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xl);
 }
 
 .note-form h2 {
   margin: 0;
-  color: #333;
-  font-size: var(--font-2xl);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-3xl);
+  font-weight: 400;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
 }
 
 .note-form-actions {
@@ -27,62 +31,69 @@
 }
 
 .note-form .form-group {
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg);
 }
 
 .note-form .form-group label {
   display: block;
-  margin-bottom: var(--space-xs);
-  font-weight: 500;
-  color: #333;
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+  color: var(--color-text);
   font-size: var(--font-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .note-form .form-group .required {
-  color: #dc3545;
+  color: var(--color-error);
 }
 
 .note-form textarea {
   width: 100%;
   padding: var(--input-padding);
-  border: 1px solid #ddd;
-  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
   font-size: var(--font-md);
   font-family: inherit;
-  transition: border-color 0.2s;
+  color: var(--color-text);
+  background: var(--color-card-bg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   resize: vertical;
-  min-height: 100px;
+  min-height: 200px;
+  line-height: var(--line-height-relaxed);
 }
 
 .note-form textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .note-form .char-count {
   display: block;
-  margin-top: var(--space-xs);
+  margin-top: var(--space-sm);
   text-align: right;
   font-size: var(--font-xs);
-  color: #6c757d;
+  color: var(--color-text-secondary);
 }
 
 .note-form .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--space-sm);
-  margin-top: var(--space-sm);
-  padding-top: var(--space-sm);
-  border-top: 1px solid #eee;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
 }
 
 .note-form .form-actions .btn {
   padding: var(--btn-padding-lg);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: var(--font-md);
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all var(--transition-base);
 }
 
 .note-form .form-actions .btn-icon {
@@ -101,24 +112,30 @@
   cursor: not-allowed;
 }
 
+.note-form .form-actions .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
 .note-form .form-actions .btn-cancel {
-  background: #6c757d;
-  color: white;
+  background: var(--color-text-secondary);
+  color: var(--color-card-bg);
 }
 
 .note-form .form-actions .btn-cancel:hover:not(:disabled) {
-  background: #5a6268;
+  background: var(--color-text);
 }
 
 .note-form .form-actions .btn-submit {
-  background: #28a745;
-  color: white;
+  background: var(--color-success);
+  color: var(--color-card-bg);
 }
 
 .note-form .form-actions .btn-submit:hover:not(:disabled) {
-  background: #218838;
+  background: var(--color-success-dark);
 }
 
+/* Form header actions (AI buttons) */
 .note-form-actions .btn-icon {
   width: var(--icon-size-md);
   height: var(--icon-size-md);
@@ -128,37 +145,60 @@
   justify-content: center;
   font-size: var(--font-lg);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xs);
+}
+
+.note-form-actions .btn-icon:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .note-form-actions .btn-ai {
-  background: #9333ea;
-  color: white;
+  background: var(--color-ai);
+  color: var(--color-card-bg);
 }
 
 .note-form-actions .btn-ai:hover:not(:disabled) {
-  background: #7e22ce;
+  background: var(--color-ai-dark);
 }
 
 .note-form-actions .btn-ai:disabled {
-  background: #ddd;
+  background: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 .note-form-actions .btn-undo {
-  background: #f59e0b;
-  color: white;
+  background: var(--color-warning);
+  color: var(--color-card-bg);
 }
 
 .note-form-actions .btn-undo:hover:not(:disabled) {
-  background: #d97706;
+  background: var(--color-warning-dark);
 }
 
 .note-form-actions .btn-undo:disabled {
-  background: #ddd;
+  background: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .note-form {
+    padding: var(--space-xl);
+  }
+
+  .note-form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .note-form-actions {
+    align-self: flex-end;
+  }
 }
