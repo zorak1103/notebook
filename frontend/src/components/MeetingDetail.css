@@ -27,16 +27,6 @@
   transition: all var(--transition-base);
 }
 
-.detail-header .btn-icon {
-  width: var(--icon-size-md);
-  height: var(--icon-size-md);
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-lg);
-}
-
 .detail-header .btn:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
@@ -53,51 +43,37 @@
   border-color: var(--color-text-secondary);
 }
 
+/* Component-specific overrides: add border-color to match background */
 .detail-header .btn-edit {
-  background: var(--color-primary);
-  color: var(--color-card-bg);
   border-color: var(--color-primary);
 }
 
 .detail-header .btn-edit:hover {
-  background: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
 }
 
 .detail-header .btn-ai {
-  background: var(--color-ai);
-  color: var(--color-card-bg);
   border-color: var(--color-ai);
 }
 
 .detail-header .btn-ai:hover:not(:disabled) {
-  background: var(--color-ai-dark);
   border-color: var(--color-ai-dark);
 }
 
 .detail-header .btn-ai:disabled {
-  background: var(--color-text-tertiary);
   border-color: var(--color-text-tertiary);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .detail-header .btn-undo {
-  background: var(--color-warning);
-  color: var(--color-card-bg);
   border-color: var(--color-warning);
 }
 
 .detail-header .btn-undo:hover:not(:disabled) {
-  background: var(--color-warning-dark);
   border-color: var(--color-warning-dark);
 }
 
 .detail-header .btn-undo:disabled {
-  background: var(--color-text-tertiary);
   border-color: var(--color-text-tertiary);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .meeting-info {

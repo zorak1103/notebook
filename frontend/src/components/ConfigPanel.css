@@ -48,52 +48,18 @@
   border-bottom: none;
 }
 
-.form-group {
-  margin-bottom: var(--space-lg);
-}
-
+/* Component-specific overrides */
 .form-group:last-child {
   margin-bottom: 0;
 }
 
-.form-group label {
-  display: block;
-  font-size: var(--font-sm);
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: var(--space-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: var(--input-padding);
-  font-size: var(--font-md);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-card-bg);
-  color: var(--color-text);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
 .form-group textarea {
   font-family: var(--font-family-mono);
-  resize: vertical;
   min-height: 100px;
-  line-height: var(--line-height-relaxed);
 }
 
 .form-group input[type="password"] {
   font-family: var(--font-family-mono);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .form-group .hint {
@@ -104,38 +70,22 @@
   line-height: var(--line-height-normal);
 }
 
-.form-actions {
-  display: flex;
+/* Override: left-align submit button for config panel */
+.config-panel .form-actions {
   justify-content: flex-start;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
 }
 
-.form-actions button {
-  padding: var(--btn-padding-lg);
-  font-size: var(--font-md);
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-base);
-}
-
-.form-actions button[type="submit"] {
+.config-panel .form-actions button[type="submit"] {
   background-color: var(--color-primary);
   color: var(--color-card-bg);
 }
 
-.form-actions button[type="submit"]:hover:not(:disabled) {
+.config-panel .form-actions button[type="submit"]:hover:not(:disabled) {
   background-color: var(--color-primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
-.form-actions button:disabled {
+.config-panel .form-actions button:disabled {
   background-color: var(--color-text-tertiary);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 /* Mobile responsive */
