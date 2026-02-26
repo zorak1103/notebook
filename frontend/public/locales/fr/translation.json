@@ -54,7 +54,10 @@
     "empty": "Aucune note pour le moment. Ajoutez votre première note en utilisant le bouton ci-dessus.",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer la note #{{number}}?",
     "deleteFailed": "Échec de la suppression de la note",
-    "updated": "Mis à jour : {{date}}"
+    "updated": "Mis à jour : {{date}}",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "reorderFailed": "Echec du reordonnancement"
   },
   "noteForm": {
     "createTitle": "Nouvelle note",

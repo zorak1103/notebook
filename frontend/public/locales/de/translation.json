@@ -54,7 +54,10 @@
     "empty": "Noch keine Notizen. Fügen Sie Ihre erste Notiz mit der Schaltfläche oben hinzu.",
     "confirmDelete": "Möchten Sie Notiz #{{number}} wirklich löschen?",
     "deleteFailed": "Fehler beim Löschen der Notiz",
-    "updated": "Aktualisiert: {{date}}"
+    "updated": "Aktualisiert: {{date}}",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten",
+    "reorderFailed": "Fehler beim Verschieben der Notiz"
   },
   "noteForm": {
     "createTitle": "Neue Notiz",

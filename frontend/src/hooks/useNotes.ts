@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Note } from '../api/types';
-import { fetchNotes, deleteNote } from '../api/client';
+import { fetchNotes, deleteNote, reorderNote } from '../api/client';
 
 interface UseNotesResult {
   notes: Note[];
   loading: boolean;
   error: string | null;
   handleDelete: (id: number) => Promise<void>;
+  handleReorder: (id: number, direction: 'up' | 'down') => Promise<void>;
   refresh: () => Promise<void>;
 }
 
@@ -41,11 +42,21 @@ export function useNotes(meetingId: number): UseNotesResult {
     }
   }, [loadNotes]);
 
+  const handleReorder = useCallback(async (id: number, direction: 'up' | 'down') => {
+    try {
+      const updated = await reorderNote(id, direction);
+      setNotes(updated);
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'Failed to reorder note');
+    }
+  }, []);
+
   return {
     notes,
     loading,
     error,
     handleDelete,
+    handleReorder,
     refresh: loadNotes,
   };
 }

@@ -54,7 +54,10 @@
     "empty": "Aún no hay notas. Agregue su primera nota usando el botón de arriba.",
     "confirmDelete": "¿Está seguro de que desea eliminar la nota #{{number}}?",
     "deleteFailed": "Error al eliminar la nota",
-    "updated": "Actualizado: {{date}}"
+    "updated": "Actualizado: {{date}}",
+    "moveUp": "Mover arriba",
+    "moveDown": "Mover abajo",
+    "reorderFailed": "Error al reordenar la nota"
   },
   "noteForm": {
     "createTitle": "Nueva nota",

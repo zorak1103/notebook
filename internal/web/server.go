@@ -45,6 +45,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/notes/{id}", s.handleGetNote)
 	mux.HandleFunc("POST /api/notes", s.handleCreateNote)
 	mux.HandleFunc("PUT /api/notes/{id}", s.handleUpdateNote)
+	mux.HandleFunc("PUT /api/notes/{id}/reorder", s.handleReorderNote)
 	mux.HandleFunc("DELETE /api/notes/{id}", s.handleDeleteNote)
 
 	// Search

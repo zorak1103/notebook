@@ -54,7 +54,10 @@
     "empty": "No notes yet. Add your first note using the button above.",
     "confirmDelete": "Are you sure you want to delete note #{{number}}?",
     "deleteFailed": "Failed to delete note",
-    "updated": "Updated: {{date}}"
+    "updated": "Updated: {{date}}",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "reorderFailed": "Failed to reorder note"
   },
   "noteForm": {
     "createTitle": "New Note",

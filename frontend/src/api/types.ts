@@ -59,6 +59,11 @@ export interface UpdateNoteRequest {
   content: string;
 }
 
+// ReorderNoteRequest represents the request body for reordering a note
+export interface ReorderNoteRequest {
+  direction: 'up' | 'down';
+}
+
 // Config represents the application configuration
 export interface Config {
   llm_provider_url: string;

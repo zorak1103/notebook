@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -15,6 +16,7 @@ const (
 	errInvalidNoteID    = "invalid note ID"
 	errNoteNotFound     = "note not found"
 	errInvalidMeetingID = "invalid meeting ID"
+	errInvalidDirection = "invalid direction: must be 'up' or 'down'"
 )
 
 // parseMeetingIDParam extracts and parses the "meetingId" path parameter.
@@ -34,6 +36,95 @@ func validateNoteContent(content string) error {
 	}
 
 	return nil
+}
+
+// reorderNoteRequest is the request body for reordering a note
+type reorderNoteRequest struct {
+	Direction string `json:"direction"`
+}
+
+// findAdjacentNote returns the note adjacent to noteID in the given direction within the sorted list.
+func findAdjacentNote(notes []*models.Note, noteID int, direction string) (*models.Note, error) {
+	for i, n := range notes {
+		if n.ID != noteID {
+			continue
+		}
+		switch direction {
+		case "up":
+			if i == 0 {
+				return nil, fmt.Errorf("note is already first")
+			}
+			return notes[i-1], nil
+		case "down":
+			if i == len(notes)-1 {
+				return nil, fmt.Errorf("note is already last")
+			}
+			return notes[i+1], nil
+		default:
+			return nil, errors.New(errInvalidDirection)
+		}
+	}
+	return nil, fmt.Errorf("note not found in list")
+}
+
+// handleReorderNote handles PUT /api/notes/{id}/reorder
+func (s *Server) handleReorderNote(w http.ResponseWriter, r *http.Request) {
+	id, err := parseIDParam(r)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, errInvalidNoteID)
+		return
+	}
+
+	var req reorderNoteRequest
+	if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+
+	if req.Direction != "up" && req.Direction != "down" {
+		writeError(w, http.StatusBadRequest, errInvalidDirection)
+		return
+	}
+
+	repo := repositories.NewNoteRepository(s.database.DB)
+	note, err := repo.GetByID(int(id))
+	if err != nil {
+		s.logError(r, "failed to get note", err)
+		writeError(w, http.StatusInternalServerError, "failed to get note")
+		return
+	}
+	if note == nil {
+		writeError(w, http.StatusNotFound, errNoteNotFound)
+		return
+	}
+
+	noteList, err := repo.ListByMeeting(note.MeetingID)
+	if err != nil {
+		s.logError(r, "failed to list notes", err)
+		writeError(w, http.StatusInternalServerError, "failed to list notes")
+		return
+	}
+
+	adjacent, err := findAdjacentNote(noteList, int(id), req.Direction)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err = repo.SwapNoteOrder(int(id), adjacent.ID); err != nil {
+		s.logError(r, "failed to swap note order", err)
+		writeError(w, http.StatusInternalServerError, "failed to reorder note")
+		return
+	}
+
+	updated, err := repo.ListByMeeting(note.MeetingID)
+	if err != nil {
+		s.logError(r, "failed to list updated notes", err)
+		writeError(w, http.StatusInternalServerError, "failed to list updated notes")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, updated)
 }
 
 // handleListNotes handles GET /api/meetings/{meetingId}/notes

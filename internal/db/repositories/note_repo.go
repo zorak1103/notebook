@@ -127,6 +127,66 @@ func (r *NoteRepository) Update(n *models.Note) error {
 	return nil
 }
 
+// SwapNoteOrder swaps the note_number values of two notes within the same meeting.
+// Uses a transaction with sentinel value 0 to work around the UNIQUE(meeting_id, note_number) constraint.
+func (r *NoteRepository) SwapNoteOrder(noteID1, noteID2 int) error {
+	if noteID1 == noteID2 {
+		return fmt.Errorf("cannot swap note with itself")
+	}
+
+	ctx := context.Background()
+
+	note1, err := r.GetByID(noteID1)
+	if err != nil {
+		return fmt.Errorf("get note1: %w", err)
+	}
+	if note1 == nil {
+		return fmt.Errorf("note not found: %d", noteID1)
+	}
+
+	note2, err := r.GetByID(noteID2)
+	if err != nil {
+		return fmt.Errorf("get note2: %w", err)
+	}
+	if note2 == nil {
+		return fmt.Errorf("note not found: %d", noteID2)
+	}
+
+	if note1.MeetingID != note2.MeetingID {
+		return fmt.Errorf("notes belong to different meetings")
+	}
+
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	// Step 1: Move note1 to sentinel value 0 to free its slot
+	_, err = tx.ExecContext(ctx, "UPDATE notes SET note_number = 0 WHERE id = ?", noteID1)
+	if err != nil {
+		return fmt.Errorf("set temp value: %w", err)
+	}
+
+	// Step 2: Move note2 into note1's original position
+	_, err = tx.ExecContext(ctx, "UPDATE notes SET note_number = ? WHERE id = ?", note1.NoteNumber, noteID2)
+	if err != nil {
+		return fmt.Errorf("set note2 number: %w", err)
+	}
+
+	// Step 3: Move note1 into note2's original position
+	_, err = tx.ExecContext(ctx, "UPDATE notes SET note_number = ? WHERE id = ?", note2.NoteNumber, noteID1)
+	if err != nil {
+		return fmt.Errorf("set note1 number: %w", err)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("commit transaction: %w", err)
+	}
+
+	return nil
+}
+
 // Delete deletes a note
 func (r *NoteRepository) Delete(id int) error {
 	ctx := context.Background()

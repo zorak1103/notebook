@@ -3,6 +3,7 @@ package web
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -538,6 +539,254 @@ func TestHandleDeleteNote_Success(t *testing.T) {
 	}
 	if deleted != nil {
 		t.Error("expected note to be deleted, but it still exists")
+	}
+}
+
+func TestHandleReorderNote_MoveDown_Success(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note1 := &models.Note{MeetingID: meetingID, Content: "First"}
+	note2 := &models.Note{MeetingID: meetingID, Content: "Second"}
+	note3 := &models.Note{MeetingID: meetingID, Content: "Third"}
+	if err := noteRepo.Create(note1); err != nil {
+		t.Fatalf("create note1: %v", err)
+	}
+	if err := noteRepo.Create(note2); err != nil {
+		t.Fatalf("create note2: %v", err)
+	}
+	if err := noteRepo.Create(note3); err != nil {
+		t.Fatalf("create note3: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "down"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note1.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var result []*models.Note
+	if err := json.NewDecoder(w.Body).Decode(&result); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if len(result) != 3 {
+		t.Fatalf("expected 3 notes, got %d", len(result))
+	}
+	// note1 moved down: result[0] should be note2
+	if result[0].ID != note2.ID {
+		t.Errorf("expected first note to be note2 (id=%d), got id=%d", note2.ID, result[0].ID)
+	}
+}
+
+func TestHandleReorderNote_MoveUp_Success(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note1 := &models.Note{MeetingID: meetingID, Content: "First"}
+	note2 := &models.Note{MeetingID: meetingID, Content: "Second"}
+	note3 := &models.Note{MeetingID: meetingID, Content: "Third"}
+	if err := noteRepo.Create(note1); err != nil {
+		t.Fatalf("create note1: %v", err)
+	}
+	if err := noteRepo.Create(note2); err != nil {
+		t.Fatalf("create note2: %v", err)
+	}
+	if err := noteRepo.Create(note3); err != nil {
+		t.Fatalf("create note3: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "up"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/3/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note3.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var result []*models.Note
+	if err := json.NewDecoder(w.Body).Decode(&result); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if len(result) != 3 {
+		t.Fatalf("expected 3 notes, got %d", len(result))
+	}
+	// note3 moved up: result[1] should be note3
+	if result[1].ID != note3.ID {
+		t.Errorf("expected second note to be note3 (id=%d), got id=%d", note3.ID, result[1].ID)
+	}
+}
+
+func TestHandleReorderNote_FirstNote_MoveUp(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note1 := &models.Note{MeetingID: meetingID, Content: "First"}
+	note2 := &models.Note{MeetingID: meetingID, Content: "Second"}
+	if err := noteRepo.Create(note1); err != nil {
+		t.Fatalf("create note1: %v", err)
+	}
+	if err := noteRepo.Create(note2); err != nil {
+		t.Fatalf("create note2: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "up"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note1.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestHandleReorderNote_LastNote_MoveDown(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note1 := &models.Note{MeetingID: meetingID, Content: "First"}
+	note2 := &models.Note{MeetingID: meetingID, Content: "Second"}
+	if err := noteRepo.Create(note1); err != nil {
+		t.Fatalf("create note1: %v", err)
+	}
+	if err := noteRepo.Create(note2); err != nil {
+		t.Fatalf("create note2: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "down"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/2/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note2.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestHandleReorderNote_InvalidDirection(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note := &models.Note{MeetingID: meetingID, Content: "Test"}
+	if err := noteRepo.Create(note); err != nil {
+		t.Fatalf("create note: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "sideways"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+
+	var errResp errorResponse
+	if err := json.NewDecoder(w.Body).Decode(&errResp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+	if errResp.Error == "" {
+		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleReorderNote_NoteNotFound(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	payload := map[string]interface{}{"direction": "up"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/999/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", "999")
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusNotFound {
+		t.Errorf("expected status 404, got %d", w.Code)
+	}
+}
+
+func TestHandleReorderNote_InvalidID(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	payload := map[string]interface{}{"direction": "up"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/abc/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", "abc")
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestHandleReorderNote_SingleNote_MoveDown(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	noteRepo := repositories.NewNoteRepository(server.database.DB)
+	note := &models.Note{MeetingID: meetingID, Content: "Only note"}
+	if err := noteRepo.Create(note); err != nil {
+		t.Fatalf("create note: %v", err)
+	}
+
+	payload := map[string]interface{}{"direction": "down"}
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req.SetPathValue("id", fmt.Sprintf("%d", note.ID))
+	w := httptest.NewRecorder()
+
+	server.handleReorderNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
 	}
 }
 

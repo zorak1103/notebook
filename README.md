@@ -10,7 +10,7 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 
 - **Internationalization**: Support for German, English, French, Spanish (react-i18next)
 - **Meeting Management**: Create, edit, and organize meetings with metadata
-- **Notes System**: Attach numbered notes to meetings with automatic numbering
+- **Notes System**: Attach numbered notes to meetings with automatic numbering and manual reordering (▲/▼)
 - **Full-Text Search**: Search across meeting subjects, summaries, participants, and keywords
 - **Configuration Management**: Web UI for LLM provider settings with masked API keys and customizable prompts
 - **Tailscale Integration**: Seamless authentication and secure network access via tsnet with user information display
@@ -32,75 +32,37 @@ Meeting and Notes Management Application with Tailscale Integration and optional
 
 ### Docker (Recommended)
 
-**Dev Mode (Local Development)**:
+**Dev Mode**:
 ```bash
-docker pull zorak1103/notebook:latest
-
-docker run -d \
-  -p 8080:8080 \
-  -v $(pwd)/data:/data \
-  --name notebook \
-  zorak1103/notebook:latest
+docker run -d -p 8080:8080 -v $(pwd)/data:/data --name notebook zorak1103/notebook:latest
 ```
-
 Open http://localhost:8080
 
-**Tailscale Mode (Production)**:
+**Tailscale Mode**:
 ```bash
-docker pull zorak1103/notebook:latest
-
-docker run -d \
-  --network host \
-  -v $(pwd)/data:/data \
-  --name notebook \
-  zorak1103/notebook:latest \
-  --hostname notebook \
-  --state-dir /data/tsnet-state \
-  --db /data/notebook.db
+docker run -d --network host -v $(pwd)/data:/data --name notebook \
+  zorak1103/notebook:latest --hostname notebook --state-dir /data/tsnet-state --db /data/notebook.db
 ```
+Access at https://notebook.your-tailnet.ts.net
 
-Access at https://notebook.your-tailnet.ts.net (not localhost)
-
-**Docker Compose**:
-```bash
-# Dev Mode
-docker compose up -d notebook-dev
-
-# Tailscale Mode
-docker compose up -d notebook-tailscale
-```
-
-See `docker-compose.yml` for configuration. Database persists in `./data/` directory.
+**Docker Compose**: `docker compose up -d notebook-dev` (see `docker-compose.yml`)
 
 ### Binary Download
 
-Download the latest release for your platform:
+Download the latest release from [Releases](https://github.com/zorak1103/notebook/releases):
 
-**Linux**:
 ```bash
-wget https://github.com/zorak1103/notebook/releases/latest/download/notebook_Linux_x86_64.tar.gz
+# Linux / macOS
 tar xzf notebook_Linux_x86_64.tar.gz
 ./notebook --dev-listen :8080
 ```
 
-**macOS**:
-```bash
-wget https://github.com/zorak1103/notebook/releases/latest/download/notebook_Darwin_x86_64.tar.gz
-tar xzf notebook_Darwin_x86_64.tar.gz
-./notebook --dev-listen :8080
-```
-
-**Windows**:
-Download `notebook_Windows_x86_64.zip` from [Releases](https://github.com/zorak1103/notebook/releases)
+Windows: download `notebook_Windows_x86_64.zip`.
 
 ### From Source
 
-**Prerequisites**:
-- Go 1.26+
-- Node.js 20+
-- Mage (optional: `go install github.com/magefile/mage@latest`)
+**Prerequisites**: Go 1.26+, Node.js 20+
 
-**Build**:
 ```bash
 git clone https://github.com/zorak1103/notebook.git
 cd notebook
@@ -110,186 +72,47 @@ mage build  # or: go run github.com/magefile/mage@latest build
 
 ## Usage
 
-### Development Mode (without Tailscale)
-
 ```bash
+# Dev mode (no Tailscale)
 notebook --dev-listen :8080 --db notebook.db
-```
 
-Access at http://localhost:8080
-
-### Tailscale Mode (Production)
-
-```bash
+# Tailscale mode (production)
 notebook --hostname notebook --state-dir ./tsnet-state --db notebook.db
 ```
 
-Access at https://notebook.your-tailnet.ts.net
-
-**Note**: In Tailscale mode, the application is **only accessible via your Tailnet** (not localhost). Requires Tailscale authentication on first run.
-
-### Configuration
-
-**CLI Flags**:
-- `--dev-listen <addr>` - Run in dev mode on specified address (e.g., `:8080`)
-- `--hostname <name>` - Tailscale hostname (default: `notebook`)
-- `--state-dir <dir>` - Tailscale state directory (default: `tsnet-state`)
-- `--db <path>` - SQLite database file (default: `notebook.db`)
-
-**LLM Configuration**:
-
-Configure via Web UI under "Configuration":
-- **Provider URL**: Base URL for LLM API (e.g., `https://api.openai.com/v1`, `https://api.anthropic.com/v1`)
-- **API Key**: Authentication key (automatically masked after saving)
-- **Model**: Model identifier (e.g., `gpt-4o`, `claude-opus-4-6`)
-- **Summary Prompt**: Customizable template for generating meeting summaries (supports `{{subject}}`, `{{date}}`, `{{participants}}`, `{{notes}}` placeholders)
-- **Enhancement Prompt**: Customizable template for enhancing note content (supports `{{content}}` placeholder)
-
-Configuration is stored in the SQLite database and persists across restarts. Supports OpenAI, Anthropic, Ollama, LM Studio, vLLM, and other OpenAI-compatible providers.
-
-### LLM Features
-
-**Meeting Summarization**:
-- Click the ✨ icon in the meeting detail view
-- Generates a concise summary (3-5 sentences) based on all notes
-- Summary is saved to the meeting record
-- Undo button (↶) appears after summarization to restore previous summary
-- Requires at least one note in the meeting
-
-**Note Enhancement**:
-- Available in both note list view and note edit form
-- Click the ✨ icon on any note to improve grammar, clarity, and structure
-- Enhanced content replaces the original note
-- Undo button (↶) appears to restore previous content
-- Edit mode enhancement updates the textarea content without saving (allows further editing before save)
-
-**Customizable Prompts**:
-- Default prompts emphasize language preservation (no translation)
-- Prompts instruct LLM to provide final text only (no multiple options)
-- Edit prompts in Configuration panel to match your workflow
-- Uses template syntax: `{{placeholder}}` for dynamic content
+For CLI flags, LLM configuration, and AI feature details see [`.docs/configuration.md`](.docs/configuration.md).
 
 ## Development
 
-### Project Structure
+| Command | Description |
+|---------|-------------|
+| `mage build` | Build frontend + backend |
+| `mage test` | Run tests |
+| `mage lint` | Run linter |
+| `mage verify` | Run lint + test |
+| `mage -l` | List all targets |
 
-```
-notebook/
-├── cmd/notebook/          # Main entry point
-├── internal/
-│   ├── db/               # Database layer (SQLite)
-│   ├── llm/              # LLM integration
-│   ├── tsapp/            # Tailscale wrapper
-│   ├── validation/       # Generated validation rules
-│   └── web/              # HTTP server & handlers
-├── frontend/             # React + Vite frontend
-├── .docs/                # Documentation
-├── .github/workflows/    # CI/CD pipelines
-└── magefile.go           # Build system (Mage)
-```
-
-### Build Commands
-
-```bash
-mage build        # Build frontend + backend (or just: mage)
-mage frontend     # Build frontend only
-mage backend      # Build backend only
-mage dev          # Show dev setup instructions
-mage test         # Run tests
-mage lint         # Run linter
-mage verify       # Run lint + test
-mage clean        # Clean build artifacts
-mage -l           # List all available targets
-```
-
-### Running Tests
-
-```bash
-go test -v ./...
-go test -cover ./...
-```
-
-### Frontend Development
-
-```bash
-cd frontend
-npm install
-npm run dev       # Vite dev server on :5173
-```
-
-In another terminal:
-```bash
-go run ./cmd/notebook --dev-listen :8080
-```
-
-Frontend proxies API requests to backend (configured in `vite.config.ts`)
+For project structure, build system details, and frontend dev setup see [`.docs/development.md`](.docs/development.md).
 
 ## Documentation
 
-- [Product Requirements](/.docs/prd.md)
-- [Project Plan](/.docs/projektplan.md)
-- [Internationalization Guide](/.docs/internationalization.md)
-- [CI/CD Setup](/.docs/cicd-setup.md)
-- [Phase Documentation](/.docs/)
+- [Configuration & LLM Setup](.docs/configuration.md)
+- [Development Guide](.docs/development.md)
+- [API Reference & DB Schema](.docs/api.md)
+- [Product Requirements](.docs/prd.md)
+- [Project Plan](.docs/projektplan.md)
+- [Internationalization Guide](.docs/internationalization.md)
+- [CI/CD Setup](.docs/cicd-setup.md)
 
 ## Architecture
 
-**Database**: SQLite with automatic migrations
+See [`.docs/api.md`](.docs/api.md) for the full API reference and database schema.
 
-**Tables**:
-- `meetings` - Meeting metadata with full-text search indices
-- `notes` - Notes with auto-incrementing note numbers per meeting
-- `config` - Key-value configuration store (llm_provider_url, llm_api_key, llm_model, language, llm_prompt_summary, llm_prompt_enhance)
-
-**API Endpoints**:
-
-*Meetings*:
-- `GET /api/meetings` - List all meetings (supports `?sort=` and `?order=`)
-- `GET /api/meetings/{id}` - Get meeting by ID
-- `POST /api/meetings` - Create meeting
-- `PUT /api/meetings/{id}` - Update meeting
-- `DELETE /api/meetings/{id}` - Delete meeting
-- `POST /api/meetings/{id}/summarize` - Generate AI summary from notes
-
-*Notes*:
-- `GET /api/meetings/{meetingId}/notes` - List notes for meeting
-- `GET /api/notes/{id}` - Get note by ID
-- `POST /api/notes` - Create note (auto-assigns note_number)
-- `PUT /api/notes/{id}` - Update note
-- `DELETE /api/notes/{id}` - Delete note
-- `POST /api/notes/{id}/enhance` - Enhance note content with AI
-
-*Search*:
-- `GET /api/search?q=<query>` - Search meetings by subject, summary, participants, and keywords
-
-*Configuration*:
-- `GET /api/config` - Get configuration (API keys masked)
-- `POST /api/config` - Update configuration (provider settings and customizable prompts)
-
-*Authentication*:
-- `GET /api/whoami` - Get Tailscale user identity (WhoIs API)
-
-**Frontend**:
-- Single-page application (SPA)
-- Vite build output embedded in Go binary via `go:embed`
-- Served from `/` with SPA routing fallback
+Request flow: `Browser → HTTP → Server → Handler → Repository → SQLite`
 
 ## Multi-Platform Support
 
-**Supported Platforms**:
-- Linux: amd64, arm64
-- macOS: amd64, arm64 (Apple Silicon)
-- Windows: amd64, arm64
-
-**Docker Images**:
-- `zorak1103/notebook:latest` (multi-arch: amd64, arm64)
-- `zorak1103/notebook:v1.0.0` (version tags)
-
-**Package Formats**:
-- DEB (Debian/Ubuntu)
-- RPM (RedHat/Fedora)
-- APK (Alpine)
-- Arch Linux packages
+Binaries for Linux/macOS/Windows (amd64 + arm64) and Docker image `zorak1103/notebook:latest` (multi-arch).
 
 ## Security
 

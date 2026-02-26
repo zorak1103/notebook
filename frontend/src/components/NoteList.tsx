@@ -14,10 +14,22 @@ interface NoteListProps {
 
 export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
   const { t } = useTranslation();
-  const { notes, loading, error, handleDelete, refresh } = useNotes(meetingId);
+  const { notes, loading, error, handleDelete, handleReorder, refresh } = useNotes(meetingId);
   const [enhancingId, setEnhancingId] = useState<number | null>(null);
   const [enhanceError, setEnhanceError] = useState<string | null>(null);
   const [previousContent, setPreviousContent] = useState<{ noteId: number; content: string } | null>(null);
+  const [reorderingId, setReorderingId] = useState<number | null>(null);
+
+  const handleReorderNote = async (id: number, direction: 'up' | 'down') => {
+    try {
+      setReorderingId(id);
+      await handleReorder(id, direction);
+    } catch {
+      alert(t('notes.reorderFailed'));
+    } finally {
+      setReorderingId(null);
+    }
+  };
 
   const confirmDelete = async (id: number, noteNumber: number) => {
     if (window.confirm(t('notes.confirmDelete', { number: noteNumber }))) {
@@ -85,9 +97,31 @@ export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
         </div>
       ) : (
         <div className="notes">
-          {notes.map((note) => (
+          {notes.map((note, index) => (
             <div key={note.id} className="note-card">
               <div className="note-header">
+                {notes.length > 1 && (
+                  <div className="note-reorder">
+                    <button
+                      onClick={() => handleReorderNote(note.id, 'up')}
+                      className="btn btn-icon btn-reorder"
+                      title={t('notes.moveUp')}
+                      disabled={index === 0 || reorderingId !== null}
+                      style={{ visibility: index === 0 ? 'hidden' : 'visible' }}
+                    >
+                      ▲
+                    </button>
+                    <button
+                      onClick={() => handleReorderNote(note.id, 'down')}
+                      className="btn btn-icon btn-reorder"
+                      title={t('notes.moveDown')}
+                      disabled={index === notes.length - 1 || reorderingId !== null}
+                      style={{ visibility: index === notes.length - 1 ? 'hidden' : 'visible' }}
+                    >
+                      ▼
+                    </button>
+                  </div>
+                )}
                 <span className="note-number">#{note.note_number}</span>
                 <div className="note-actions">
                   <button

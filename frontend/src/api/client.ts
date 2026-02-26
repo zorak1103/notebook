@@ -1,4 +1,4 @@
-import type { UserInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, Config, ConfigUpdateRequest } from './types';
+import type { UserInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, ReorderNoteRequest, Config, ConfigUpdateRequest } from './types';
 
 /**
  * Fetches the current user's Tailscale information from the backend
@@ -128,6 +128,11 @@ export async function deleteNote(id: number): Promise<void> {
 
 export async function enhanceNote(id: number): Promise<Note> {
   return apiPost<Note>(`/api/notes/${id}/enhance`, {});
+}
+
+export async function reorderNote(id: number, direction: 'up' | 'down'): Promise<Note[]> {
+  const req: ReorderNoteRequest = { direction };
+  return apiPut<Note[]>(`/api/notes/${id}/reorder`, req);
 }
 
 // Config API functions
