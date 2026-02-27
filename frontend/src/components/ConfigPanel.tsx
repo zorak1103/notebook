@@ -23,28 +23,27 @@ function ConfigPanel(): React.JSX.Element {
   });
 
   useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const config = await getConfig();
+        setFormData({
+          llm_provider_url: config.llm_provider_url || '',
+          llm_api_key: config.llm_api_key || '',
+          llm_model: config.llm_model || '',
+          llm_prompt_summary: config.llm_prompt_summary || '',
+          llm_prompt_enhance: config.llm_prompt_enhance || '',
+        });
+        setOriginalKey(config.llm_api_key || '');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : t('config.loadError'));
+      } finally {
+        setLoading(false);
+      }
+    };
     loadConfig();
-  }, []);
-
-  const loadConfig = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const config = await getConfig();
-      setFormData({
-        llm_provider_url: config.llm_provider_url || '',
-        llm_api_key: config.llm_api_key || '',
-        llm_model: config.llm_model || '',
-        llm_prompt_summary: config.llm_prompt_summary || '',
-        llm_prompt_enhance: config.llm_prompt_enhance || '',
-      });
-      setOriginalKey(config.llm_api_key || '');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('config.loadError'));
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
