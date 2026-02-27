@@ -5,7 +5,7 @@ go 1.25.5
 require (
 	github.com/magefile/mage v1.15.0
 	github.com/stretchr/testify v1.11.1
-	modernc.org/sqlite v1.45.0
+	modernc.org/sqlite v1.46.1
 	tailscale.com v1.94.2
 )
 
