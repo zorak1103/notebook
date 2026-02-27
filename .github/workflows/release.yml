@@ -49,11 +49,13 @@ jobs:
       - name: Run frontend linter
         run: npm --prefix frontend run lint
 
-      - name: Run linter
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
-          args: --timeout=5m ./...
+      - name: Install golangci-lint
+        # NOTE: If golangci-lint releases v3, update the module path below to .../v3/cmd/golangci-lint@latest
+        # Dependabot does not track go install paths in shell steps — this must be updated manually.
+        run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+
+      - name: Run golangci-lint
+        run: golangci-lint run --timeout=5m
 
       - name: Run tests
         run: go test -v -race ./...
