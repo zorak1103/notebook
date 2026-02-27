@@ -21,12 +21,31 @@ func Generate() error {
 	return sh.RunV("go", "run", "./cmd/genvalidation")
 }
 
+// npmInstall runs "npm ci" only when package-lock.json is newer than node_modules.
+// This ensures local and CI environments always use the same dependency versions
+// without paying the full install cost on every invocation.
+func npmInstall() error {
+	lockFile := filepath.Join("frontend", "package-lock.json")
+	installedMark := filepath.Join("frontend", "node_modules", ".package-lock.json")
+
+	lockInfo, err := os.Stat(lockFile)
+	if err != nil {
+		return fmt.Errorf("cannot stat %s: %w", lockFile, err)
+	}
+
+	if markInfo, err := os.Stat(installedMark); err == nil && markInfo.ModTime().After(lockInfo.ModTime()) {
+		return nil // node_modules are up to date
+	}
+
+	fmt.Println("Installing frontend dependencies...")
+	return sh.RunV("npm", "--prefix", "frontend", "ci")
+}
+
 // Frontend builds the React frontend with Vite
 func Frontend() error {
 	mg.Deps(Generate)
 
-	fmt.Println("Installing frontend dependencies...")
-	if err := sh.RunV("npm", "--prefix", "frontend", "ci"); err != nil {
+	if err := npmInstall(); err != nil {
 		return err
 	}
 
@@ -59,6 +78,9 @@ func Test() error {
 
 // FrontendLint runs the ESLint TypeScript/React linter for the frontend
 func FrontendLint() error {
+	if err := npmInstall(); err != nil {
+		return err
+	}
 	fmt.Println("Running frontend linter...")
 	return sh.RunV("npm", "--prefix", "frontend", "run", "lint")
 }
