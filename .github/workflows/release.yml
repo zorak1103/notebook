@@ -46,6 +46,9 @@ jobs:
       - name: Build frontend (required for go:embed)
         run: mage frontend
 
+      - name: Run frontend linter
+        run: npm --prefix frontend run lint
+
       - name: Run linter
         uses: golangci/golangci-lint-action@v6
         with:

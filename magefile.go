@@ -57,9 +57,16 @@ func Test() error {
 	return sh.RunV("go", "test", "./...")
 }
 
-// Lint runs golangci-lint with timeout
+// FrontendLint runs the ESLint TypeScript/React linter for the frontend
+func FrontendLint() error {
+	fmt.Println("Running frontend linter...")
+	return sh.RunV("npm", "--prefix", "frontend", "run", "lint")
+}
+
+// Lint runs all linters (frontend ESLint + Go golangci-lint)
 func Lint() error {
-	fmt.Println("Running linter...")
+	mg.Deps(FrontendLint)
+	fmt.Println("Running Go linter...")
 	return sh.RunV("golangci-lint", "run", "--timeout=5m", "./...")
 }
 

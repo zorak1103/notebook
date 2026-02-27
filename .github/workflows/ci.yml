@@ -44,6 +44,9 @@ jobs:
       - name: Build frontend (required for go:embed)
         run: mage frontend
 
+      - name: Run frontend linter
+        run: npm --prefix frontend run lint
+
       - name: Install golangci-lint
         run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 
