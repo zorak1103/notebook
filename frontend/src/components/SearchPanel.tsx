@@ -50,24 +50,28 @@ export function SearchPanel({ onSelectMeeting }: SearchPanelProps) {
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
-      setResults([]);
-      setError(null);
       return;
     }
 
-    setLoading(true);
-    setError(null);
-
-    searchMeetings(debouncedQuery)
-      .then((data) => {
+    async function fetchResults() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await searchMeetings(debouncedQuery);
         setResults(data);
+      } catch (err) {
+        setError((err as Error).message || t('search.error'));
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message || t('search.error'));
-        setLoading(false);
-      });
+      }
+    }
+
+    fetchResults();
   }, [debouncedQuery, t]);
+
+  const hasQuery = debouncedQuery.trim().length > 0;
+  const visibleResults = hasQuery ? results : [];
+  const visibleError = hasQuery ? error : null;
 
   return (
     <div className="search-panel">
@@ -86,19 +90,19 @@ export function SearchPanel({ onSelectMeeting }: SearchPanelProps) {
 
       {loading && <div className="search-loading">{t('search.loading')}</div>}
 
-      {error && <div className="search-error">{error}</div>}
+      {visibleError && <div className="search-error">{visibleError}</div>}
 
-      {!loading && !error && query.trim() && results.length === 0 && (
+      {!loading && !visibleError && query.trim() && visibleResults.length === 0 && (
         <div className="search-no-results">{t('search.noResults')}</div>
       )}
 
-      {!loading && !error && results.length > 0 && (
+      {!loading && !visibleError && visibleResults.length > 0 && (
         <>
           <div className="search-result-count">
-            {t('search.resultCount', { count: results.length })}
+            {t('search.resultCount', { count: visibleResults.length })}
           </div>
           <div className="search-results">
-            {results.map((meeting) => (
+            {visibleResults.map((meeting) => (
               <div
                 key={meeting.id}
                 className="search-result-item"
