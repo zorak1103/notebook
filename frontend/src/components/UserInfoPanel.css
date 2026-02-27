@@ -50,8 +50,9 @@
 }
 
 .info-row {
-  display: flex;
-  gap: var(--space-lg);
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: baseline;
   margin-bottom: var(--space-lg);
   font-size: var(--font-md);
 }
@@ -63,8 +64,6 @@
 .info-label {
   font-weight: 600;
   color: var(--color-text-secondary);
-  min-width: 150px;
-  flex-shrink: 0;
   font-size: var(--font-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -74,14 +73,6 @@
   color: var(--color-text);
   word-break: break-word;
   line-height: var(--line-height-relaxed);
-}
-
-.info-value.code {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-sm);
-  background-color: var(--color-bg-secondary);
-  padding: var(--space-sm);
-  border-radius: var(--radius-md);
 }
 
 /* Mobile responsive */

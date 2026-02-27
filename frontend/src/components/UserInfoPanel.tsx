@@ -72,7 +72,7 @@ function UserInfoPanel(): React.JSX.Element {
 
           <div className="info-row">
             <span className="info-label">{t('info.nodeID')}:</span>
-            <span className="info-value code">{userInfo.nodeID}</span>
+            <span className="info-value">{userInfo.nodeID}</span>
           </div>
         </section>
       )}
@@ -88,7 +88,7 @@ function UserInfoPanel(): React.JSX.Element {
 
           <div className="info-row">
             <span className="info-label">{t('info.commit')}:</span>
-            <span className="info-value code">{versionInfo.commit.slice(0, 7)}</span>
+            <span className="info-value">{versionInfo.commit.slice(0, 7)}</span>
           </div>
 
           <div className="info-row">
