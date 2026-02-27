@@ -93,7 +93,7 @@ notebook --dev-listen :8080 --db notebook.db
 notebook --hostname notebook --state-dir ./tsnet-state --db notebook.db
 ```
 
-For CLI flags, LLM configuration, and AI feature details see [`.docs/configuration.md`](.docs/configuration.md).
+For CLI flags, LLM configuration, and AI feature details see [`docs/configuration.md`](docs/configuration.md).
 
 ## Development
 
@@ -105,17 +105,14 @@ For CLI flags, LLM configuration, and AI feature details see [`.docs/configurati
 | `mage verify` | Run lint + test |
 | `mage -l` | List all targets |
 
-For project structure, build system details, and frontend dev setup see [`.docs/development.md`](.docs/development.md).
+For project structure, build system details, and frontend dev setup see [`docs/development.md`](docs/development.md).
 
 ## Documentation
 
-- [Configuration & LLM Setup](.docs/configuration.md)
-- [Development Guide](.docs/development.md)
-- [API Reference & DB Schema](.docs/api.md)
-- [Product Requirements](.docs/prd.md)
-- [Project Plan](.docs/projektplan.md)
-- [Internationalization Guide](.docs/internationalization.md)
-- [CI/CD Setup](.docs/cicd-setup.md)
+- [Configuration & LLM Setup](docs/configuration.md)
+- [Development Guide](docs/development.md)
+- [API Reference & DB Schema](docs/api.md)
+- [Internationalization](docs/internationalization.md)
 
 ## Architecture
 
@@ -138,10 +135,6 @@ Binaries for Linux/macOS/Windows (amd64 + arm64) and Docker image `zorak1103/not
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details
-
-## Contributing
-
-Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## Acknowledgments
 
