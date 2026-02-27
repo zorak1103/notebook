@@ -60,7 +60,7 @@ func (p *OpenAIProvider) Complete(ctx context.Context, prompt string) (string, e
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+p.apiKey)
 
-	resp, err := p.client.Do(req)
+	resp, err := p.client.Do(req) //nolint:gosec // G704 - URL is intentionally user-configurable (LLM provider endpoint)
 	if err != nil {
 		return "", fmt.Errorf("send request: %w", err)
 	}

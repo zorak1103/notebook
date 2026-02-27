@@ -59,7 +59,7 @@ func (p *AnthropicProvider) Complete(ctx context.Context, prompt string) (string
 	req.Header.Set("x-api-key", p.apiKey)
 	req.Header.Set("anthropic-version", "2023-06-01")
 
-	resp, err := p.client.Do(req)
+	resp, err := p.client.Do(req) //nolint:gosec // G704 - URL is hardcoded constant
 	if err != nil {
 		return "", fmt.Errorf("send request: %w", err)
 	}
