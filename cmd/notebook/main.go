@@ -17,6 +17,13 @@ import (
 	"github.com/zorak1103/notebook/internal/web"
 )
 
+// Build-time version information injected by GoReleaser via ldflags.
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
 	// Parse command-line flags
 	var (
@@ -87,7 +94,7 @@ func setupTailscale(ctx context.Context, hostname, stateDir string) (*tsapp.App,
 }
 
 func createHTTPServer(tsApp *tsapp.App, database *db.DB, devMode, verbose bool) *http.Server {
-	webServer := web.NewServer(tsApp, database, devMode, verbose)
+	webServer := web.NewServer(tsApp, database, devMode, verbose, version, commit, date)
 	return &http.Server{
 		Handler:      webServer.Handler(),
 		ReadTimeout:  15 * time.Second,

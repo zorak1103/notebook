@@ -14,15 +14,21 @@ type Server struct {
 	database *db.DB
 	devMode  bool
 	verbose  bool
+	version  string
+	commit   string
+	date     string
 }
 
 // NewServer creates a new web server instance
-func NewServer(app *tsapp.App, database *db.DB, devMode, verbose bool) *Server {
+func NewServer(app *tsapp.App, database *db.DB, devMode, verbose bool, version, commit, date string) *Server {
 	return &Server{
 		tsapp:    app,
 		database: database,
 		devMode:  devMode,
 		verbose:  verbose,
+		version:  version,
+		commit:   commit,
+		date:     date,
 	}
 }
 
@@ -32,6 +38,7 @@ func (s *Server) Handler() http.Handler {
 
 	// API routes
 	mux.HandleFunc("GET /api/whoami", s.handleWhoAmI)
+	mux.HandleFunc("GET /api/version", s.handleVersion)
 
 	// Meeting CRUD
 	mux.HandleFunc("GET /api/meetings", s.handleListMeetings)

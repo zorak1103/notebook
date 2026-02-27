@@ -131,6 +131,10 @@
     "loginName": "Login Name",
     "nodeName": "Node Name",
     "nodeID": "Node ID",
-    "loadError": "Failed to load user information"
+    "loadError": "Failed to load user information",
+    "sectionApplication": "Application",
+    "version": "Version",
+    "commit": "Commit",
+    "buildDate": "Build Date"
   }
 }

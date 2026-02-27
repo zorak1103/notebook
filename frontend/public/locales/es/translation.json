@@ -131,6 +131,10 @@
     "loginName": "Nombre de inicio de sesión",
     "nodeName": "Nombre del nodo",
     "nodeID": "ID del nodo",
-    "loadError": "Error al cargar la información del usuario"
+    "loadError": "Error al cargar la información del usuario",
+    "sectionApplication": "Aplicación",
+    "version": "Versión",
+    "commit": "Commit",
+    "buildDate": "Fecha de compilación"
   }
 }

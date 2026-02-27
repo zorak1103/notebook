@@ -1,3 +1,10 @@
+// VersionInfo represents the build-time version information returned by the API
+export interface VersionInfo {
+  version: string;
+  commit: string;
+  date: string;
+}
+
 // UserInfo represents the Tailscale user information returned by the API
 export interface UserInfo {
   displayName: string;

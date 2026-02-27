@@ -7,6 +7,24 @@ import (
 	"github.com/zorak1103/notebook/internal/tsapp"
 )
 
+// versionResponse holds build-time version information.
+type versionResponse struct {
+	Version string `json:"version"`
+	Commit  string `json:"commit"`
+	Date    string `json:"date"`
+}
+
+// handleVersion returns the build-time version information.
+func (s *Server) handleVersion(w http.ResponseWriter, r *http.Request) {
+	resp := versionResponse{
+		Version: s.version,
+		Commit:  s.commit,
+		Date:    s.date,
+	}
+	writeJSON(w, http.StatusOK, resp)
+	s.logRequest(r.Method, r.URL.Path, http.StatusOK)
+}
+
 // handleWhoAmI returns the authenticated user's Tailscale information.
 // In dev mode, it returns mock data since Tailscale is not available.
 func (s *Server) handleWhoAmI(w http.ResponseWriter, r *http.Request) {

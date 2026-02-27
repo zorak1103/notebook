@@ -131,6 +131,10 @@
     "loginName": "Nom de connexion",
     "nodeName": "Nom du nœud",
     "nodeID": "ID du nœud",
-    "loadError": "Échec du chargement des informations utilisateur"
+    "loadError": "Échec du chargement des informations utilisateur",
+    "sectionApplication": "Application",
+    "version": "Version",
+    "commit": "Commit",
+    "buildDate": "Date de build"
   }
 }

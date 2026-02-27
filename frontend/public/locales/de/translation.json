@@ -131,6 +131,10 @@
     "loginName": "Anmeldename",
     "nodeName": "Knotenname",
     "nodeID": "Knoten-ID",
-    "loadError": "Fehler beim Laden der Benutzerinformationen"
+    "loadError": "Fehler beim Laden der Benutzerinformationen",
+    "sectionApplication": "Anwendung",
+    "version": "Version",
+    "commit": "Commit",
+    "buildDate": "Build-Datum"
   }
 }

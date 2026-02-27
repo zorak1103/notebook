@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { fetchWhoAmI } from '../api/client';
-import type { UserInfo } from '../api/types';
+import { fetchWhoAmI, fetchVersion } from '../api/client';
+import type { UserInfo, VersionInfo } from '../api/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorMessage } from './ErrorMessage';
 import './UserInfoPanel.css';
@@ -11,17 +11,19 @@ function UserInfoPanel(): React.JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
 
   useEffect(() => {
-    loadUserInfo();
+    loadData();
   }, []);
 
-  const loadUserInfo = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
       setError(null);
-      const info = await fetchWhoAmI();
+      const [info, ver] = await Promise.all([fetchWhoAmI(), fetchVersion()]);
       setUserInfo(info);
+      setVersionInfo(ver);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('info.loadError'));
     } finally {
@@ -71,6 +73,27 @@ function UserInfoPanel(): React.JSX.Element {
           <div className="info-row">
             <span className="info-label">{t('info.nodeID')}:</span>
             <span className="info-value code">{userInfo.nodeID}</span>
+          </div>
+        </section>
+      )}
+
+      {versionInfo && (
+        <section className="info-section">
+          <h2>{t('info.sectionApplication')}</h2>
+
+          <div className="info-row">
+            <span className="info-label">{t('info.version')}:</span>
+            <span className="info-value">{versionInfo.version}</span>
+          </div>
+
+          <div className="info-row">
+            <span className="info-label">{t('info.commit')}:</span>
+            <span className="info-value code">{versionInfo.commit.slice(0, 7)}</span>
+          </div>
+
+          <div className="info-row">
+            <span className="info-label">{t('info.buildDate')}:</span>
+            <span className="info-value">{versionInfo.date}</span>
           </div>
         </section>
       )}

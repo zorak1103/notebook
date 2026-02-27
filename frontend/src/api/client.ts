@@ -1,4 +1,8 @@
-import type { UserInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, ReorderNoteRequest, Config, ConfigUpdateRequest } from './types';
+import type { UserInfo, VersionInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, ReorderNoteRequest, Config, ConfigUpdateRequest } from './types';
+
+export async function fetchVersion(): Promise<VersionInfo> {
+  return apiGet<VersionInfo>('/api/version');
+}
 
 /**
  * Fetches the current user's Tailscale information from the backend
