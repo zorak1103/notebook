@@ -50,7 +50,8 @@ export function NoteList({ meetingId, onEdit, onAdd }: NoteListProps) {
       setEnhanceError(null);
       setPreviousContent({ noteId, content: note.content });
 
-      await enhanceNote(noteId);
+      const result = await enhanceNote(noteId, note.content);
+      await updateNote(noteId, { content: result.content });
       await refresh();
     } catch (err) {
       setEnhanceError(err instanceof Error ? err.message : t('notes.enhanceError'));
