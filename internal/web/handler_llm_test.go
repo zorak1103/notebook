@@ -103,7 +103,8 @@ func TestHandleEnhanceNote_MissingConfig(t *testing.T) {
 		t.Fatalf("failed to create test note: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", nil)
+	body, _ := json.Marshal(enhanceNoteRequest{Content: "Test note content"})
+	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -118,7 +119,8 @@ func TestHandleEnhanceNote_NoteNotFound(t *testing.T) {
 	srv := newTestServer(t)
 	setTestLLMConfig(t, srv)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/999/enhance", nil)
+	body, _ := json.Marshal(enhanceNoteRequest{Content: "Some content"})
+	req := httptest.NewRequest(http.MethodPost, "/api/notes/999/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -126,6 +128,50 @@ func TestHandleEnhanceNote_NoteNotFound(t *testing.T) {
 
 	if w.Code != http.StatusNotFound {
 		t.Errorf("expected status 404, got %d", w.Code)
+	}
+}
+
+func TestHandleEnhanceNote_EmptyContent(t *testing.T) {
+	srv := newTestServer(t)
+
+	body, _ := json.Marshal(enhanceNoteRequest{Content: ""})
+	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
+	req.SetPathValue("id", "1")
+	w := httptest.NewRecorder()
+
+	srv.handleEnhanceNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestHandleEnhanceNote_WhitespaceContent(t *testing.T) {
+	srv := newTestServer(t)
+
+	body, _ := json.Marshal(enhanceNoteRequest{Content: "   "})
+	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
+	req.SetPathValue("id", "1")
+	w := httptest.NewRecorder()
+
+	srv.handleEnhanceNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestHandleEnhanceNote_InvalidBody(t *testing.T) {
+	srv := newTestServer(t)
+
+	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader([]byte("not json {")))
+	req.SetPathValue("id", "1")
+	w := httptest.NewRecorder()
+
+	srv.handleEnhanceNote(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
 	}
 }
 

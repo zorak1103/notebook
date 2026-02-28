@@ -23,11 +23,7 @@
   padding: var(--btn-padding-md);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--color-text);
-  font-size: var(--font-md);
   font-weight: 600;
-  cursor: pointer;
   transition: all var(--transition-base);
 }
 
@@ -97,8 +93,8 @@
 }
 
 .note-reorder .btn-icon {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
   font-size: 10px;
 }
 

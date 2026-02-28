@@ -74,8 +74,8 @@ export function SearchPanel({ onSelectMeeting }: SearchPanelProps) {
   const visibleError = hasQuery ? error : null;
 
   return (
-    <div className="search-panel">
-      <h2>{t('search.title')}</h2>
+    <div className="search-panel page-panel">
+      <h2 className="page-heading">{t('search.title')}</h2>
 
       <div className="search-input-container">
         <input

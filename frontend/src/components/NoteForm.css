@@ -17,11 +17,6 @@
 
 .note-form h2 {
   margin: 0;
-  font-family: var(--font-family-heading);
-  font-size: var(--font-3xl);
-  font-weight: 400;
-  color: var(--color-text);
-  letter-spacing: -0.01em;
 }
 
 .note-form-actions {

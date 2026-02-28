@@ -8,14 +8,6 @@
   animation: fadeInUp var(--transition-slow);
 }
 
-.meeting-form h2 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-3xl);
-  font-weight: 400;
-  color: var(--color-text);
-  margin-bottom: var(--space-xl);
-  letter-spacing: -0.01em;
-}
 
 /* Date/time row - 3 columns */
 .form-row {

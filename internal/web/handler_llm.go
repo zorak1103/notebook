@@ -2,6 +2,7 @@ package web
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -11,6 +12,14 @@ import (
 	"github.com/zorak1103/notebook/internal/db/repositories"
 	"github.com/zorak1103/notebook/internal/llm"
 )
+
+type enhanceNoteRequest struct {
+	Content string `json:"content"`
+}
+
+type enhanceNoteResponse struct {
+	Content string `json:"content"`
+}
 
 // handleSummarizeMeeting generates an LLM summary for a meeting based on its notes
 func (s *Server) handleSummarizeMeeting(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +73,8 @@ func (s *Server) handleSummarizeMeeting(w http.ResponseWriter, r *http.Request) 
 	writeJSON(w, http.StatusOK, meeting)
 }
 
-// handleEnhanceNote uses LLM to enhance a note's content
+// handleEnhanceNote transforms note content via LLM and returns the result.
+// It does not persist to DB — the caller decides whether to save.
 func (s *Server) handleEnhanceNote(w http.ResponseWriter, r *http.Request) {
 	noteID, err := parseIDParam(r)
 	if err != nil {
@@ -72,7 +82,16 @@ func (s *Server) handleEnhanceNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Load LLM config
+	var req enhanceNoteRequest
+	if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	if strings.TrimSpace(req.Content) == "" {
+		writeError(w, http.StatusBadRequest, "content is required")
+		return
+	}
+
 	configRepo := repositories.NewConfigRepository(s.database.DB)
 	llmURL, llmAPIKey, llmModel, enhancePrompt, err := loadLLMConfigForEnhance(configRepo)
 	if err != nil {
@@ -81,7 +100,6 @@ func (s *Server) handleEnhanceNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Load note
 	noteRepo := repositories.NewNoteRepository(s.database.DB)
 	note, err := noteRepo.GetByID(int(noteID))
 	if err != nil {
@@ -94,39 +112,36 @@ func (s *Server) handleEnhanceNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create LLM client
-	client, err := llm.New(llmURL, llmAPIKey, llmModel)
-	if err != nil {
-		s.logError(r, "failed to create LLM client", err)
-		writeError(w, http.StatusInternalServerError, "failed to create LLM client")
-		return
-	}
-
-	// Render prompt
-	prompt := llm.RenderPrompt(enhancePrompt, map[string]string{
-		"content": note.Content,
-	})
-
-	// Call LLM with timeout
-	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
-	defer cancel()
-
-	enhancedContent, err := client.Complete(ctx, prompt)
+	enhanced, err := s.enhanceContent(r, llmURL, llmAPIKey, llmModel, enhancePrompt, req.Content)
 	if err != nil {
 		s.logError(r, "LLM completion failed", err)
 		writeError(w, http.StatusInternalServerError, "LLM completion failed")
 		return
 	}
 
-	// Update note with enhanced content
-	note.Content = enhancedContent
-	if err := noteRepo.Update(note); err != nil {
-		s.logError(r, "failed to update note", err)
-		writeError(w, http.StatusInternalServerError, "failed to update note")
-		return
+	writeJSON(w, http.StatusOK, enhanceNoteResponse{Content: enhanced})
+}
+
+// enhanceContent uses LLM to transform a piece of text
+func (s *Server) enhanceContent(r *http.Request, llmURL, llmAPIKey, llmModel, enhancePrompt, content string) (string, error) {
+	client, err := llm.New(llmURL, llmAPIKey, llmModel)
+	if err != nil {
+		return "", fmt.Errorf("failed to create LLM client: %w", err)
 	}
 
-	writeJSON(w, http.StatusOK, note)
+	prompt := llm.RenderPrompt(enhancePrompt, map[string]string{
+		"content": content,
+	})
+
+	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
+	defer cancel()
+
+	enhanced, err := client.Complete(ctx, prompt)
+	if err != nil {
+		return "", fmt.Errorf("LLM completion failed: %w", err)
+	}
+
+	return enhanced, nil
 }
 
 // loadMeetingWithNotes loads a meeting and its notes from the database

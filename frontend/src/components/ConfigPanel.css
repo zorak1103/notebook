@@ -1,17 +1,3 @@
-.config-panel {
-  max-width: 1000px;
-  margin: 0 auto;
-  animation: fadeInUp var(--transition-slow);
-}
-
-.config-panel h1 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-3xl);
-  font-weight: 400;
-  margin-bottom: var(--space-xl);
-  color: var(--color-text);
-  letter-spacing: -0.01em;
-}
 
 /* Success toast with fadeInDown animation */
 .config-success {
@@ -25,27 +11,6 @@
   font-size: var(--font-md);
   font-weight: 600;
   animation: fadeInDown var(--transition-slow);
-}
-
-.config-section {
-  background-color: var(--color-card-bg);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-xl);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Section headers - clean uppercase label style */
-.config-section h2 {
-  font-size: var(--font-sm);
-  font-weight: 600;
-  margin-bottom: var(--space-lg);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-bottom: 0;
-  border-bottom: none;
 }
 
 /* Component-specific overrides */
@@ -75,25 +40,8 @@
   justify-content: flex-start;
 }
 
-.config-panel .form-actions button[type="submit"] {
-  background-color: var(--color-primary);
-  color: var(--color-card-bg);
-}
-
-.config-panel .form-actions button[type="submit"]:hover:not(:disabled) {
-  background-color: var(--color-primary-dark);
-}
-
-.config-panel .form-actions button:disabled {
-  background-color: var(--color-text-tertiary);
-}
-
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .config-section {
-    padding: var(--space-lg);
-  }
-
   .form-actions {
     flex-direction: column;
   }

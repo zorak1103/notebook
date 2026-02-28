@@ -1,17 +1,3 @@
-.search-panel {
-  max-width: 1000px;
-  margin: 0 auto;
-  animation: fadeInUp var(--transition-slow);
-}
-
-.search-panel h2 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-3xl);
-  font-weight: 400;
-  margin-bottom: var(--space-xl);
-  color: var(--color-text);
-  letter-spacing: -0.01em;
-}
 
 .search-input-container {
   margin-bottom: var(--space-xl);

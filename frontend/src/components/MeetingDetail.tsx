@@ -143,14 +143,14 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
       {summaryError && <ErrorMessage message={summaryError} />}
 
       <div className="meeting-info">
-        <h1>{meeting.subject}</h1>
+        <h1 className="page-heading">{meeting.subject}</h1>
         <div className="meeting-metadata">
           <div className="metadata-row">
-            <span className="metadata-label">{t('meetingDetail.date')}:</span>
+            <span className="metadata-label data-label">{t('meetingDetail.date')}:</span>
             <span className="metadata-value">{meeting.meeting_date}</span>
           </div>
           <div className="metadata-row">
-            <span className="metadata-label">{t('meetingDetail.time')}:</span>
+            <span className="metadata-label data-label">{t('meetingDetail.time')}:</span>
             <span className="metadata-value">
               {meeting.start_time}
               {meeting.end_time && ` - ${meeting.end_time}`}
@@ -158,19 +158,19 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
           </div>
           {meeting.participants && (
             <div className="metadata-row">
-              <span className="metadata-label">{t('meetingDetail.participants')}:</span>
+              <span className="metadata-label data-label">{t('meetingDetail.participants')}:</span>
               <span className="metadata-value">{meeting.participants}</span>
             </div>
           )}
           {meeting.summary && (
             <div className="meeting-summary">
-              <span className="metadata-label">{t('meetingDetail.summary')}:</span>
+              <span className="metadata-label data-label">{t('meetingDetail.summary')}:</span>
               <p className="summary-text">{meeting.summary}</p>
             </div>
           )}
           {meeting.keywords && (
             <div className="meeting-keywords">
-              <span className="metadata-label">{t('meetingDetail.keywords')}:</span>
+              <span className="metadata-label data-label">{t('meetingDetail.keywords')}:</span>
               <div className="keywords-list">
                 {meeting.keywords.split(',').map((keyword, idx) => (
                   <span key={idx} className="keyword-pill">

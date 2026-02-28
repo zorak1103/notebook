@@ -81,6 +81,16 @@ export interface Config {
   llm_prompt_enhance: string;
 }
 
+// EnhanceNoteRequest is the body sent to the note enhancement endpoint
+export interface EnhanceNoteRequest {
+  content: string;
+}
+
+// EnhanceNoteResponse is the result from the note enhancement endpoint
+export interface EnhanceNoteResponse {
+  content: string;
+}
+
 // ConfigUpdateRequest represents the request body for updating configuration
 export interface ConfigUpdateRequest {
   llm_provider_url: string;

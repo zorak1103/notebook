@@ -76,8 +76,8 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
       setEnhanceError(null);
       setPreviousContent(content);
 
-      const enhancedNote = await enhanceNote(noteId);
-      setContent(enhancedNote.content);
+      const result = await enhanceNote(noteId, content);
+      setContent(result.content);
     } catch (err) {
       setEnhanceError(err instanceof Error ? err.message : t('notes.enhanceError'));
       setPreviousContent(null);
@@ -98,7 +98,7 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
   return (
     <div className="note-form">
       <div className="note-form-header">
-        <h2>{noteId ? t('noteForm.editTitle') : t('noteForm.createTitle')}</h2>
+        <h2 className="page-heading">{noteId ? t('noteForm.editTitle') : t('noteForm.createTitle')}</h2>
         {noteId && (
           <div className="note-form-actions">
             <button

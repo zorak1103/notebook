@@ -1,4 +1,4 @@
-import type { UserInfo, VersionInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, ReorderNoteRequest, Config, ConfigUpdateRequest } from './types';
+import type { UserInfo, VersionInfo, Meeting, CreateMeetingRequest, Note, CreateNoteRequest, UpdateNoteRequest, ReorderNoteRequest, Config, ConfigUpdateRequest, EnhanceNoteRequest, EnhanceNoteResponse } from './types';
 
 export async function fetchVersion(): Promise<VersionInfo> {
   return apiGet<VersionInfo>('/api/version');
@@ -130,8 +130,9 @@ export async function deleteNote(id: number): Promise<void> {
   return apiDelete(`/api/notes/${id}`);
 }
 
-export async function enhanceNote(id: number): Promise<Note> {
-  return apiPost<Note>(`/api/notes/${id}/enhance`, {});
+export async function enhanceNote(id: number, content: string): Promise<EnhanceNoteResponse> {
+  const req: EnhanceNoteRequest = { content };
+  return apiPost<EnhanceNoteResponse>(`/api/notes/${id}/enhance`, req);
 }
 
 export async function reorderNote(id: number, direction: 'up' | 'down'): Promise<Note[]> {

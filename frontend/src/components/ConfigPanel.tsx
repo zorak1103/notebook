@@ -91,8 +91,8 @@ function ConfigPanel(): React.JSX.Element {
   }
 
   return (
-    <div className="config-panel">
-      <h1>{t('config.title')}</h1>
+    <div className="config-panel page-panel">
+      <h1 className="page-heading">{t('config.title')}</h1>
 
       {error && <ErrorMessage message={error} />}
 
@@ -102,8 +102,8 @@ function ConfigPanel(): React.JSX.Element {
         </div>
       )}
 
-      <section className="config-section">
-        <h2>{t('config.sectionLanguage')}</h2>
+      <section className="card-section">
+        <h2 className="section-heading">{t('config.sectionLanguage')}</h2>
         <div className="form-group">
           <label>{t('config.language')}</label>
           <LanguageSwitcher />
@@ -112,8 +112,8 @@ function ConfigPanel(): React.JSX.Element {
       </section>
 
       <form onSubmit={handleSubmit}>
-        <section className="config-section">
-          <h2>{t('config.sectionLlm')}</h2>
+        <section className="card-section">
+          <h2 className="section-heading">{t('config.sectionLlm')}</h2>
 
           <div className="form-group">
             <label htmlFor="provider-url">{t('config.providerUrl')}</label>
@@ -152,8 +152,8 @@ function ConfigPanel(): React.JSX.Element {
           </div>
         </section>
 
-        <section className="config-section">
-          <h2>{t('config.sectionPrompts')}</h2>
+        <section className="card-section">
+          <h2 className="section-heading">{t('config.sectionPrompts')}</h2>
 
           <div className="form-group">
             <label htmlFor="prompt-summary">{t('config.promptSummary')}</label>
@@ -181,7 +181,7 @@ function ConfigPanel(): React.JSX.Element {
         </section>
 
         <div className="form-actions">
-          <button type="submit" disabled={saving}>
+          <button type="submit" className="btn btn-submit" disabled={saving}>
             {saving ? t('config.saving') : t('config.save')}
           </button>
         </div>

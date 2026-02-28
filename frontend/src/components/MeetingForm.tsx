@@ -97,7 +97,7 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
 
   return (
     <div className="meeting-form">
-      <h2>{meetingId ? t('meetingForm.editTitle') : t('meetingForm.createTitle')}</h2>
+      <h2 className="page-heading">{meetingId ? t('meetingForm.editTitle') : t('meetingForm.createTitle')}</h2>
 
       {error && <ErrorMessage message={error} />}
 

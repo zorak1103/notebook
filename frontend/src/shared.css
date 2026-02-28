@@ -125,14 +125,14 @@
   font-size: var(--font-md);
   color: var(--color-text);
   transition: all var(--transition-fast);
-  font-family: var(--font-family-base);
+  font-family: var(--font-family-body);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-alpha);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .form-group textarea {
@@ -173,7 +173,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
-  font-family: var(--font-family-base);
+  font-family: var(--font-family-body);
 }
 
 .form-actions .btn:disabled {
@@ -202,4 +202,61 @@
 
 .form-actions .btn-submit:hover:not(:disabled) {
   background: var(--color-success-dark);
+}
+
+/* Card Section
+   ========================================================================== */
+.card-section {
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .card-section {
+    padding: var(--space-lg);
+  }
+}
+
+/* Section Heading (uppercase label style inside card sections)
+   ========================================================================== */
+.section-heading {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Data Label (uppercase typography for key-value metadata)
+   ========================================================================== */
+.data-label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Page Panel (full-page view wrapper: constrained width + entrance animation)
+   ========================================================================== */
+.page-panel {
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: fadeInUp var(--transition-slow);
+}
+
+/* Page Heading (top-level display heading for each view)
+   ========================================================================== */
+.page-heading {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-3xl);
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+  letter-spacing: -0.01em;
 }
