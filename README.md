@@ -2,19 +2,15 @@
 
 ![CI](https://github.com/zorak1103/notebook/workflows/CI/badge.svg)
 ![Release](https://github.com/zorak1103/notebook/workflows/Release/badge.svg)
-
 [![GitHub Release](https://img.shields.io/github/v/release/zorak1103/notebook)](https://github.com/zorak1103/notebook/releases/latest)
 [![Docker Image Version](https://img.shields.io/docker/v/zorak1103/notebook?sort=semver)](https://hub.docker.com/r/zorak1103/notebook)
 [![Docker Pulls](https://img.shields.io/docker/pulls/zorak1103/notebook)](https://hub.docker.com/r/zorak1103/notebook)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/zorak1103/notebook)](https://goreportcard.com/report/github.com/zorak1103/notebook)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
 ![Go Version](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
-
 ![i18n](https://img.shields.io/badge/i18n-en%20%7C%20de%20%7C%20fr%20%7C%20es-brightgreen)
 
 Meeting and Notes Management Application with Tailscale Integration and optional LLM-powered summaries.
