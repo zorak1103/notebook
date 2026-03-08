@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,7 @@ func TestHandleVersion(t *testing.T) {
 		date:    "2026-02-27",
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/version", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/version", nil)
 	w := httptest.NewRecorder()
 
 	server.handleVersion(w, req)
@@ -46,7 +47,7 @@ func TestHandleVersion_Defaults(t *testing.T) {
 		date:    "unknown",
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/version", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/version", nil)
 	w := httptest.NewRecorder()
 
 	server.handleVersion(w, req)
