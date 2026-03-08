@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -40,7 +41,7 @@ func TestHandleListNotes_Empty(t *testing.T) {
 	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
 	meetingID := createTestMeeting(t, meetingRepo)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings/1/notes", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings/1/notes", nil)
 	req.SetPathValue("meetingId", "1")
 	w := httptest.NewRecorder()
 
@@ -90,7 +91,7 @@ func TestHandleListNotes_WithData(t *testing.T) {
 		t.Fatalf("failed to create note2: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings/1/notes", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings/1/notes", nil)
 	req.SetPathValue("meetingId", "1")
 	w := httptest.NewRecorder()
 
@@ -138,7 +139,7 @@ func TestHandleGetNote_Success(t *testing.T) {
 		t.Fatalf("failed to create note: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/notes/1", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/notes/1", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -162,7 +163,7 @@ func TestHandleGetNote_NotFound(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/notes/999", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/notes/999", nil)
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -186,7 +187,7 @@ func TestHandleGetNote_InvalidID(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/notes/abc", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/notes/abc", nil)
 	req.SetPathValue("id", "abc")
 	w := httptest.NewRecorder()
 
@@ -220,7 +221,7 @@ func TestHandleCreateNote_Success(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateNote(w, req)
@@ -260,7 +261,7 @@ func TestHandleCreateNote_AutoNumbering(t *testing.T) {
 	}
 
 	body1, _ := json.Marshal(payload1)
-	req1 := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader(body1))
+	req1 := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body1))
 	w1 := httptest.NewRecorder()
 
 	server.handleCreateNote(w1, req1)
@@ -277,7 +278,7 @@ func TestHandleCreateNote_AutoNumbering(t *testing.T) {
 	}
 
 	body2, _ := json.Marshal(payload2)
-	req2 := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader(body2))
+	req2 := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body2))
 	w2 := httptest.NewRecorder()
 
 	server.handleCreateNote(w2, req2)
@@ -305,7 +306,7 @@ func TestHandleCreateNote_MissingFields(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateNote(w, req)
@@ -328,7 +329,7 @@ func TestHandleCreateNote_InvalidJSON(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader([]byte("invalid json")))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader([]byte("invalid json")))
 	w := httptest.NewRecorder()
 
 	server.handleCreateNote(w, req)
@@ -368,7 +369,7 @@ func TestHandleCreateNote_ContentTooLong(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/notes", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateNote(w, req)
@@ -411,7 +412,7 @@ func TestHandleUpdateNote_Success(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -440,7 +441,7 @@ func TestHandleUpdateNote_NotFound(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/999", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/999", bytes.NewReader(body))
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -484,7 +485,7 @@ func TestHandleUpdateNote_MissingContent(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -522,7 +523,7 @@ func TestHandleDeleteNote_Success(t *testing.T) {
 		t.Fatalf("failed to create note: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/notes/1", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodDelete, "/api/notes/1", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -565,7 +566,7 @@ func TestHandleReorderNote_MoveDown_Success(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "down"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note1.ID))
 	w := httptest.NewRecorder()
 
@@ -612,7 +613,7 @@ func TestHandleReorderNote_MoveUp_Success(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "up"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/3/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/3/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note3.ID))
 	w := httptest.NewRecorder()
 
@@ -655,7 +656,7 @@ func TestHandleReorderNote_FirstNote_MoveUp(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "up"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note1.ID))
 	w := httptest.NewRecorder()
 
@@ -685,7 +686,7 @@ func TestHandleReorderNote_LastNote_MoveDown(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "down"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/2/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/2/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note2.ID))
 	w := httptest.NewRecorder()
 
@@ -711,7 +712,7 @@ func TestHandleReorderNote_InvalidDirection(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "sideways"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note.ID))
 	w := httptest.NewRecorder()
 
@@ -736,7 +737,7 @@ func TestHandleReorderNote_NoteNotFound(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "up"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/999/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/999/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -753,7 +754,7 @@ func TestHandleReorderNote_InvalidID(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "up"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/abc/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/abc/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", "abc")
 	w := httptest.NewRecorder()
 
@@ -779,7 +780,7 @@ func TestHandleReorderNote_SingleNote_MoveDown(t *testing.T) {
 
 	payload := map[string]interface{}{"direction": "down"}
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/notes/1/reorder", bytes.NewReader(body))
 	req.SetPathValue("id", fmt.Sprintf("%d", note.ID))
 	w := httptest.NewRecorder()
 
@@ -794,7 +795,7 @@ func TestHandleDeleteNote_NotFound(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/notes/999", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodDelete, "/api/notes/999", nil)
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 

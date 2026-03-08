@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -13,7 +14,7 @@ import (
 func TestHandleGetConfig_Empty(t *testing.T) {
 	srv := newTestServer(t)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
 	w := httptest.NewRecorder()
 
 	srv.handleGetConfig(w, req)
@@ -63,7 +64,7 @@ func TestHandleGetConfig_WithValues(t *testing.T) {
 		t.Fatalf("failed to set model: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
 	w := httptest.NewRecorder()
 
 	srv.handleGetConfig(w, req)
@@ -101,7 +102,7 @@ func TestHandleGetConfig_MasksShortKey(t *testing.T) {
 		t.Fatalf("failed to set API key: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
 	w := httptest.NewRecorder()
 
 	srv.handleGetConfig(w, req)
@@ -132,7 +133,7 @@ func TestHandleUpdateConfig_Success(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -165,7 +166,7 @@ func TestHandleUpdateConfig_Success(t *testing.T) {
 func TestHandleUpdateConfig_InvalidJSON(t *testing.T) {
 	srv := newTestServer(t)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader([]byte("invalid json")))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader([]byte("invalid json")))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -186,7 +187,7 @@ func TestHandleUpdateConfig_InvalidURL(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -215,7 +216,7 @@ func TestHandleUpdateConfig_SkipsMaskedKey(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -258,7 +259,7 @@ func TestHandleUpdateConfig_EmptyFieldsSkipped(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -347,7 +348,7 @@ func TestHandleUpdateConfig_LanguagePersistence(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -358,7 +359,7 @@ func TestHandleUpdateConfig_LanguagePersistence(t *testing.T) {
 	}
 
 	// Verify language is persisted via GET
-	req2 := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	req2 := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
 	w2 := httptest.NewRecorder()
 
 	srv.handleGetConfig(w2, req2)
@@ -381,7 +382,7 @@ func TestHandleUpdateConfig_InvalidLanguage(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -405,7 +406,7 @@ func TestHandleUpdateConfig_PromptPersistence(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -416,7 +417,7 @@ func TestHandleUpdateConfig_PromptPersistence(t *testing.T) {
 	}
 
 	// Verify prompts are persisted via GET
-	req2 := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	req2 := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
 	w2 := httptest.NewRecorder()
 
 	srv.handleGetConfig(w2, req2)

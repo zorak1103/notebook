@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -34,7 +35,7 @@ func TestHandleListMeetings_Empty(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings", nil)
 	w := httptest.NewRecorder()
 
 	server.handleListMeetings(w, req)
@@ -83,7 +84,7 @@ func TestHandleListMeetings_WithData(t *testing.T) {
 		t.Fatalf("failed to create meeting2: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings", nil)
 	w := httptest.NewRecorder()
 
 	server.handleListMeetings(w, req)
@@ -129,7 +130,7 @@ func TestHandleListMeetings_Sorting(t *testing.T) {
 		t.Fatalf("failed to create meeting2: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings?sort=subject&order=asc", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings?sort=subject&order=asc", nil)
 	w := httptest.NewRecorder()
 
 	server.handleListMeetings(w, req)
@@ -173,7 +174,7 @@ func TestHandleGetMeeting_Success(t *testing.T) {
 		t.Fatalf("failed to create meeting: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings/1", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings/1", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -197,7 +198,7 @@ func TestHandleGetMeeting_NotFound(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings/999", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings/999", nil)
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -221,7 +222,7 @@ func TestHandleGetMeeting_InvalidID(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/meetings/abc", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/meetings/abc", nil)
 	req.SetPathValue("id", "abc")
 	w := httptest.NewRecorder()
 
@@ -253,7 +254,7 @@ func TestHandleCreateMeeting_Success(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -288,7 +289,7 @@ func TestHandleCreateMeeting_MissingFields(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -311,7 +312,7 @@ func TestHandleCreateMeeting_InvalidJSON(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader([]byte("invalid json")))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader([]byte("invalid json")))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -356,7 +357,7 @@ func TestHandleUpdateMeeting_Success(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -390,7 +391,7 @@ func TestHandleUpdateMeeting_NotFound(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/meetings/999", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/meetings/999", bytes.NewReader(body))
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -428,7 +429,7 @@ func TestHandleDeleteMeeting_Success(t *testing.T) {
 		t.Fatalf("failed to create meeting: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/meetings/1", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodDelete, "/api/meetings/1", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -452,7 +453,7 @@ func TestHandleDeleteMeeting_NotFound(t *testing.T) {
 	server := newTestServer(t)
 	defer server.database.Close()
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/meetings/999", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodDelete, "/api/meetings/999", nil)
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -483,7 +484,7 @@ func TestHandleCreateMeeting_InvalidDateFormat(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -513,7 +514,7 @@ func TestHandleCreateMeeting_InvalidTimeFormat(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -545,7 +546,7 @@ func TestHandleCreateMeeting_InvalidEndTimeFormat(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -590,7 +591,7 @@ func TestHandleUpdateMeeting_InvalidDateFormat(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -628,7 +629,7 @@ func TestHandleCreateMeeting_SubjectTooLong(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -666,7 +667,7 @@ func TestHandleCreateMeeting_ParticipantsTooLong(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
 	w := httptest.NewRecorder()
 
 	server.handleCreateMeeting(w, req)
@@ -717,7 +718,7 @@ func TestHandleUpdateMeeting_SubjectTooLong(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(payload)
-	req := httptest.NewRequest(http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPut, "/api/meetings/1", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
