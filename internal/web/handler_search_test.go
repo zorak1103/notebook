@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -16,7 +17,7 @@ func TestHandleSearch_EmptyQuery(t *testing.T) {
 	s := newTestServer(t)
 	defer s.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -33,7 +34,7 @@ func TestHandleSearch_NoResults(t *testing.T) {
 	s := newTestServer(t)
 	defer s.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=nonexistent", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=nonexistent", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -64,7 +65,7 @@ func TestHandleSearch_MatchesSubject(t *testing.T) {
 	err := repo.Create(meeting)
 	require.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=Sprint", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=Sprint", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -96,7 +97,7 @@ func TestHandleSearch_MatchesSummary(t *testing.T) {
 	err := repo.Create(meeting)
 	require.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=launch", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=launch", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -114,7 +115,7 @@ func TestHandleSearch_NoQueryParam(t *testing.T) {
 	s := newTestServer(t)
 	defer s.database.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -143,7 +144,7 @@ func TestHandleSearch_MatchesParticipants(t *testing.T) {
 	err := repo.Create(meeting)
 	require.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=Alice", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=Alice", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
@@ -173,7 +174,7 @@ func TestHandleSearch_MatchesKeywords(t *testing.T) {
 	err := repo.Create(meeting)
 	require.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/search?q=quarterly", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/search?q=quarterly", nil)
 	w := httptest.NewRecorder()
 
 	s.handleSearch(w, req)
