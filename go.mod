@@ -1,6 +1,6 @@
 module github.com/zorak1103/notebook
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/magefile/mage v1.15.0

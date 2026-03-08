@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -26,7 +27,7 @@ func TestHandleSummarizeMeeting_MissingConfig(t *testing.T) {
 		t.Fatalf("failed to create test meeting: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings/1/summarize", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings/1/summarize", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -41,7 +42,7 @@ func TestHandleSummarizeMeeting_MeetingNotFound(t *testing.T) {
 	srv := newTestServer(t)
 	setTestLLMConfig(t, srv)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings/999/summarize", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings/999/summarize", nil)
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -68,7 +69,7 @@ func TestHandleSummarizeMeeting_NoNotes(t *testing.T) {
 		t.Fatalf("failed to create test meeting: %v", err)
 	}
 
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings/1/summarize", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings/1/summarize", nil)
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -104,7 +105,7 @@ func TestHandleEnhanceNote_MissingConfig(t *testing.T) {
 	}
 
 	body, _ := json.Marshal(enhanceNoteRequest{Content: "Test note content"})
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -120,7 +121,7 @@ func TestHandleEnhanceNote_NoteNotFound(t *testing.T) {
 	setTestLLMConfig(t, srv)
 
 	body, _ := json.Marshal(enhanceNoteRequest{Content: "Some content"})
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/999/enhance", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/999/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "999")
 	w := httptest.NewRecorder()
 
@@ -135,7 +136,7 @@ func TestHandleEnhanceNote_EmptyContent(t *testing.T) {
 	srv := newTestServer(t)
 
 	body, _ := json.Marshal(enhanceNoteRequest{Content: ""})
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -150,7 +151,7 @@ func TestHandleEnhanceNote_WhitespaceContent(t *testing.T) {
 	srv := newTestServer(t)
 
 	body, _ := json.Marshal(enhanceNoteRequest{Content: "   "})
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/1/enhance", bytes.NewReader(body))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -164,7 +165,7 @@ func TestHandleEnhanceNote_WhitespaceContent(t *testing.T) {
 func TestHandleEnhanceNote_InvalidBody(t *testing.T) {
 	srv := newTestServer(t)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/1/enhance", bytes.NewReader([]byte("not json {")))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/1/enhance", bytes.NewReader([]byte("not json {")))
 	req.SetPathValue("id", "1")
 	w := httptest.NewRecorder()
 
@@ -289,7 +290,7 @@ func TestLoadLLMConfig_MissingAPIKey(t *testing.T) {
 func TestHandleSummarizeMeeting_InvalidID(t *testing.T) {
 	srv := newTestServer(t)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/meetings/invalid/summarize", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings/invalid/summarize", nil)
 	req.SetPathValue("id", "invalid")
 	w := httptest.NewRecorder()
 
@@ -303,7 +304,7 @@ func TestHandleSummarizeMeeting_InvalidID(t *testing.T) {
 func TestHandleEnhanceNote_InvalidID(t *testing.T) {
 	srv := newTestServer(t)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/notes/invalid/enhance", nil)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes/invalid/enhance", nil)
 	req.SetPathValue("id", "invalid")
 	w := httptest.NewRecorder()
 
@@ -328,7 +329,7 @@ func TestHandleUpdateConfig_AllFields(t *testing.T) {
 	}
 	body, _ := json.Marshal(reqBody)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/config", bytes.NewReader(body))
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
