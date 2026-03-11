@@ -6,7 +6,7 @@ require (
 	github.com/magefile/mage v1.16.0
 	github.com/stretchr/testify v1.11.1
 	modernc.org/sqlite v1.46.1
-	tailscale.com v1.96.0
+	tailscale.com v1.96.1
 )
 
 require (
