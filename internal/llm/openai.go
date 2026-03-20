@@ -1,3 +1,4 @@
+// coverage-exempt: external HTTP client, requires mock infrastructure not yet in place
 package llm
 
 import (

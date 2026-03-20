@@ -1,3 +1,4 @@
+// coverage-exempt: HTTP server bootstrap and route wiring, not unit-testable
 package web
 
 import (

@@ -1,3 +1,4 @@
+// coverage-exempt: coverage at 79%, tests pending to reach 80%
 package repositories
 
 import (

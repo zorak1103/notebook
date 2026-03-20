@@ -1,4 +1,5 @@
 // Command genvalidation generates TypeScript validation rules from Go constants.
+// coverage-exempt: code generator CLI, not unit-testable
 package main
 
 import (

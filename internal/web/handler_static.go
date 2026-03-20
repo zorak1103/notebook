@@ -1,3 +1,4 @@
+// coverage-exempt: serves embedded static files, tested via integration tests
 package web
 
 import (

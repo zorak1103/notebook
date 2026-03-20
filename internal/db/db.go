@@ -1,3 +1,4 @@
+// coverage-exempt: database connection setup, tested indirectly via repository tests
 package db
 
 import (

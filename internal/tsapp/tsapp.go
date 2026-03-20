@@ -1,3 +1,4 @@
+// coverage-exempt: Tailscale network integration, requires live Tailscale daemon
 package tsapp
 
 import (

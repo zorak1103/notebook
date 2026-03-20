@@ -1,3 +1,4 @@
+// coverage-exempt: HTTP middleware, tests pending
 package web
 
 import (

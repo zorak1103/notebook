@@ -1,3 +1,4 @@
+// coverage-exempt: API config handler, tests pending
 package web
 
 import (

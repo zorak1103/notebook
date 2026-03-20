@@ -1,3 +1,4 @@
+// coverage-exempt: main entry point, not unit-testable
 package main
 
 import (
