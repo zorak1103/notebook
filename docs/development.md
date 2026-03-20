@@ -14,32 +14,32 @@ notebook/
 ├── frontend/             # React + Vite frontend
 ├── docs/                 # Documentation
 ├── .github/workflows/    # CI/CD pipelines
-└── magefile.go           # Build system (Mage)
+└── Taskfile.yml          # Build system (Task)
 ```
 
 ## Build Commands
 
-The project uses [Mage](https://magefile.org) (Go-based Make alternative).
+The project uses [Task](https://taskfile.dev) (YAML-based Make alternative).
 
 ```bash
-mage build        # Build frontend + backend (or just: mage)
-mage frontend     # Build frontend only
-mage backend      # Build backend only
-mage dev          # Show dev setup instructions
-mage test         # Run tests
-mage lint         # Run linter
-mage verify       # Run lint + test
-mage clean        # Clean build artifacts
-mage -l           # List all available targets
+task build              # Build frontend + backend (default)
+task build:frontend     # Build frontend only
+task build:check        # Compile-check Go without building frontend
+task dev                # Show dev setup instructions
+task dev:backend        # Start Go backend in dev mode
+task dev:frontend       # Start Vite dev server
+task test               # Run tests
+task test:coverage      # Run tests with per-file 80% coverage enforcement
+task lint               # Run golangci-lint
+task lint:frontend      # Run ESLint
+task verify             # Run lint + lint:frontend + test
+task clean              # Clean build artifacts
+task --list             # List all available tasks
 ```
 
-Mage without installation (useful for CI/CD or first-time setup):
-```bash
-go run github.com/magefile/mage@latest build
-go run github.com/magefile/mage@latest -l
-```
+Install Task: `go install github.com/go-task/task/v3/cmd/task@latest` (or via Scoop/Homebrew/apt).
 
-**Important**: `go:embed` requires the frontend to be built before any Go command (build, test, lint). Always run `mage frontend` first.
+**Important**: `go:embed` requires the frontend to be built before any Go command (build, test, lint). Always run `task build:frontend` first. For Go-only work (e.g. unit tests without frontend), `task build:check` and `task test` use `prepare:embed` to create a placeholder directory automatically.
 
 ## Running Tests
 
@@ -80,7 +80,7 @@ Frontend proxies API requests to backend (configured in `vite.config.ts`).
 
 - Go 1.26+
 - Node.js 20+
-- Mage: `go install github.com/magefile/mage@latest` (or via Scoop/Homebrew)
+- Task: `go install github.com/go-task/task/v3/cmd/task@latest` (or via Scoop/Homebrew/apt)
 - golangci-lint v2
 
 ## CI/CD

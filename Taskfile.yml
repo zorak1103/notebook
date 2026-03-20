@@ -1,0 +1,141 @@
+version: '3'
+
+vars:
+  RACE: ''
+
+tasks:
+  default:
+    deps: [build]
+    silent: true
+
+  # ============================================================================
+  # PREPARE
+  # ============================================================================
+  prepare:embed:
+    desc: Create embed placeholder so go:embed compiles without a full frontend build
+    internal: true
+    silent: true
+    cmds:
+      - mkdir -p internal/web/frontend/dist
+      - touch internal/web/frontend/dist/.gitkeep
+
+  # ============================================================================
+  # GENERATE
+  # ============================================================================
+  generate:
+    desc: Run the validation code generator
+    cmds:
+      - go run ./cmd/genvalidation
+
+  # ============================================================================
+  # BUILD
+  # ============================================================================
+  build:frontend:
+    desc: Build the React frontend with Vite
+    deps: [generate]
+    dir: frontend
+    cmds:
+      - npm ci
+      - npm run build
+
+  build:
+    desc: Build everything (frontend + backend) — default task
+    deps: [build:frontend]
+    cmds:
+      - go build -o notebook{{exeExt}} ./cmd/notebook
+
+  build:check:
+    desc: Compile-check Go without building the frontend
+    deps: [prepare:embed]
+    cmds:
+      - go build ./...
+
+  # ============================================================================
+  # TEST
+  # ============================================================================
+  test:
+    desc: Run all Go tests
+    deps: [prepare:embed]
+    cmds:
+      - go test {{.RACE}} ./...
+
+  test:integration:
+    desc: Run integration tests (placeholder)
+    cmds:
+      - echo "No integration tests yet"
+
+  test:all:
+    desc: Run unit and integration tests
+    deps: [test, test:integration]
+
+  test:coverage:
+    desc: Run tests with per-file 80% coverage enforcement
+    deps: [prepare:embed]
+    cmds:
+      - go test {{.RACE}} -coverprofile=coverage.out -covermode=atomic ./...
+      - bash scripts/check-coverage.sh coverage.out 80
+
+  # ============================================================================
+  # LINT
+  # ============================================================================
+  lint:frontend:
+    desc: Run ESLint for the React frontend
+    dir: frontend
+    cmds:
+      - npm ci
+      - npm run lint
+
+  lint:
+    desc: Run golangci-lint for Go
+    deps: [prepare:embed]
+    cmds:
+      - golangci-lint run --timeout=5m ./...
+
+  # ============================================================================
+  # VERIFY
+  # ============================================================================
+  verify:
+    desc: Run all verification checks (lint + lint:frontend + test)
+    deps: [lint, lint:frontend, test]
+
+  # ============================================================================
+  # DEV
+  # ============================================================================
+  dev:
+    desc: Show development mode instructions
+    silent: true
+    cmds:
+      - |
+        echo "To run in development mode, open two terminals:"
+        echo ""
+        echo "  Terminal 1 (frontend):  task dev:frontend"
+        echo "  Terminal 2 (backend):   task dev:backend"
+        echo ""
+        echo "Then open http://localhost:5173 in your browser"
+
+  dev:backend:
+    desc: Start the Go backend in development mode
+    cmds:
+      - go run ./cmd/notebook --dev-listen :8080 --verbose
+
+  dev:frontend:
+    desc: Start the Vite frontend dev server
+    dir: frontend
+    cmds:
+      - npm run dev
+
+  # ============================================================================
+  # INSTALL / CLEAN
+  # ============================================================================
+  install:
+    desc: Download Go module dependencies
+    cmds:
+      - go mod download
+
+  clean:
+    desc: Remove all build artifacts
+    cmds:
+      - rm -rf notebook notebook.exe genvalidation genvalidation.exe
+      - rm -rf internal/web/frontend/dist
+      - rm -rf frontend/dist frontend/src/generated
+      - rm -rf tsnet-state coverage.out coverage-report.txt

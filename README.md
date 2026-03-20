@@ -75,7 +75,7 @@ Windows: download `notebook_Windows_x86_64.zip`.
 ```bash
 git clone https://github.com/zorak1103/notebook.git
 cd notebook
-mage build  # or: go run github.com/magefile/mage@latest build
+task build
 ./notebook --dev-listen :8080
 ```
 
@@ -95,11 +95,12 @@ For CLI flags, LLM configuration, and AI feature details see [`docs/configuratio
 
 | Command | Description |
 |---------|-------------|
-| `mage build` | Build frontend + backend |
-| `mage test` | Run tests |
-| `mage lint` | Run linter |
-| `mage verify` | Run lint + test |
-| `mage -l` | List all targets |
+| `task build` | Build frontend + backend |
+| `task test` | Run tests |
+| `task lint` | Run linter |
+| `task verify` | Run lint + lint:frontend + test |
+| `task test:coverage` | Tests with per-file 80% coverage enforcement |
+| `task --list` | List all tasks |
 
 For project structure, build system details, and frontend dev setup see [`docs/development.md`](docs/development.md).
 

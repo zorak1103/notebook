@@ -3,7 +3,6 @@ module github.com/zorak1103/notebook
 go 1.26.1
 
 require (
-	github.com/magefile/mage v1.16.0
 	github.com/stretchr/testify v1.11.1
 	modernc.org/sqlite v1.46.1
 	tailscale.com v1.96.1

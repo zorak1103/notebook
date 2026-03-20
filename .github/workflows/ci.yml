@@ -38,14 +38,16 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Build frontend (required for go:embed)
-        run: mage frontend
+        run: task build:frontend
 
       - name: Run frontend linter
-        run: npm --prefix frontend run lint
+        run: task lint:frontend
 
       - name: Install golangci-lint
         # NOTE: If golangci-lint releases v3, update the module path below to .../v3/cmd/golangci-lint@latest
@@ -53,7 +55,7 @@ jobs:
         run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 
       - name: Run golangci-lint
-        run: golangci-lint run --timeout=5m
+        run: task lint
 
       - name: Check Go formatting
         run: |
@@ -92,21 +94,23 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Download dependencies
         run: go mod download
 
       - name: Build frontend (required for go:embed)
-        run: mage frontend
+        run: task build:frontend
 
-      - name: Run tests with coverage
-        run: |
-          go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
+      - name: Run tests with race detector
+        run: task test RACE=-race
 
       - name: Generate coverage report
         run: |
+          go test -race -coverprofile=coverage.out -covermode=atomic ./...
           go tool cover -func=coverage.out | tee coverage-report.txt
           COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}')
           echo "Total Coverage: $COVERAGE"
@@ -119,6 +123,42 @@ jobs:
             coverage.out
             coverage-report.txt
           retention-days: 30
+
+  # ============================================================================
+  # COVERAGE - Per-file Coverage Enforcement
+  # ============================================================================
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: "1"  # Required for race detector
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+
+      - name: Build frontend (required for go:embed)
+        run: task build:frontend
+
+      - name: Run coverage with enforcement
+        run: task test:coverage RACE=-race
 
   # ============================================================================
   # BUILD - Frontend and Backend
@@ -143,19 +183,21 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Download Go dependencies
         run: go mod download
 
-      - name: Build with Mage
-        run: mage build
+      - name: Build with Task
+        run: task build
 
       - name: Verify binary
         run: |
           ./notebook --help || true
-          echo "✓ Binary verification complete"
+          echo "Binary verification complete"
 
   # ============================================================================
   # SECURITY - govulncheck Vulnerability Scanner
@@ -180,11 +222,13 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Build frontend (required for go:embed)
-        run: mage frontend
+        run: task build:frontend
 
       - name: Install govulncheck
         run: go install golang.org/x/vuln/cmd/govulncheck@latest

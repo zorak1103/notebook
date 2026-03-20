@@ -37,14 +37,16 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Download Go dependencies
         run: go mod download
 
       - name: Build frontend (required for go:embed)
-        run: mage frontend
+        run: task build:frontend
 
       - name: Run frontend linter
         run: npm --prefix frontend run lint
@@ -83,14 +85,16 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
       - name: Download Go dependencies
         run: go mod download
 
-      - name: Build frontend with Mage
-        run: mage frontend
+      - name: Build frontend with Task
+        run: task build:frontend
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
