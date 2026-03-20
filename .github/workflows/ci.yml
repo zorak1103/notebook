@@ -39,10 +39,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Build frontend (required for go:embed)
         run: task build:frontend
@@ -96,10 +93,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Download dependencies
         run: go mod download
@@ -152,10 +146,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Build frontend (required for go:embed)
         run: task build:frontend
@@ -187,10 +178,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Download Go dependencies
         run: go mod download
@@ -227,10 +215,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Build frontend (required for go:embed)
         run: task build:frontend
