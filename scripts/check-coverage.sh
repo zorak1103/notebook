@@ -19,6 +19,9 @@ fi
 
 echo "Checking per-file coverage (threshold: ${THRESHOLD}%)..."
 
+# Determine module path from go.mod to convert coverage paths to local paths
+MODULE=$(grep '^module ' go.mod 2>/dev/null | awk '{print $2}')
+
 # Build associative arrays: file -> covered statements, file -> total statements
 declare -A file_covered
 declare -A file_total
@@ -48,8 +51,14 @@ for file in "${!file_total[@]}"; do
 
   [ "$total" -eq 0 ] && continue
 
+  # Convert module path (github.com/owner/repo/pkg/file.go) to local path (pkg/file.go)
+  local_file="$file"
+  if [ -n "$MODULE" ]; then
+    local_file="${file#${MODULE}/}"
+  fi
+
   # Check for coverage-exempt annotation in the source file
-  if [ -f "$file" ] && grep -q "// coverage-exempt:" "$file" 2>/dev/null; then
+  if [ -f "$local_file" ] && grep -q "// coverage-exempt:" "$local_file" 2>/dev/null; then
     EXEMPT_COUNT=$(( EXEMPT_COUNT + 1 ))
     continue
   fi
