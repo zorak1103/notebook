@@ -48,7 +48,7 @@ tasks:
     desc: Compile-check Go without building the frontend
     deps: [prepare:embed]
     cmds:
-      - go build ./...
+      - go build ./cmd/... ./internal/...
 
   # ============================================================================
   # TEST
@@ -57,7 +57,7 @@ tasks:
     desc: Run all Go tests
     deps: [prepare:embed]
     cmds:
-      - go test {{.RACE}} ./...
+      - go test {{.RACE}} ./cmd/... ./internal/...
 
   test:integration:
     desc: Run integration tests (placeholder)
@@ -72,7 +72,7 @@ tasks:
     desc: Run tests with per-file 80% coverage enforcement
     deps: [prepare:embed]
     cmds:
-      - go test {{.RACE}} -coverprofile=coverage.out -covermode=atomic ./...
+      - go test {{.RACE}} -coverprofile=coverage.out -covermode=atomic ./cmd/... ./internal/...
       - bash scripts/check-coverage.sh coverage.out 80
 
   # ============================================================================
@@ -89,7 +89,7 @@ tasks:
     desc: Run golangci-lint for Go
     deps: [prepare:embed]
     cmds:
-      - golangci-lint run --timeout=5m ./...
+      - golangci-lint run --timeout=5m ./cmd/... ./internal/...
 
   # ============================================================================
   # VERIFY

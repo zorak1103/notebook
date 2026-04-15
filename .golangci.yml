@@ -8,6 +8,8 @@ run:
   # Test files are excluded from funlen/gocognit via exclusions below
   tests: true
   modules-download-mode: readonly
+  exclude-dirs:
+    - frontend/node_modules
 
 output:
   formats:

@@ -106,7 +106,7 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          go test -race -coverprofile=coverage.out -covermode=atomic ./...
+          go test -race -coverprofile=coverage.out -covermode=atomic ./cmd/... ./internal/...
           go tool cover -func=coverage.out | tee coverage-report.txt
           COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}')
           echo "Total Coverage: $COVERAGE"
