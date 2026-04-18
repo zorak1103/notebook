@@ -16,7 +16,7 @@ interface NoteFormProps {
 
 export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormProps) {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!!noteId);
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState('');
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -27,17 +27,18 @@ export function NoteForm({ meetingId, noteId, onSuccess, onCancel }: NoteFormPro
   // Load note data if editing
   useEffect(() => {
     if (noteId) {
-      setLoading(true);
+      let cancelled = false;
       fetchNote(noteId)
         .then((note) => {
-          setContent(note.content);
+          if (!cancelled) setContent(note.content);
         })
         .catch((err) => {
-          setError(err instanceof Error ? err.message : 'Failed to load note');
+          if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load note');
         })
         .finally(() => {
-          setLoading(false);
+          if (!cancelled) setLoading(false);
         });
+      return () => { cancelled = true; };
     } else {
       // Focus textarea when creating new note
       contentTextareaRef.current?.focus();

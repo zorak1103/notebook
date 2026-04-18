@@ -16,7 +16,25 @@ export function useNotes(meetingId: number): UseNotesResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadNotes = useCallback(async () => {
+  useEffect(() => {
+    let cancelled = false;
+    fetchNotes(meetingId)
+      .then((data) => {
+        if (!cancelled) {
+          setNotes(data);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load notes');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [meetingId]);
+
+  const refresh = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -29,18 +47,14 @@ export function useNotes(meetingId: number): UseNotesResult {
     }
   }, [meetingId]);
 
-  useEffect(() => {
-    loadNotes();
-  }, [loadNotes]);
-
   const handleDelete = useCallback(async (id: number) => {
     try {
       await deleteNote(id);
-      await loadNotes();
+      await refresh();
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : 'Failed to delete note');
     }
-  }, [loadNotes]);
+  }, [refresh]);
 
   const handleReorder = useCallback(async (id: number, direction: 'up' | 'down') => {
     try {
@@ -57,6 +71,6 @@ export function useNotes(meetingId: number): UseNotesResult {
     error,
     handleDelete,
     handleReorder,
-    refresh: loadNotes,
+    refresh,
   };
 }

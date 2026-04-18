@@ -28,17 +28,18 @@ export function MeetingDetail({ meetingId, onBack, onEdit }: MeetingDetailProps)
   const [previousSummary, setPreviousSummary] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
+    let cancelled = false;
     fetchMeeting(meetingId)
       .then((data) => {
-        setMeeting(data);
+        if (!cancelled) setMeeting(data);
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Failed to load meeting');
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load meeting');
       })
       .finally(() => {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       });
+    return () => { cancelled = true; };
   }, [meetingId]);
 
   const handleNoteSuccess = () => {

@@ -20,7 +20,37 @@ export function useMeetings(): UseMeetingsResult {
   const [sortColumn, setSortColumn] = useState('meeting_date');
   const [sortOrder, setSortOrder] = useState('desc');
 
-  const loadMeetings = useCallback(async () => {
+  useEffect(() => {
+    let cancelled = false;
+    fetchMeetings(sortColumn, sortOrder)
+      .then((data) => {
+        if (!cancelled) {
+          setMeetings(data);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load meetings');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [sortColumn, sortOrder]);
+
+  const handleSort = useCallback((column: string) => {
+    setLoading(true);
+    setSortColumn((prev) => {
+      if (prev === column) {
+        setSortOrder((order) => (order === 'asc' ? 'desc' : 'asc'));
+        return prev;
+      }
+      setSortOrder('asc');
+      return column;
+    });
+  }, []);
+
+  const refresh = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -33,31 +63,14 @@ export function useMeetings(): UseMeetingsResult {
     }
   }, [sortColumn, sortOrder]);
 
-  useEffect(() => {
-    loadMeetings();
-  }, [loadMeetings]);
-
-  const handleSort = useCallback((column: string) => {
-    setSortColumn((prev) => {
-      if (prev === column) {
-        // Toggle order if same column
-        setSortOrder((order) => (order === 'asc' ? 'desc' : 'asc'));
-        return prev;
-      }
-      // New column, default to ascending
-      setSortOrder('asc');
-      return column;
-    });
-  }, []);
-
   const handleDelete = useCallback(async (id: number) => {
     try {
       await deleteMeeting(id);
-      await loadMeetings();
+      await refresh();
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : 'Failed to delete meeting');
     }
-  }, [loadMeetings]);
+  }, [refresh]);
 
   return {
     meetings,
@@ -67,6 +80,6 @@ export function useMeetings(): UseMeetingsResult {
     sortOrder,
     handleSort,
     handleDelete,
-    refresh: loadMeetings,
+    refresh,
   };
 }

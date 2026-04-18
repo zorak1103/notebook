@@ -53,20 +53,23 @@ export function SearchPanel({ onSelectMeeting }: SearchPanelProps) {
       return;
     }
 
-    async function fetchResults() {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await searchMeetings(debouncedQuery);
-        setResults(data);
-      } catch (err) {
-        setError((err as Error).message || t('search.error'));
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchResults();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoading(true);
+    let cancelled = false;
+    searchMeetings(debouncedQuery)
+      .then((data) => {
+        if (!cancelled) {
+          setResults(data);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError((err as Error).message || t('search.error'));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
   }, [debouncedQuery, t]);
 
   const hasQuery = debouncedQuery.trim().length > 0;

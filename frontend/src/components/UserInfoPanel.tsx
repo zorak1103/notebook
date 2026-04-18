@@ -14,20 +14,22 @@ function UserInfoPanel(): React.JSX.Element {
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const [info, ver] = await Promise.all([fetchWhoAmI(), fetchVersion()]);
-        setUserInfo(info);
-        setVersionInfo(ver);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : t('info.loadError'));
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    let cancelled = false;
+    Promise.all([fetchWhoAmI(), fetchVersion()])
+      .then(([info, ver]) => {
+        if (!cancelled) {
+          setUserInfo(info);
+          setVersionInfo(ver);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : t('info.loadError'));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
   }, [t]);
 
   if (loading) {

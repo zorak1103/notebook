@@ -20,7 +20,7 @@ interface MeetingFormProps {
 
 export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps) {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!!meetingId);
   const [error, setError] = useState<string | null>(null);
   const subjectInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,25 +42,28 @@ export function MeetingForm({ meetingId, onSuccess, onCancel }: MeetingFormProps
   // Load meeting data if editing
   useEffect(() => {
     if (meetingId) {
-      setLoading(true);
+      let cancelled = false;
       fetchMeeting(meetingId)
         .then((meeting) => {
-          setFormData({
-            subject: meeting.subject,
-            meeting_date: meeting.meeting_date,
-            start_time: meeting.start_time,
-            end_time: meeting.end_time,
-            participants: meeting.participants,
-            summary: meeting.summary,
-            keywords: meeting.keywords,
-          });
+          if (!cancelled) {
+            setFormData({
+              subject: meeting.subject,
+              meeting_date: meeting.meeting_date,
+              start_time: meeting.start_time,
+              end_time: meeting.end_time,
+              participants: meeting.participants,
+              summary: meeting.summary,
+              keywords: meeting.keywords,
+            });
+          }
         })
         .catch((err) => {
-          setError(err instanceof Error ? err.message : 'Failed to load meeting');
+          if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load meeting');
         })
         .finally(() => {
-          setLoading(false);
+          if (!cancelled) setLoading(false);
         });
+      return () => { cancelled = true; };
     } else {
       // Focus subject field when creating new meeting
       subjectInputRef.current?.focus();
