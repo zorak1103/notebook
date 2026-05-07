@@ -68,7 +68,7 @@ export function useMeetings(): UseMeetingsResult {
       await deleteMeeting(id);
       await refresh();
     } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Failed to delete meeting');
+      throw new Error(err instanceof Error ? err.message : 'Failed to delete meeting', { cause: err });
     }
   }, [refresh]);
 
