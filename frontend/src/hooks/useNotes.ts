@@ -52,7 +52,7 @@ export function useNotes(meetingId: number): UseNotesResult {
       await deleteNote(id);
       await refresh();
     } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Failed to delete note');
+      throw new Error(err instanceof Error ? err.message : 'Failed to delete note', { cause: err });
     }
   }, [refresh]);
 
@@ -61,7 +61,7 @@ export function useNotes(meetingId: number): UseNotesResult {
       const updated = await reorderNote(id, direction);
       setNotes(updated);
     } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Failed to reorder note');
+      throw new Error(err instanceof Error ? err.message : 'Failed to reorder note', { cause: err });
     }
   }, []);
 
