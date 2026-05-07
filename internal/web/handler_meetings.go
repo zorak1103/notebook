@@ -13,9 +13,10 @@ import (
 )
 
 const (
-	devModeCreatedBy = "dev@example.com"
-	dateFormat       = "2006-01-02"
-	timeFormat       = "15:04"
+	devModeCreatedBy  = "dev@example.com"
+	dateFormat        = "2006-01-02"
+	timeFormat        = "15:04"
+	defaultSortColumn = "meeting_date"
 )
 
 // validateMeetingDateTime validates date and time formats
@@ -73,7 +74,7 @@ func validateMeeting(m *models.Meeting) error {
 func (s *Server) handleListMeetings(w http.ResponseWriter, r *http.Request) {
 	sortColumn := r.URL.Query().Get("sort")
 	if sortColumn == "" {
-		sortColumn = "meeting_date"
+		sortColumn = defaultSortColumn
 	}
 
 	order := r.URL.Query().Get("order")

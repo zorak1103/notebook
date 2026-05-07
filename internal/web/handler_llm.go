@@ -14,6 +14,12 @@ import (
 	"github.com/zorak1103/notebook/internal/llm"
 )
 
+const (
+	llmKeyContent      = "content"
+	llmKeySubject      = "subject"
+	llmKeyParticipants = "participants"
+)
+
 type enhanceNoteRequest struct {
 	Content string `json:"content"`
 }
@@ -131,7 +137,7 @@ func (s *Server) enhanceContent(r *http.Request, llmURL, llmAPIKey, llmModel, en
 	}
 
 	prompt := llm.RenderPrompt(enhancePrompt, map[string]string{
-		"content": content,
+		llmKeyContent: content,
 	})
 
 	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
@@ -175,10 +181,10 @@ func (s *Server) generateSummary(r *http.Request, llmURL, llmAPIKey, llmModel, s
 		participants = *meeting.Participants
 	}
 	prompt := llm.RenderPrompt(summaryPrompt, map[string]string{
-		"subject":      meeting.Subject,
-		"date":         meeting.MeetingDate,
-		"participants": participants,
-		"notes":        notesText,
+		llmKeySubject:      meeting.Subject,
+		"date":             meeting.MeetingDate,
+		llmKeyParticipants: participants,
+		"notes":            notesText,
 	})
 
 	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
