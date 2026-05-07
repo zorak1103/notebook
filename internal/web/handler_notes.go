@@ -18,6 +18,7 @@ const (
 	errNoteNotFound     = "note not found"
 	errInvalidMeetingID = "invalid meeting ID"
 	errInvalidDirection = "invalid direction: must be 'up' or 'down'"
+	directionDown       = "down"
 )
 
 // parseMeetingIDParam extracts and parses the "meetingId" path parameter.
@@ -56,7 +57,7 @@ func findAdjacentNote(notes []*models.Note, noteID int, direction string) (*mode
 				return nil, fmt.Errorf("note is already first")
 			}
 			return notes[i-1], nil
-		case "down":
+		case directionDown:
 			if i == len(notes)-1 {
 				return nil, fmt.Errorf("note is already last")
 			}
@@ -82,7 +83,7 @@ func (s *Server) handleReorderNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.Direction != "up" && req.Direction != "down" {
+	if req.Direction != "up" && req.Direction != directionDown {
 		writeError(w, http.StatusBadRequest, errInvalidDirection)
 		return
 	}
