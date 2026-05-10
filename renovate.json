@@ -88,7 +88,7 @@
     {
       "customType": "regex",
       "description": "Track golangci-lint version in go install workflow steps",
-      "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
+      "managerFilePatterns": ["/\\.github/workflows/[^/]+\\.ya?ml$/"],
       "matchStrings": [
         "golangci-lint/v2/cmd/golangci-lint@(?<currentValue>v[\\d.]+)"
       ],
