@@ -220,7 +220,9 @@ jobs:
         run: task build:frontend
 
       - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+        # Renovate tracks this version via customManagers regex in renovate.json.
+        # Pinned: @latest resolved to v1.4.0 which panics on generics (x/tools v0.46.0 bug).
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.3.0
 
       - name: Run govulncheck
         run: govulncheck -show verbose ./...
