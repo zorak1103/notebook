@@ -82,6 +82,13 @@
       "matchPackageNames": ["golangci/golangci-lint"],
       "automerge": true,
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "govulncheck minor/patch - automerge",
+      "matchPackageNames": ["golang.org/x/vuln"],
+      "matchManagers": ["regex"],
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ],
   "customManagers": [
@@ -94,6 +101,17 @@
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "golangci/golangci-lint",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Track govulncheck version in go install workflow steps",
+      "managerFilePatterns": ["/\\.github/workflows/[^/]+\\.ya?ml$/"],
+      "matchStrings": [
+        "golang.org/x/vuln/cmd/govulncheck@(?<currentValue>v[\\d.]+)"
+      ],
+      "datasourceTemplate": "go",
+      "depNameTemplate": "golang.org/x/vuln",
       "versioningTemplate": "semver"
     }
   ],
