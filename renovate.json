@@ -84,12 +84,17 @@
       "matchUpdateTypes": ["minor", "patch"]
     },
     {
-      "description": "govulncheck minor/patch - automerge (skip v1.4.0: generics panic)",
+      "description": "govulncheck - skip v1.4.0 (generics panic, see ci_tool_pinning)",
       "matchPackageNames": ["golang.org/x/vuln"],
-      "matchManagers": ["regex"],
-      "automerge": true,
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchManagers": ["custom.regex"],
       "allowedVersions": "<1.4.0 || >1.4.0"
+    },
+    {
+      "description": "govulncheck minor/patch - automerge",
+      "matchPackageNames": ["golang.org/x/vuln"],
+      "matchManagers": ["custom.regex"],
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ],
   "customManagers": [
