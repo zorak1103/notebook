@@ -43,6 +43,13 @@
       "labels": ["dependencies", "npm", "major"]
     },
     {
+      "description": "Hold typescript major until typescript-eslint supports TS 7 (TS 7 removed ts.Extension, breaking @typescript-eslint/typescript-estree at runtime; see PR #79)",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "description": "Docker minor/patch - automerge",
       "matchManagers": ["dockerfile"],
       "matchUpdateTypes": ["minor", "patch"],
