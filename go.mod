@@ -1,11 +1,11 @@
 module github.com/zorak1103/notebook
 
-go 1.26.5
+go 1.26.6
 
 require (
-	github.com/stretchr/testify v1.12.0
-	modernc.org/sqlite v1.56.0
-	tailscale.com v1.102.2
+	github.com/stretchr/testify v1.12.1
+	modernc.org/sqlite v1.57.0
+	tailscale.com v1.102.3
 )
 
 require (
@@ -43,6 +43,7 @@ require (
 	github.com/tailscale/web-client-prebuilt v0.0.0-20250124233751-d4cd19a26976 // indirect
 	github.com/tailscale/wireguard-go v0.0.0-20260715223240-2e01ba5b00f0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	go4.org/mem v0.0.0-20240501181205-ae6ca9944745 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/crypto v0.54.0 // indirect
