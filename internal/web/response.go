@@ -14,7 +14,7 @@ type errorResponse struct {
 }
 
 // writeJSON writes a JSON response with the given status code and data.
-func writeJSON(w http.ResponseWriter, status int, data interface{}) {
+func writeJSON(w http.ResponseWriter, status int, data any) {
 	w.Header().Set("Content-Type", contentTypeJSON)
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(data)

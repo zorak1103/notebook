@@ -34,13 +34,13 @@ func NewOpenAIProvider(baseURL, apiKey, model string) (*OpenAIProvider, error) {
 		apiKey:  apiKey,
 		model:   model,
 		baseURL: strings.TrimSuffix(baseURL, "/"),
-		client:  &http.Client{},
+		client:  &http.Client{Timeout: llmRequestTimeout},
 	}, nil
 }
 
 // Complete sends a prompt to the OpenAI-compatible API
 func (p *OpenAIProvider) Complete(ctx context.Context, prompt string) (string, error) {
-	reqBody := map[string]interface{}{
+	reqBody := map[string]any{
 		"model": p.model,
 		"messages": []map[string]string{
 			{"role": "user", "content": prompt},

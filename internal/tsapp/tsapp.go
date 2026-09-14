@@ -32,7 +32,7 @@ func New(hostname, stateDir string) *App {
 	srv := &tsnet.Server{
 		Hostname: hostname,
 		Dir:      stateDir,
-		Logf: func(format string, args ...interface{}) {
+		Logf: func(format string, args ...any) {
 			fmt.Printf("[tsnet] "+format+"\n", args...)
 		},
 	}
