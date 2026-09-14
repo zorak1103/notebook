@@ -435,6 +435,63 @@ func TestHandleUpdateConfig_PromptPersistence(t *testing.T) {
 	}
 }
 
+func TestHandleUpdateConfig_EmptyPromptPreservesExisting(t *testing.T) {
+	srv := newTestServer(t)
+	repo := repositories.NewConfigRepository(srv.database.DB)
+
+	customPrompt := "Custom enhance prompt with {{content}}"
+	if err := repo.Set("llm_prompt_enhance", customPrompt); err != nil {
+		t.Fatalf("failed to seed prompt: %v", err)
+	}
+
+	// Update without sending the enhance prompt — existing value must survive.
+	reqBody := ConfigUpdateRequest{LLMModel: "gpt-4o"}
+	body, _ := json.Marshal(reqBody)
+
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	srv.handleUpdateConfig(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("expected status 200, got %d", w.Code)
+	}
+
+	req2 := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/config", nil)
+	w2 := httptest.NewRecorder()
+	srv.handleGetConfig(w2, req2)
+
+	var resp ConfigData
+	if err := json.NewDecoder(w2.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.LLMPromptEnhance != customPrompt {
+		t.Errorf("expected existing enhance prompt %q to be preserved, got %q", customPrompt, resp.LLMPromptEnhance)
+	}
+}
+
+func TestHandleUpdateConfig_DatabaseError(t *testing.T) {
+	srv := newTestServer(t)
+
+	// Close the DB so repo.Set fails — handler must return 500.
+	_ = srv.database.Close()
+
+	reqBody := ConfigUpdateRequest{LLMModel: "gpt-4o"}
+	body, _ := json.Marshal(reqBody)
+
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/config", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	srv.handleUpdateConfig(w, req)
+
+	if w.Code != http.StatusInternalServerError {
+		t.Errorf("expected status 500 when database write fails, got %d", w.Code)
+	}
+}
+
 func TestIsMasked(t *testing.T) {
 	tests := []struct {
 		name     string
