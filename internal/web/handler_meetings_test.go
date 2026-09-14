@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -276,6 +277,64 @@ func TestHandleCreateMeeting_Success(t *testing.T) {
 	}
 	if result.CreatedBy == "" {
 		t.Error("expected created_by to be set")
+	}
+}
+
+func TestHandleCreateMeeting_FieldsExactlyAtLimit(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	payload := map[string]interface{}{
+		"subject":      strings.Repeat("a", validation.MaxSubjectLength),
+		"meeting_date": time.Now().Format("2006-01-02"),
+		"start_time":   "10:00",
+		"participants": strings.Repeat("p", validation.MaxParticipantsLength),
+		"summary":      strings.Repeat("s", validation.MaxSummaryLength),
+		"keywords":     strings.Repeat("k", validation.MaxKeywordsLength),
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateMeeting(w, req)
+
+	if w.Code != http.StatusCreated {
+		t.Errorf("expected status 201 for fields exactly at limit, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestHandleCreateMeeting_OptionalFieldsTooLong(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	cases := []struct {
+		name  string
+		field string
+		limit int
+	}{
+		{"participants too long", "participants", validation.MaxParticipantsLength},
+		{"summary too long", "summary", validation.MaxSummaryLength},
+		{"keywords too long", "keywords", validation.MaxKeywordsLength},
+	}
+
+	for _, tc := range cases {
+		payload := map[string]interface{}{
+			"subject":      "Valid subject",
+			"meeting_date": time.Now().Format("2006-01-02"),
+			"start_time":   "10:00",
+			tc.field:       strings.Repeat("x", tc.limit+1),
+		}
+
+		body, _ := json.Marshal(payload)
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/meetings", bytes.NewReader(body))
+		w := httptest.NewRecorder()
+
+		server.handleCreateMeeting(w, req)
+
+		if w.Code != http.StatusBadRequest {
+			t.Errorf("%s: expected status 400, got %d", tc.name, w.Code)
+		}
 	}
 }
 

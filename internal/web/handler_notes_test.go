@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -345,6 +346,29 @@ func TestHandleCreateNote_InvalidJSON(t *testing.T) {
 
 	if errResp.Error == "" {
 		t.Error("expected error message, got empty string")
+	}
+}
+
+func TestHandleCreateNote_ContentExactlyAtLimit(t *testing.T) {
+	server := newTestServer(t)
+	defer server.database.Close()
+
+	meetingRepo := repositories.NewMeetingRepository(server.database.DB)
+	meetingID := createTestMeeting(t, meetingRepo)
+
+	payload := map[string]interface{}{
+		"meeting_id": meetingID,
+		"content":    strings.Repeat("a", validation.MaxNoteContentLength),
+	}
+
+	body, _ := json.Marshal(payload)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/notes", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	server.handleCreateNote(w, req)
+
+	if w.Code != http.StatusCreated {
+		t.Errorf("expected status 201 for content exactly at limit, got %d: %s", w.Code, w.Body.String())
 	}
 }
 
