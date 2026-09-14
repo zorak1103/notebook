@@ -75,6 +75,12 @@ tasks:
       - go test {{.RACE}} -coverprofile=coverage.out -covermode=atomic ./cmd/... ./internal/...
       - bash scripts/check-coverage.sh coverage.out 80
 
+  test:mutation:
+    desc: Run mutation testing (gremlins) — scope via PACKAGES, default ./internal
+    deps: [prepare:embed]
+    cmds:
+      - gremlins unleash -E 'generated' --threshold-efficacy 75 {{.PACKAGES | default "./internal"}}
+
   # ============================================================================
   # LINT
   # ============================================================================
