@@ -4,7 +4,12 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 )
+
+// llmRequestTimeout bounds each outbound LLM API call so a hung provider
+// cannot block a request forever.
+const llmRequestTimeout = 60 * time.Second
 
 // Provider defines the interface for LLM completion providers
 type Provider interface {

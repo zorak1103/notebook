@@ -31,13 +31,13 @@ func NewAnthropicProvider(apiKey, model string) (*AnthropicProvider, error) {
 	return &AnthropicProvider{
 		apiKey: apiKey,
 		model:  model,
-		client: &http.Client{},
+		client: &http.Client{Timeout: llmRequestTimeout},
 	}, nil
 }
 
 // Complete sends a prompt to the Anthropic API
 func (p *AnthropicProvider) Complete(ctx context.Context, prompt string) (string, error) {
-	reqBody := map[string]interface{}{
+	reqBody := map[string]any{
 		"model": p.model,
 		"messages": []map[string]string{
 			{"role": "user", "content": prompt},
