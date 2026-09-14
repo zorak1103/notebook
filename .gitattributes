@@ -1,0 +1,10 @@
+# Normalize all text files to LF in the index and on checkout.
+# Binary files are auto-detected and left untouched.
+* text=auto
+
+# Explicitly LF (scripts break with CRLF)
+*.sh text eol=lf
+
+# Explicitly CRLF (Windows-only files)
+*.bat text eol=crlf
+*.cmd text eol=crlf
