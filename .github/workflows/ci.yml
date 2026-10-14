@@ -203,7 +203,7 @@ jobs:
       - name: Install govulncheck
         # v1.4.0 panics on generics (x/tools@v0.46.0 ForEachElement bug) — do not bump until a fixed release is confirmed
         # renovate: datasource=go depName=golang.org/x/vuln
-        run: go install golang.org/x/vuln/cmd/govulncheck@v1.8.0
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
 
       - name: Run govulncheck with ignore-list gate
         run: |
@@ -256,6 +256,6 @@ jobs:
 
       - name: TruffleHog Secret Scan
         # renovate: datasource=github-releases depName=trufflesecurity/trufflehog
-        uses: trufflesecurity/trufflehog@0186870afd2c4a90def791d80260923ba583d076  # v3.98.0
+        uses: trufflesecurity/trufflehog@e76dff8a7e57d6df0c60ad8cbf5d5cba505a8fc9  # v3.99.2
         with:
           extra_args: --only-verified
