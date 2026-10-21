@@ -1,11 +1,11 @@
 module github.com/zorak1103/notebook
 
-go 1.27.1
+go 1.27.3
 
 require (
 	github.com/stretchr/testify v1.12.1
 	modernc.org/sqlite v1.60.1
-	tailscale.com v1.104.1
+	tailscale.com v1.104.2
 )
 
 require (
