@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/stretchr/testify v1.12.1
-	modernc.org/sqlite v1.61.0
+	modernc.org/sqlite v1.61.1
 	tailscale.com v1.104.4
 )
 
