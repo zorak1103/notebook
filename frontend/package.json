@@ -15,7 +15,7 @@
     "i18next-http-backend": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-i18next": "^17.0.0"
+    "react-i18next": "^18.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
